@@ -5,7 +5,9 @@
     --color-primary-dark: #4f46e5;
     --color-secondary: #8b5cf6;
     --color-success: #10b981;
+    --color-success-dark: #059669;
     --color-danger: #ef4444;
+    --color-danger-dark: #dc2626;
     --color-warning: #f59e0b;
     
     /* Neutrals */
@@ -173,7 +175,7 @@ h2 {
 }
 
 .btn-danger:hover {
-    background-color: #dc2626;
+    background-color: var(--color-danger-dark);
 }
 
 .btn-success {
@@ -182,7 +184,7 @@ h2 {
 }
 
 .btn-success:hover {
-    background-color: #059669;
+    background-color: var(--color-success-dark);
 }
 
 .btn-sm {

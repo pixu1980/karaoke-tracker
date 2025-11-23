@@ -1,0 +1,17 @@
+{
+  "name": "karaoke-tracker",
+  "version": "1.0.0",
+  "description": "Simple Karaoke Singers list tracker",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url ./",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.16.1"
+  }
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple Karaoke Singers list tracker - Manage your karaoke singers queue">
+    <title>Karaoke Tracker</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <h1>🎤 Karaoke Tracker</h1>
+        <p class="subtitle">Manage your karaoke singers queue</p>
+    </header>
+
+    <main class="app-main">
+        <section class="add-singer-section" aria-label="Add new singer">
+            <h2>Add Singer</h2>
+            <singer-form></singer-form>
+        </section>
+
+        <section class="singers-section" aria-label="Singers list">
+            <div class="section-header">
+                <h2>Singers Queue</h2>
+                <button id="clearAllBtn" class="btn btn-secondary" aria-label="Clear all singers">
+                    Clear All
+                </button>
+            </div>
+            <singer-list></singer-list>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>Built with ❤️ for karaoke enthusiasts</p>
+    </footer>
+
+    <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,5 +1,22 @@
 # Development Rules and Guidelines
 
+## ⚠️ Documentation as Source of Truth
+
+**This `/docs` folder is the ONLY source of truth for all project rules and conventions.**
+
+### Related documents (ALWAYS consult):
+- **`docs/coding-styleguides/javascript.md`** - Detailed JavaScript standards
+- **`docs/coding-styleguides/css.md`** - CSS standards and conventions
+- **`docs/coding-styleguides/html.md`** - HTML standards and semantics
+- **`docs/coding-styleguides/a11y.md`** - Accessibility standards
+
+### Documentation hierarchy:
+1. This file (`RULES.md`) contains general project rules
+2. Coding styleguides contain detailed language-specific conventions
+3. In case of conflict, styleguides take precedence for their specific scope
+
+---
+
 ## Core Principles
 
 ### 1. Simplicity First
@@ -14,7 +31,11 @@
 - No transpilation beyond what Parcel provides by default
 - Keep the build process fast and simple
 
-### 3. Vanilla Everything
+### 3. Package Manager
+- Use **pnpm** for all dependency installation and script execution
+- Do not mix npm or yarn commands within this project
+
+### 4. Vanilla Everything
 - **JavaScript**: Pure vanilla JS, no frameworks
 - **CSS**: Pure CSS, no preprocessors
 - **HTML**: Semantic HTML5, no templating engines
@@ -224,7 +245,7 @@ async function loadData() {
 - Test deployed version after each release
 
 ### Production Build
-- Run `npm run build` before committing
+- Run `pnpm run build` before committing
 - Check dist/ folder is correctly generated
 - Verify all assets are included
 - Test the built version locally

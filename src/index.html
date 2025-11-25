@@ -1,39 +1,171 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Simple Karaoke Singers list tracker - Manage your karaoke singers queue">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Simple Karaoke Singers list tracker - Manage your karaoke singers queue" />
     <title>Karaoke Tracker</title>
-    <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./styles/index.css" />
+  </head>
+  <body>
     <header class="app-header">
-        <h1>🎤 Karaoke Tracker</h1>
-        <p class="subtitle">Manage your karaoke singers queue</p>
+      <div class="header-text">
+        <h1>🎤 <span data-i18n="appTitle">Karaoke Tracker</span></h1>
+        <p class="subtitle" data-i18n="appSubtitle">Manage your karaoke singers queue</p>
+      </div>
+      <div class="header-controls">
+        <label class="auto-readd-toggle header-toggle header-control">
+          <input type="checkbox" id="autoReaddCheckbox" checked />
+          <span class="toggle-label" data-i18n="autoReadd">🔄 Auto re-add</span>
+        </label>
+        <div class="theme-switcher header-control">
+          <button class="theme-btn" data-theme="light" title="Light mode" aria-label="Light mode">☀️</button>
+          <button class="theme-btn" data-theme="dark" title="Dark mode" aria-label="Dark mode">🌙</button>
+          <button class="theme-btn" data-theme="system" title="System mode" aria-label="System mode">💻</button>
+        </div>
+        <select is="custom-select" id="languageSelect" class="language-select header-control" aria-label="Select language">
+          <option value="en">🇬🇧 EN</option>
+          <option value="it">🇮🇹 IT</option>
+          <option value="fr">🇫🇷 FR</option>
+          <option value="de">🇩🇪 DE</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="zh">🇨🇳 中文</option>
+          <option value="ja">🇯🇵 日本語</option>
+          <option value="ar">🇸🇦 عربي</option>
+        </select>
+      </div>
     </header>
 
     <main class="app-main">
-        <section class="add-singer-section" aria-label="Add new singer">
-            <h2>Add Singer</h2>
-            <singer-form></singer-form>
+      <div class="main-content">
+        <section class="singers-section" aria-label="Singers list">
+          <div class="section-header">
+            <h2 data-i18n="singersQueue">Singers Queue</h2>
+            <div class="section-actions">
+              <button id="resetListBtn" class="btn btn-warning" aria-label="Load example list with sample data" data-i18n="exampleList">
+                📋 Example List
+              </button>
+              <button id="clearAllBtn" class="btn btn-secondary" aria-label="Reset list and clear all singers" data-i18n="resetList">
+                🔄 Reset List
+              </button>
+            </div>
+          </div>
+          <singer-list></singer-list>
         </section>
 
-        <section class="singers-section" aria-label="Singers list">
-            <div class="section-header">
-                <h2>Singers Queue</h2>
-                <button id="clearAllBtn" class="btn btn-secondary" aria-label="Clear all singers">
-                    Clear All
-                </button>
-            </div>
-            <singer-list></singer-list>
+        <section class="add-singer-section" aria-label="Add new singer">
+          <div class="section-header-form">
+            <h2 data-i18n="addSinger">Add Singer</h2>
+          </div>
+          <singer-form></singer-form>
+
+          <div class="leaderboard-section">
+            <h3 data-i18n="leaderboard">🏆 Leaderboard</h3>
+            <singer-leaderboard></singer-leaderboard>
+          </div>
         </section>
+      </div>
     </main>
 
     <footer class="app-footer">
-        <p>Built with ❤️ for karaoke enthusiasts</p>
+      <p data-i18n="footer">Built with ❤️ for karaoke enthusiasts</p>
     </footer>
 
-    <script type="module" src="./app.js"></script>
-</body>
+    <!-- Confirmation Dialogs -->
+    <confirm-dialog
+      id="exampleListDialog"
+      title-key="loadExampleTitle"
+      message-key="loadExampleMsg"
+      warning-key="loadExampleWarning"
+      confirm-key="loadExamples"
+      cancel-key="cancel"
+      confirm-variant="btn-warning"
+    ></confirm-dialog>
+
+    <confirm-dialog
+      id="resetListDialog"
+      title-key="resetListTitle"
+      message-key="resetListMsg"
+      warning-key="resetListWarning"
+      confirm-key="resetList"
+      cancel-key="cancel"
+      confirm-variant="btn-danger"
+    ></confirm-dialog>
+
+    <confirm-dialog
+      id="removeSingerDialog"
+      title-key="removeSingerTitle"
+      message-key="removeSingerMsg"
+      message-after-key="fromQueue"
+      confirm-key="remove"
+      cancel-key="cancel"
+      confirm-variant="btn-danger"
+      show-dynamic-name
+    ></confirm-dialog>
+
+    <dialog id="doneSingerDialog" class="confirm-dialog">
+      <div class="dialog-content">
+        <h3 class="dialog-title" data-i18n="performanceComplete">✓ Performance Complete</h3>
+        <p class="dialog-message">
+          <span data-i18n="markAsDone">Mark</span> <strong class="dialog-singer-name"></strong>
+          <span data-i18n="asDone">as done?</span>
+        </p>
+        <div class="form-group">
+          <label class="form-label" data-i18n="ratePerformance">Rate the performance (optional)</label>
+          <star-rating value="0"></star-rating>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-secondary" data-action="cancel" data-i18n="cancel">Cancel</button>
+          <button type="button" class="btn btn-success" data-action="confirm" data-i18n="complete">Complete</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="editSingerDialog" class="confirm-dialog edit-dialog">
+      <div class="dialog-content">
+        <h3 class="dialog-title" data-i18n="editSingerTitle">✎ Edit Singer</h3>
+        <form class="edit-form">
+          <input type="hidden" name="editId" />
+          <div class="form-group">
+            <label for="editName" class="form-label"><span data-i18n="singerName">Singer Name</span> *</label>
+            <input type="text" id="editName" name="editName" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="editSongTitle" class="form-label"><span data-i18n="songTitle">Song Title</span> *</label>
+            <input type="text" id="editSongTitle" name="editSongTitle" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="editSongAuthor" class="form-label" data-i18n="songAuthor">Song Author</label>
+            <input type="text" id="editSongAuthor" name="editSongAuthor" class="form-input" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editSongKey" class="form-label" data-i18n="keyAdjustment">Key</label>
+              <select is="custom-select" id="editSongKey" name="editSongKey" class="form-input form-select">
+                <option value="-4">-4</option>
+                <option value="-3">-3</option>
+                <option value="-2">-2</option>
+                <option value="-1">-1</option>
+                <option value="0" selected>0</option>
+                <option value="+1">+1</option>
+                <option value="+2">+2</option>
+                <option value="+3">+3</option>
+                <option value="+4">+4</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editYoutubeUrl" class="form-label" data-i18n="youtubeLink">YouTube Link</label>
+            <input type="url" id="editYoutubeUrl" name="editYoutubeUrl" class="form-input" placeholder="https://youtube.com/..." />
+          </div>
+          <div class="dialog-actions">
+            <button type="button" class="btn btn-secondary" data-action="cancel" data-i18n="cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary" data-i18n="saveChanges">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <script type="module" src="./scripts/index.js"></script>
+  </body>
 </html>

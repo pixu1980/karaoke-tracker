@@ -23,7 +23,7 @@
 
 ### Prerequisites
 
-- Node.js 20+ and npm
+- Node.js 20+ and pnpm
 
 ### Installation
 
@@ -32,15 +32,15 @@
 git clone https://github.com/pixu1980/karaoke-tracker.git
 cd karaoke-tracker
 
-# Install dependencies
-npm install
+# Install dependencies (pnpm only)
+pnpm install
 ```
 
 ### Development
 
 ```bash
 # Start development server
-npm start
+pnpm start
 
 # Open http://localhost:1234 in your browser
 ```
@@ -49,7 +49,7 @@ npm start
 
 ```bash
 # Build for production
-npm run build
+pnpm run build
 
 # Output will be in the dist/ folder
 ```

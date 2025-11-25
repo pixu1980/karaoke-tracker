@@ -1,0 +1,12 @@
+/* Confirm Dialog Component Styles */
+
+confirm-dialog {
+  display: contents;
+}
+
+.confirm-dialog .dialog-message {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  align-items: center;
+}

@@ -1,0 +1,18 @@
+/* Singer List Component Styles */
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-secondary);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.5;
+}
+
+.empty-state-text {
+  font-size: var(--font-size-lg);
+  margin: 0;
+}

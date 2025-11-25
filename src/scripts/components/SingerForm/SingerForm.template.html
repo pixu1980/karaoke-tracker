@@ -1,0 +1,68 @@
+<form class="singer-form">
+  <div class="form-group">
+    <label for="singerName" class="form-label">{{singerNameLabel}} {{requiredLabel}}</label>
+    <input 
+      type="text" 
+      id="singerName" 
+      name="name" 
+      class="form-input" 
+      required
+      aria-required="true"
+    >
+  </div>
+  
+  <div class="form-group">
+    <label for="songTitle" class="form-label">{{songTitleLabel}} {{requiredLabel}}</label>
+    <input 
+      type="text" 
+      id="songTitle" 
+      name="songTitle" 
+      class="form-input" 
+      required
+      aria-required="true"
+    >
+  </div>
+  
+  <div class="form-group">
+    <label for="songAuthor" class="form-label">{{songAuthorLabel}}</label>
+    <input 
+      type="text" 
+      id="songAuthor" 
+      name="songAuthor" 
+      class="form-input" 
+    >
+  </div>
+  
+  <div class="form-group">
+    <label for="songKey" class="form-label">{{keyAdjustmentLabel}}</label>
+    <select 
+      is="custom-select"
+      id="songKey" 
+      name="songKey" 
+      class="form-select"
+    >
+      <option value="-4">-4</option>
+      <option value="-3">-3</option>
+      <option value="-2">-2</option>
+      <option value="-1">-1</option>
+      <option value="0" selected>0 {{originalLabel}}</option>
+      <option value="+1">+1</option>
+      <option value="+2">+2</option>
+      <option value="+3">+3</option>
+      <option value="+4">+4</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label for="youtubeUrl" class="form-label">{{youtubeLinkLabel}}</label>
+    <input 
+      type="url" 
+      id="youtubeUrl" 
+      name="youtubeUrl" 
+      class="form-input" 
+      placeholder="https://youtube.com/watch?v=..."
+    >
+  </div>
+  
+  <button type="submit" class="btn btn-primary">{{addToQueueLabel}}</button>
+</form>

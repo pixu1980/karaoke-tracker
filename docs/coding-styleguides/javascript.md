@@ -577,7 +577,7 @@ export class BaseDialog extends HTMLElement {
     static {
         if (!BaseDialog.stylesInjected) {
             const styleSheet = document.createElement('style');
-            styleSheet.setAttribute('data-component', 'base-dialog');
+            styleSheet.setAttribute('data-component', 'pix-dialog');
             styleSheet.textContent = styles;
             document.head.appendChild(styleSheet);
             BaseDialog.stylesInjected = true;

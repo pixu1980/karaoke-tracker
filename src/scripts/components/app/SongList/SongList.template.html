@@ -1,0 +1,20 @@
+<if condition="hasSongs">
+  <for each="index, song in songs">
+    <song-card 
+      data-id="{{song.id}}"
+      data-name="{{song.name}}"
+      data-song-title="{{song.songTitle}}"
+      data-song-author="{{song.songAuthor}}"
+      data-song-key="{{song.songKey}}"
+      data-youtube-url="{{song.youtubeUrl}}"
+      data-rating="{{song.rating}}"
+      {{index === 0 ? 'data-singing' : ''}}
+    ></song-card>
+  </for>
+</if>
+<else>
+  <div class="empty-state">
+    <div class="empty-state-icon">🎵</div>
+    <p class="empty-state-text">{{noSongsMessage}}</p>
+  </div>
+</else>

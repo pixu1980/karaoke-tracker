@@ -1,0 +1,15 @@
+<fieldset class="color-scheme-switcher header-control">
+  <legend class="visually-hidden">{{selectColorSchemeLabel}}</legend>
+  <label class="color-scheme-option" title="{{lightModeLabel}}" aria-label="{{lightModeLabel}}">
+    <input type="radio" value="light" name="color-scheme" class="visually-hidden" {{lightChecked}} />
+    <span class="color-scheme-icon">☀️</span>
+  </label>
+  <label class="color-scheme-option" title="{{darkModeLabel}}" aria-label="{{darkModeLabel}}">
+    <input type="radio" value="dark" name="color-scheme" class="visually-hidden" {{darkChecked}} />
+    <span class="color-scheme-icon">🌙</span>
+  </label>
+  <label class="color-scheme-option" title="{{systemModeLabel}}" aria-label="{{systemModeLabel}}">
+    <input type="radio" value="light dark" name="color-scheme" class="visually-hidden" {{systemChecked}} />
+    <span class="color-scheme-icon">💻</span>
+  </label>
+</fieldset>

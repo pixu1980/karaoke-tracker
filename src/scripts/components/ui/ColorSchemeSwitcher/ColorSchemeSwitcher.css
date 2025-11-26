@@ -1,0 +1,40 @@
+/* ColorSchemeSwitcher Component Styles */
+
+.color-scheme-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 0 var(--spacing-xs);
+  border: none;
+}
+
+.color-scheme-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+  min-width: 44px;
+  min-height: calc(var(--header-control-height) - var(--spacing-sm));
+}
+
+.color-scheme-option:hover {
+  background-color: var(--color-surface-elevated);
+}
+
+.color-scheme-option:has(input:checked) {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.color-scheme-option:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.color-scheme-icon {
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}

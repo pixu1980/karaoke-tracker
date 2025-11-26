@@ -1,0 +1,126 @@
+/* Rating Component Styles */
+
+/* Screen reader only - hide the native input visually but keep it accessible */
+input[is='pix-rating'].sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Rating wrapper (label element) */
+.rating-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pix-rating-container {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.pix-rating-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.pix-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pix-rating .star {
+  display: inline-flex;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  aspect-ratio: 1;
+}
+
+.pix-rating .star-half {
+  position: absolute;
+  top: 0;
+  width: 16px;
+  height: 32px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.pix-rating .star-half::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-border);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  transition: background-color 0.15s ease;
+}
+
+.pix-rating .star-left {
+  left: 0;
+  overflow: hidden;
+}
+
+.pix-rating .star-left::before {
+  left: 0;
+}
+
+.pix-rating .star-right {
+  right: 0;
+  overflow: hidden;
+}
+
+.pix-rating .star-right::before {
+  right: 0;
+}
+
+.pix-rating .star-half.filled::before {
+  background-color: #fbbf24;
+}
+
+.pix-rating .star-half:hover {
+  transform: scale(1.1);
+}
+
+/* Reset Rating Button */
+.btn-reset-rating {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reset-rating:hover {
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+  color: white;
+}
+
+.btn-reset-rating.hidden {
+  visibility: hidden;
+}
+
+/* Song Rating Wrapper in Card */
+.song-rating-wrapper {
+  margin-top: var(--spacing-sm);
+}

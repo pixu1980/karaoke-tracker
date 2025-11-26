@@ -4,7 +4,10 @@
   "description": "Simple Karaoke Singers list tracker",
   "source": "src/index.html",
   "scripts": {
+    "clear": "rm -rf .parcel-cache dist",
+    "prestart": "pnpm clear",
     "start": "parcel src/index.html",
+    "prebuild": "pnpm clear",
     "build": "parcel build src/index.html --public-url ./",
     "test": "echo \"No tests yet\" && exit 0",
     "lint": "biome check src/",

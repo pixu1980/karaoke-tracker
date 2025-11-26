@@ -1,13 +1,13 @@
 /**
  * Storage Service
- * Manages IndexedDB operations for singers and performances
+ * Manages IndexedDB operations for songs and performances
  */
 class StorageService {
   constructor() {
     this.dbName = 'KaraokeTrackerDB';
-    this.storeName = 'singers';
+    this.storeName = 'karaoke-tracker';
     this.performancesStoreName = 'performances';
-    this.version = 2;
+    this.version = 3;
     this.db = null;
   }
 
@@ -33,7 +33,6 @@ class StorageService {
         }
         if (!db.objectStoreNames.contains(this.performancesStoreName)) {
           const perfStore = db.createObjectStore(this.performancesStoreName, { keyPath: 'id', autoIncrement: true });
-          perfStore.createIndex('singerName', 'singerName', { unique: false });
           perfStore.createIndex('timestamp', 'timestamp', { unique: false });
         }
       };
@@ -44,7 +43,7 @@ class StorageService {
    * Get all singers from the database
    * @returns {Promise<Array>}
    */
-  async getAllSingers() {
+  async getAllSongs() {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([this.storeName], 'readonly');
       const objectStore = transaction.objectStore(this.storeName);
@@ -56,16 +55,16 @@ class StorageService {
   }
 
   /**
-   * Add a singer to the database
-   * @param {Object} singer - Singer data
-   * @returns {Promise<number>} - ID of the added singer
+   * Add a song to the database
+   * @param {Object} song - Song data
+   * @returns {Promise<number>} - ID of the added song
    */
-  async addSinger(singer) {
+  async addSong(song) {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([this.storeName], 'readwrite');
       const objectStore = transaction.objectStore(this.storeName);
       const request = objectStore.add({
-        ...singer,
+        ...song,
         timestamp: Date.now()
       });
 
@@ -75,11 +74,11 @@ class StorageService {
   }
 
   /**
-   * Delete a singer from the database
-   * @param {number} id - Singer ID
+   * Delete a song from the database
+   * @param {number} id - Song ID
    * @returns {Promise<void>}
    */
-  async deleteSinger(id) {
+  async deleteSong(id) {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([this.storeName], 'readwrite');
       const objectStore = transaction.objectStore(this.storeName);
@@ -91,10 +90,10 @@ class StorageService {
   }
 
   /**
-   * Clear all singers from the database
+   * Clear all songs from the database
    * @returns {Promise<void>}
    */
-  async clearAllSingers() {
+  async clearAllSongs() {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([this.storeName], 'readwrite');
       const objectStore = transaction.objectStore(this.storeName);
@@ -106,26 +105,26 @@ class StorageService {
   }
 
   /**
-   * Update a singer in the database
-   * @param {number} id - Singer ID
+   * Update a song in the database
+   * @param {number} id - Song ID
    * @param {Object} data - Updated data
-   * @returns {Promise<Object>} - Updated singer
+   * @returns {Promise<Object>} - Updated song
    */
-  async updateSinger(id, data) {
+  async updateSong(id, data) {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([this.storeName], 'readwrite');
       const objectStore = transaction.objectStore(this.storeName);
       const getRequest = objectStore.get(id);
 
       getRequest.onsuccess = () => {
-        const existingSinger = getRequest.result;
-        if (!existingSinger) {
-          reject(new Error('Singer not found'));
+        const existingSong = getRequest.result;
+        if (!existingSong) {
+          reject(new Error('Song not found'));
           return;
         }
-        const updatedSinger = { ...existingSinger, ...data };
-        const putRequest = objectStore.put(updatedSinger);
-        putRequest.onsuccess = () => resolve(updatedSinger);
+        const updatedSong = { ...existingSong, ...data };
+        const putRequest = objectStore.put(updatedSong);
+        putRequest.onsuccess = () => resolve(updatedSong);
         putRequest.onerror = () => reject(putRequest.error);
       };
       getRequest.onerror = () => reject(getRequest.error);

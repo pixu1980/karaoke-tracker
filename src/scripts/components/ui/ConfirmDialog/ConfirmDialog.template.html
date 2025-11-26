@@ -1,0 +1,28 @@
+<div class="dialog-content">
+  <if condition="titleKey">
+    <h3 class="dialog-title" data-i18n="{{titleKey}}">{{titleText}}</h3>
+  </if>
+  <if condition="messageKey || showDynamicName || messageAfterKey">
+    <p class="dialog-message">
+      <if condition="messageKey">
+        <span data-role="message-primary" data-i18n="{{messageKey}}">{{messageText}}</span>
+      </if>
+      <if condition="showDynamicName">
+        <strong class="dialog-singer-name" aria-live="polite"></strong>
+      </if>
+      <if condition="messageAfterKey">
+        <span data-role="message-after" data-i18n="{{messageAfterKey}}">{{messageAfterText}}</span>
+      </if>
+    </p>
+  </if>
+  <if condition="warningKey">
+    <p class="dialog-warning" data-i18n="{{warningKey}}">{{warningText}}</p>
+  </if>
+  <div class="dialog-actions">
+    <button type="button" class="btn {{cancelVariant}}" data-action="cancel" data-i18n="{{cancelKey}}">{{cancelText}}</button>
+    <if condition="confirmKey">
+      <button type="button" class="btn {{confirmVariant}}" data-action="confirm" data-i18n="{{confirmKey}}">{{confirmText}}</button>
+    </if>
+  </div>
+</div>
+

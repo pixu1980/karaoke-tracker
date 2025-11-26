@@ -8,7 +8,7 @@ import it from '../../assets/i18n/it.json';
 import ja from '../../assets/i18n/ja.json';
 import zh from '../../assets/i18n/zh.json';
 
-const translations = { en, it, fr, de, es, zh, ja, ar };
+const languages = { en, it, fr, de, es, zh, ja, ar };
 
 /**
  * Internationalization Service
@@ -17,8 +17,34 @@ const translations = { en, it, fr, de, es, zh, ja, ar };
 class I18nService {
   constructor() {
     this.currentLang = localStorage.getItem('karaoke-lang') || 'en';
-    this.rtlLanguages = ['ar', 'he', 'fa', 'ur'];
-    this.translations = translations;
+    this.languages = languages;
+  }
+
+  /**
+   * Get all available languages
+   * @returns {Array<{code: string, name: string, flag: string, isRTL: boolean}>}
+   */
+  getLanguages() {
+    return Object.entries(this.languages).map(([code, lang]) => ({
+      code,
+      name: lang.name,
+      flag: lang.flag,
+      isRTL: lang.isRTL
+    }));
+  }
+
+  /**
+   * Get current language data
+   * @returns {{code: string, name: string, flag: string, isRTL: boolean}}
+   */
+  getCurrentLanguage() {
+    const lang = this.languages[this.currentLang] || this.languages.en;
+    return {
+      code: this.currentLang,
+      name: lang.name,
+      flag: lang.flag,
+      isRTL: lang.isRTL
+    };
   }
 
   /**
@@ -26,7 +52,7 @@ class I18nService {
    * @returns {boolean}
    */
   isRTL() {
-    return this.rtlLanguages.includes(this.currentLang);
+    return this.languages[this.currentLang]?.isRTL || false;
   }
 
   /**
@@ -46,7 +72,11 @@ class I18nService {
    * @returns {string} - Translated text
    */
   t(key) {
-    return this.translations[this.currentLang]?.[key] || this.translations.en?.[key] || key;
+    return (
+      this.languages[this.currentLang]?.translations?.[key] ||
+      this.languages.en?.translations?.[key] ||
+      key
+    );
   }
 
   /**

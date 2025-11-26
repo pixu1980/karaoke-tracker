@@ -1,0 +1,11 @@
+/* SongSungDialog Component Styles */
+
+.song-sung-dialog .dialog-singer-name {
+  color: var(--color-primary);
+}
+
+.song-sung-dialog pix-rating {
+  display: flex;
+  justify-content: center;
+  margin-block: var(--spacing-sm);
+}

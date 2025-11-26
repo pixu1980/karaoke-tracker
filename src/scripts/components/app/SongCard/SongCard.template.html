@@ -1,0 +1,48 @@
+<article class="{{isSinging ? 'song-card song-card--singing' : 'song-card'}}" role="article" aria-label="Song by {{name}}">
+  <div class="song-info">
+    <if condition="isSinging">
+      <span class="singing-badge">{{nowSingingLabel}}</span>
+    </if>
+    <h3 class="song-singer-name">{{name}}</h3>
+    <p class="song-details">
+      <span class="song-title">🎵 {{songTitle}}</span>
+      <if condition="songAuthor">
+        <span class="song-author">by {{songAuthor}}</span>
+      </if>
+    </p>
+    <div class="song-meta">
+      <if condition="keyDisplay">
+        <span class="song-key" title="Key adjustment">{{{keyDisplay}}}</span>
+      </if>
+      <if condition="youtubeUrl">
+        <a href="{{youtubeUrl}}" target="_blank" rel="noopener noreferrer" class="song-youtube" aria-label="Open backing track on YouTube" title="Open backing track">▶ YouTube</a>
+      </if>
+    </div>
+    <div class="song-rating-wrapper">
+      <pix-rating value="{{rating}}" data-song-id="{{id}}"></pix-rating>
+    </div>
+  </div>
+  <div class="song-actions">
+    <button 
+      class="btn btn-primary" 
+      data-action="edit"
+      aria-label="Edit {{name}}"
+    >
+      {{editLabel}}
+    </button>
+    <button 
+      class="btn btn-success" 
+      data-action="done"
+      aria-label="Mark {{name}} as done"
+    >
+      {{doneLabel}}
+    </button>
+    <button 
+      class="btn btn-danger" 
+      data-action="remove"
+      aria-label="Remove {{name}} from queue"
+    >
+      {{removeLabel}}
+    </button>
+  </div>
+</article>

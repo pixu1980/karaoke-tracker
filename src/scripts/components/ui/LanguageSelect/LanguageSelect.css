@@ -1,0 +1,17 @@
+/* LanguageSelect Component Styles */
+
+.pix-language-select-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pix-language-select-wrapper .pix-language-select {
+  padding: 0 var(--spacing-md);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  background-color: var(--color-surface-elevated);
+  height: var(--header-control-height);
+  line-height: var(--header-control-height);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+}

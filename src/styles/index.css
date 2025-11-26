@@ -83,7 +83,10 @@
    ========================================================================== */
 @layer foundations {
   :root {
-    /* Colors - Light Theme (Default) */
+    /* Color Scheme - enables light-dark() function */
+    color-scheme: light dark;
+
+    /* Colors - Semantic tokens using light-dark() */
     --color-primary: #3b82f6;
     --color-primary-hover: #2563eb;
     --color-success: #22c55e;
@@ -93,16 +96,22 @@
     --color-warning: #f59e0b;
     --color-warning-hover: #d97706;
 
-    /* Surface Colors */
-    --color-bg: #f8fafc;
-    --color-surface: #ffffff;
-    --color-surface-elevated: #ffffff;
-    --color-border: #e2e8f0;
+    /* Surface Colors - Light/Dark aware */
+    --color-bg: light-dark(#f8fafc, #0f172a);
+    --color-surface: light-dark(#ffffff, #1e293b);
+    --color-surface-elevated: light-dark(#ffffff, #334155);
+    --color-surface-elevated-light: #f1f5f9;
+    --color-surface-elevated-dark: #475569;
+    --color-border: light-dark(#e2e8f0, #334155);
 
-    /* Text Colors */
-    --color-text: #1e293b;
-    --color-text-secondary: #64748b;
-    --color-text-muted: #94a3b8;
+    /* Text Colors - Light/Dark aware */
+    --color-text: light-dark(#1e293b, #f8fafc);
+    --color-text-secondary: light-dark(#64748b, #94a3b8);
+    --color-text-muted: light-dark(#94a3b8, #64748b);
+
+    /* Primary backgrounds for selection states */
+    --color-primary-light-bg: rgba(59, 130, 246, 0.15);
+    --color-primary-dark-bg: rgba(59, 130, 246, 0.25);
 
     /* Spacing Scale */
     --spacing-xs: 4px;
@@ -132,10 +141,19 @@
     --radius-full: 9999px;
     --radius-card: 0.4rem;
 
-    /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    /* Shadows - Light/Dark aware */
+    --shadow-sm: light-dark(
+      0 1px 2px rgba(0, 0, 0, 0.05),
+      0 1px 2px rgba(0, 0, 0, 0.2)
+    );
+    --shadow-md: light-dark(
+      0 4px 6px rgba(0, 0, 0, 0.1),
+      0 4px 6px rgba(0, 0, 0, 0.3)
+    );
+    --shadow-lg: light-dark(
+      0 10px 15px rgba(0, 0, 0, 0.1),
+      0 10px 15px rgba(0, 0, 0, 0.3)
+    );
 
     /* Transitions */
     --transition-fast: 150ms ease;
@@ -144,30 +162,6 @@
 
     /* Component Sizes */
     --header-control-height: 44px;
-  }
-
-  /* Dark Theme */
-  [data-theme='dark'] {
-    --color-bg: #0f172a;
-    --color-surface: #1e293b;
-    --color-surface-elevated: #334155;
-    --color-border: #334155;
-    --color-text: #f8fafc;
-    --color-text-secondary: #94a3b8;
-    --color-text-muted: #64748b;
-  }
-
-  /* System Theme */
-  @media (prefers-color-scheme: dark) {
-    [data-theme='system'] {
-      --color-bg: #0f172a;
-      --color-surface: #1e293b;
-      --color-surface-elevated: #334155;
-      --color-border: #334155;
-      --color-text: #f8fafc;
-      --color-text-secondary: #94a3b8;
-      --color-text-muted: #64748b;
-    }
   }
 
   /* RTL Support */
@@ -277,28 +271,8 @@
     color: var(--color-text-secondary);
   }
 
-  /* Theme Switcher */
-  .theme-switcher {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: 0 var(--spacing-xs);
-  }
-
-  .theme-btn {
-    padding: var(--spacing-xs);
-    border-radius: var(--radius-sm);
-    transition: background-color var(--transition-base);
-    min-width: 44px;
-    min-height: calc(var(--header-control-height) - var(--spacing-sm));
-  }
-
-  .theme-btn:hover {
-    background-color: var(--color-surface-elevated);
-  }
-
   /* Language Select */
-  .language-select {
+  .pix-language-select {
     padding: 0 var(--spacing-md);
     font-size: var(--font-size-sm);
     cursor: pointer;

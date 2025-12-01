@@ -1,6 +1,6 @@
+// Import all translations dynamically
 import ar from '../../assets/i18n/ar.json';
 import de from '../../assets/i18n/de.json';
-// Import all translations dynamically
 import en from '../../assets/i18n/en.json';
 import es from '../../assets/i18n/es.json';
 import fr from '../../assets/i18n/fr.json';
@@ -18,6 +18,15 @@ class I18nService {
   constructor() {
     this.currentLang = localStorage.getItem('karaoke-lang') || 'en';
     this.languages = languages;
+  }
+
+  /**
+   * Initialize i18n service
+   * @returns {Promise<void>}
+   */
+  async init() {
+    this.updatePage();
+    return Promise.resolve();
   }
 
   /**
@@ -67,16 +76,20 @@ class I18nService {
   }
 
   /**
-   * Get translation for a key
+   * Get translation for a key with optional interpolation
    * @param {string} key - Translation key
+   * @param {Object} [params] - Interpolation parameters
    * @returns {string} - Translated text
    */
-  t(key) {
-    return (
-      this.languages[this.currentLang]?.translations?.[key] ||
-      this.languages.en?.translations?.[key] ||
-      key
-    );
+  t(key, params = {}) {
+    let text = this.languages[this.currentLang]?.translations?.[key] || this.languages.en?.translations?.[key] || key;
+
+    // Replace {{param}} placeholders with values
+    Object.entries(params).forEach(([param, value]) => {
+      text = text.replace(new RegExp(`\\{\\{${param}\\}\\}`, 'g'), value);
+    });
+
+    return text;
   }
 
   /**

@@ -1,9 +1,9 @@
 /**
- * Application Components Index
- * Exports all main application components
+ * App Components barrel file
  */
 
-export { SingerLeaderboard } from './SingerLeaderboard/SingerLeaderboard.js';
+export { SingerList } from './SingerList/SingerList.js';
+export { SingerCard } from './SingerCard/SingerCard.js';
+export { SongQueue } from './SongQueue/SongQueue.js';
 export { SongCard } from './SongCard/SongCard.js';
-export { SongForm } from './SongForm/SongForm.js';
-export { SongList } from './SongList/SongList.js';
+export { Leaderboard } from './Leaderboard/Leaderboard.js';

@@ -1,0 +1,55 @@
+<pix-dialog dialog-title="{{{title}}}">
+  <div stats-content>
+    <if condition="hasStats">
+      <div stats-grid>
+        <div stat>
+          <span stat-value>{{songCount}}</span>
+          <span stat-label>{{songsLabel}}</span>
+        </div>
+        <div stat>
+          <span stat-value>
+            <span stars>{{{averageStars}}}</span>
+            {{averageRating}}
+          </span>
+          <span stat-label>{{averageLabel}}</span>
+        </div>
+        <div stat>
+          <span stat-value>
+            <span stars>{{{bestStars}}}</span>
+            {{bestRating}}
+          </span>
+          <span stat-label>{{bestLabel}}</span>
+        </div>
+      </div>
+
+      <if condition="hasHistory">
+        <h3>{{historyLabel}}</h3>
+        <ul history>
+          <for each="song in history">
+            <li>
+              <div>
+                <span song-title>{{song.title}}</span>
+                <if condition="song.author">
+                  <span song-author>{{song.author}}</span>
+                </if>
+              </div>
+              <div>
+                <if condition="song.ratingValue">
+                  <span song-rating stars>{{{song.rating}}}</span>
+                </if>
+                <span song-time>{{song.time}}</span>
+              </div>
+            </li>
+          </for>
+        </ul>
+      </if>
+    </if>
+    <else>
+      <p empty>{{noPerformances}}</p>
+    </else>
+  </div>
+
+  <div actions>
+    <button type="button" primary data-action="close">{{closeText}}</button>
+  </div>
+</pix-dialog>

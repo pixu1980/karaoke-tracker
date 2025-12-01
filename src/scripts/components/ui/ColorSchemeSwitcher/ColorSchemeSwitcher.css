@@ -1,40 +1,79 @@
-/* ColorSchemeSwitcher Component Styles */
+/**
+ * ColorSchemeSwitcher Component Styles
+ * Uses element/attribute selectors per guidelines
+ * Labels sized to match SingerCard delete button (32x32px)
+ */
 
-.color-scheme-switcher {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: 0 var(--spacing-xs);
-  border: none;
-}
-
-.color-scheme-option {
+pix-color-scheme-switcher {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-xs);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background-color var(--transition-base);
-  min-width: 44px;
-  min-height: calc(var(--header-control-height) - var(--spacing-sm));
-}
+  gap: var(--space-2xs);
 
-.color-scheme-option:hover {
-  background-color: var(--color-surface-elevated);
-}
+  padding: var(--space-2xs);
 
-.color-scheme-option:has(input:checked) {
-  background-color: var(--color-primary);
-  color: white;
-}
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
 
-.color-scheme-option:focus-within {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
+  /* Hidden radio inputs */
+  & input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-.color-scheme-icon {
-  font-size: var(--font-size-lg);
-  line-height: 1;
+  /* Radio labels - match SingerCard delete button size */
+  & label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 3.2rem;
+    height: 3.2rem;
+    padding: 0;
+
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-text-muted);
+
+    font-size: var(--font-size-lg);
+
+    cursor: pointer;
+    transition: background-color 200ms ease, color 200ms ease;
+
+    &:hover {
+      background-color: var(--color-surface-hover);
+      color: var(--color-text);
+    }
+
+    & svg {
+      color: var(--color-text-muted);
+      transition: color 200ms ease;
+    }
+
+    &:hover svg {
+      color: var(--color-text);
+    }
+  }
+
+  /* Selected state */
+  & input[type="radio"]:checked + label {
+    background-color: var(--color-primary);
+    color: white;
+
+    & svg {
+      color: white;
+    }
+  }
+
+  /* Focus state */
+  & input[type="radio"]:focus-visible + label {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
 }

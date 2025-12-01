@@ -2,7 +2,17 @@
 
 ## Overview
 
-This document defines the Karaoke Tracker development roadmap, organized in milestones with specific acceptance criteria.
+This document defines the Karaoke Tracker development roadmap, organized in milestones with specific acceptance criteria. The application features a **three-column layout** with Singers Management, Song Queue, and Leaderboard.
+
+> **Note (2024-12)**: All core milestones (1-6) have been completed. The application is fully functional with:
+> - Complete singers management with add/edit/delete/clear
+> - Song queue with multi-singer support, key adjustment (-5 to +5), YouTube links
+> - Leaderboard with top 3 medal emojis (🥇🥈🥉) and average ratings
+> - Star rating with half-star support (0.5-5 in 0.5 increments) and hover preview
+> - Theme switcher (light/dark/system) with emoji icons
+> - Language selector (8 languages with RTL support)
+> - Example data loading for demo/testing
+> - Full IndexedDB persistence
 
 **Status Legend**:
 - 🟢 Completed
@@ -12,326 +22,297 @@ This document defines the Karaoke Tracker development roadmap, organized in mile
 
 ---
 
-## Milestone 1: MVP Core ✅
-**Status**: 🟢 Completed
-**Target**: Basic queue management functionality
+## Milestone 1: Foundation & Infrastructure ⚪
+**Status**: ⚪ Planned
+**Target**: Core infrastructure and base components
 
 ### Features
 
-#### 1.1 Add Singer Form
-**Status**: 🟢 Completed
+#### 1.1 Project Setup
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Form with fields: name (required), song title (required), song author, key adjustment, YouTube URL
-- [x] HTML5 validation for required fields
-- [x] `aria-required` attributes for accessibility
-- [x] Form reset after successful submit
-- [x] Error feedback on failure
+- [ ] Clean `src/` folder structure
+- [ ] Base HTML with three-column layout
+- [ ] CSS design system with layers and variables
+- [ ] Services: i18n, storage, template engine, stylesheet
+- [ ] Polyfills for Safari custom elements
 
-#### 1.2 Singers List
-**Status**: 🟢 Completed
-
-**Acceptance Criteria**:
-- [x] Display singers list in insertion order
-- [x] Empty state when list is empty
-- [x] Automatic update on add/remove
-- [x] Card with name, song info, key, YouTube link
-
-#### 1.3 Singer Actions
-**Status**: 🟢 Completed
+#### 1.2 StorageService (IndexedDB)
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] "Done" button with confirmation
-- [x] "Remove" button with confirmation
-- [x] "Edit" button with dialog
-- [x] "Clear All" button with confirmation
-- [x] Error feedback on failure
+- [ ] Three object stores: `singers`, `songs`, `performances`
+- [ ] CRUD operations for singers
+- [ ] CRUD operations for songs (with multi-singer support)
+- [ ] Performance recording for leaderboard
+- [ ] Data schema validation
 
-#### 1.4 Data Persistence
-**Status**: 🟢 Completed
+#### 1.3 Base UI Components
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Save to IndexedDB
-- [x] Load data on startup
-- [x] Persist after page refresh
-- [x] IndexedDB error handling
+- [ ] `pix-dialog` - Base dialog component with native `<dialog>`
+- [ ] `pix-rating` - Star rating (1-5, half-star increments)
+- [ ] `pix-color-scheme-switcher` - Light/Dark/System theme toggle
+- [ ] `pix-language-select` - i18n language dropdown
 
 ---
 
-## Milestone 2: Layout & UX Improvements ✅
-**Status**: 🟢 Completed
-**Target**: UX improvements and layout refinement
+## Milestone 2: Singers Management (Left Column) ⚪
+**Status**: ⚪ Planned
+**Target**: Complete singers CRUD and display
 
 ### Features
 
-#### 2.1 Two-Column Layout
-**Status**: 🟢 Completed
+#### 2.1 SingerList Component
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Singers list on the left side
-- [x] Add singer form on the right side
-- [x] Responsive: stack vertically on mobile
-- [x] Proper spacing and visual hierarchy
+- [ ] Display all singers in alphabetical order
+- [ ] Show song count per singer (from performances)
+- [ ] Empty state when no singers
+- [ ] "Add Singer" button in section header
+- [ ] Updates on singer events
 
-#### 2.2 Dialog Modals
-**Status**: 🟢 Completed
-
-**Acceptance Criteria**:
-- [x] Native `<dialog>` element for confirmations
-- [x] Example list dialog
-- [x] Reset list dialog
-- [x] Remove singer dialog
-- [x] Done singer dialog with rating
-- [x] Edit singer dialog
-
-#### 2.3 NOW SINGING Badge
-**Status**: 🟢 Completed
+#### 2.2 SingerCard Component
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Visual indicator for first singer in queue
-- [x] Badge with microphone emoji
-- [x] Card styling highlight
+- [ ] Display singer name
+- [ ] Display song count badge
+- [ ] Edit button (opens dialog)
+- [ ] Remove button (with confirmation)
+- [ ] Visual feedback on actions
+
+#### 2.3 Add/Edit Singer Dialog
+**Status**: ⚪ Planned
+
+**Acceptance Criteria**:
+- [ ] Name field (required, unique validation)
+- [ ] Save/Cancel buttons
+- [ ] Keyboard accessible
+- [ ] Close on backdrop click
+- [ ] Pre-filled for edit mode
 
 ---
 
-## Milestone 3: Performance Rating ✅
-**Status**: 🟢 Completed
-**Target**: Applause meter rating system
+## Milestone 3: Song Queue (Center Column) ⚪
+**Status**: ⚪ Planned
+**Target**: Song queue with multi-singer support
 
 ### Features
 
-#### 3.1 Star Rating Component
-**Status**: 🟢 Completed
+#### 3.1 SongQueue Component
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Star rating display (1-5 stars)
-- [x] Support for half-star increments (0.5)
-- [x] Visual star icons with CSS clip-path
-- [x] Click-only interaction (no hover preview)
-- [x] Reset button to clear rating
-- [x] Accessible: keyboard navigable, screen reader support
-- [x] Clear visual feedback on selection
+- [ ] Display songs in FIFO order
+- [ ] "NOW PLAYING" badge for first song
+- [ ] Empty state message
+- [ ] Queue actions section
+- [ ] Auto-updates on song events
 
-#### 3.2 Rating in Done Flow
-**Status**: 🟢 Completed
+#### 3.2 SongCard Component
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Rating appears in "Done" dialog
-- [x] Rating synced from card to dialog
-- [x] Rating saved with performance record
-- [x] Optional (can complete without rating)
+- [ ] Song title and author display
+- [ ] Singer(s) display (with group indicator for duets)
+- [ ] Key adjustment badge
+- [ ] YouTube link icon
+- [ ] Edit, Done, Remove buttons
+- [ ] Visual distinction for current song
 
-#### 3.3 Leaderboard
-**Status**: 🟢 Completed
+#### 3.3 Add/Edit Song Dialog
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Display singers ranked by average rating
-- [x] Show rank emoji (🥇🥈🥉) for top 3
-- [x] Show song count per singer
-- [x] Show average rating with stars
-- [x] Empty state message
-- [x] Reset with clear all / example list
+- [ ] Song title field (required)
+- [ ] Song author field (optional)
+- [ ] Multi-select for singers (required, 1+)
+- [ ] Key adjustment dropdown (-6 to +6)
+- [ ] YouTube URL field (optional)
+- [ ] Pre-filled for edit mode
+
+#### 3.4 Song Complete Dialog
+**Status**: ⚪ Planned
+
+**Acceptance Criteria**:
+- [ ] Display song and singer(s) info
+- [ ] Star rating component (optional)
+- [ ] Confirm/Cancel buttons
+- [ ] Creates performance record(s)
+- [ ] Triggers rotation if auto-add enabled
 
 ---
 
-## Milestone 4: Auto Re-add & Queue Management ✅
-**Status**: 🟢 Completed
-**Target**: Advanced queue management
+## Milestone 4: Leaderboard (Right Column) ⚪
+**Status**: ⚪ Planned
+**Target**: Performance ranking display
 
 ### Features
 
-#### 4.1 Auto Re-add Toggle
-**Status**: 🟢 Completed
+#### 4.1 Leaderboard Component
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Checkbox toggle in header
-- [x] Enabled by default
-- [x] Re-add singer to end of queue on "Done"
-- [x] Add with "(next song)" placeholder
-
-#### 4.2 Example List
-**Status**: 🟢 Completed
-
-**Acceptance Criteria**:
-- [x] Button to load sample data
-- [x] 8 example singers with various songs
-- [x] Clears current queue first
-- [x] Confirmation dialog
+- [ ] Ranked list by average rating
+- [ ] Medal emojis for top 3 (🥇🥈🥉)
+- [ ] Singer name display
+- [ ] Song count (rated performances)
+- [ ] Average rating with stars
+- [ ] Numeric average value
+- [ ] Empty state message
+- [ ] Auto-updates on performance events
 
 ---
 
-## Milestone 5: Theme & Internationalization ✅
-**Status**: 🟢 Completed
-**Target**: Multi-language and theme support
+## Milestone 5: Header & Controls ⚪
+**Status**: ⚪ Planned
+**Target**: Header with actions and controls
 
 ### Features
 
-#### 5.1 Theme Switcher
-**Status**: 🟢 Completed
+#### 5.1 Header Layout
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Light mode (☀️)
-- [x] Dark mode (🌙)
-- [x] System mode (💻) - follows OS preference
-- [x] Theme persisted to localStorage
-- [x] CSS custom properties for colors
-- [x] Default: System
+- [ ] Logo/Title on left
+- [ ] Action buttons on right
+- [ ] Responsive on mobile
+- [ ] RTL support for Arabic
 
-#### 5.2 Multi-language Support (i18n)
-**Status**: 🟢 Completed
+#### 5.2 Add Song Button
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Language selector in header
-- [x] 8 supported languages:
-  - 🇬🇧 English
-  - 🇮🇹 Italian
-  - 🇫🇷 French
-  - 🇩🇪 German
-  - 🇪🇸 Spanish
-  - 🇨🇳 Chinese
-  - 🇯🇵 Japanese
-  - 🇸🇦 Arabic
-- [x] `data-i18n` attributes for static text
-- [x] `i18n.t()` function for dynamic text
-- [x] Language persisted to localStorage
-- [x] Components re-render on language change
+- [ ] Prominent "+" button
+- [ ] Opens Add Song dialog
+- [ ] Disabled state when no singers
 
-#### 5.3 RTL Support
-**Status**: 🟢 Completed
+#### 5.3 Auto Re-add Toggle
+**Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [x] Arabic language with RTL layout
-- [x] Document direction changes (`dir="rtl"`)
-- [x] CSS rules for RTL elements
-- [x] Header controls position flip
-- [x] Actions buttons direction flip
+- [ ] Checkbox/switch toggle
+- [ ] Enabled by default
+- [ ] Persisted to localStorage
+- [ ] Visual indicator of state
+
+#### 5.4 Theme & Language Controls
+**Status**: ⚪ Planned
+
+**Acceptance Criteria**:
+- [ ] Color scheme switcher in header
+- [ ] Language selector in header
+- [ ] Both persist preferences
 
 ---
 
-## Milestone 6: History & Analytics ⚪
+## Milestone 6: Auto-Rotation Feature ⚪
 **Status**: ⚪ Planned
-**Target**: History and statistics
+**Target**: Singer rotation after song completion
 
 ### Features
 
-#### 6.1 Performance History
+#### 6.1 Rotation Logic
 **Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [ ] Separate tab/section for history
-- [ ] View completed performances
-- [ ] Performance timestamp
-- [ ] History list display
-- [ ] Re-add from history option
-
-#### 6.2 Night Statistics
-**Status**: ⚪ Planned
-
-**Acceptance Criteria**:
-- [ ] Total performance count
-- [ ] Most frequent singers
-- [ ] Most popular songs
-- [ ] Average wait time
-- [ ] Average performance rating
-- [ ] Rating distribution chart
-
-#### 6.3 Data Export
-**Status**: ⚪ Planned
-
-**Acceptance Criteria**:
-- [ ] JSON export of the night
-- [ ] CSV export for spreadsheets
-- [ ] Import data from file
-- [ ] Imported data validation
+- [ ] When song completed and auto-add enabled:
+  - [ ] Move singer(s) to bottom of singers list
+  - [ ] Update sort order in storage
+  - [ ] Dispatch rotation event
+- [ ] Visual feedback during rotation
+- [ ] Works correctly for duets/groups
 
 ---
 
-## Milestone 7: Advanced Queue Management ⚪
+## Milestone 7: Session Management ⚪
 **Status**: ⚪ Planned
-**Target**: Advanced queue features
+**Target**: Reset and example data
 
 ### Features
 
-#### 7.1 Drag & Drop Reorder
+#### 7.1 Reset Session
 **Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [ ] Reorder cards via drag & drop
-- [ ] Visual indicator during drag
-- [ ] Save new order to IndexedDB
-- [ ] Touch support for mobile
-- [ ] Keyboard alternative for accessibility
+- [ ] Reset button in UI (menu or controls)
+- [ ] Confirmation dialog with warning
+- [ ] Clears all: singers, songs, performances
+- [ ] Resets all components to empty state
 
-#### 7.2 Search/Filter
+#### 7.2 Load Example Data
 **Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [ ] Search field above list
-- [ ] Real-time filter by name or song
-- [ ] Highlight found terms
-- [ ] "No results" message if empty
-- [ ] Clear button for filter reset
-
-#### 7.3 Queue Counter
-**Status**: ⚪ Planned
-
-**Acceptance Criteria**:
-- [ ] Total singers in queue count
-- [ ] Estimated wait time (based on average)
-- [ ] Real-time update
+- [ ] Example data button
+- [ ] Confirmation dialog
+- [ ] Sample singers (8+)
+- [ ] Sample songs in queue
+- [ ] Useful for demo/testing
 
 ---
 
-## Milestone 8: Multi-Session ⚪
+## Milestone 8: i18n & Accessibility ⚪
 **Status**: ⚪ Planned
-**Target**: Multiple nights management
+**Target**: Full internationalization and a11y
 
 ### Features
 
-#### 8.1 Sessions
+#### 8.1 Complete Translations
 **Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [ ] Create new session/night
-- [ ] Saved sessions list
-- [ ] Switch between sessions
-- [ ] Archive past sessions
-- [ ] Delete session
+- [ ] All 8 languages updated:
+  - [ ] English (en)
+  - [ ] Italian (it)
+  - [ ] French (fr)
+  - [ ] German (de)
+  - [ ] Spanish (es)
+  - [ ] Chinese (zh)
+  - [ ] Japanese (ja)
+  - [ ] Arabic (ar)
+- [ ] RTL layout for Arabic
+- [ ] All UI strings translatable
 
-#### 8.2 Session Settings
+#### 8.2 Accessibility Audit
 **Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [ ] Customizable session name
-- [ ] Session date
-- [ ] Session notes/description
-- [ ] Configurable average song time
+- [ ] WCAG 2.1 AA compliance
+- [ ] Full keyboard navigation
+- [ ] Screen reader compatibility
+- [ ] Color contrast compliance
+- [ ] Focus management in dialogs
+- [ ] ARIA labels on all controls
 
 ---
 
-## Milestone 9: PWA & Offline ⚪
+## Milestone 9: Responsive Design ⚪
 **Status**: ⚪ Planned
-**Target**: Progressive Web App
+**Target**: Mobile and tablet optimization
 
 ### Features
 
-#### 9.1 Service Worker
+#### 9.1 Mobile Layout
 **Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [ ] Static assets caching
-- [ ] Full offline operation
-- [ ] Data sync when online
-- [ ] Update notification
+- [ ] Single column layout (< 768px)
+- [ ] Tab navigation or accordion for sections
+- [ ] Touch-friendly buttons
+- [ ] Swipe gestures (optional)
 
-#### 9.2 Installation
+#### 9.2 Tablet Layout
 **Status**: ⚪ Planned
 
 **Acceptance Criteria**:
-- [ ] Valid manifest.json
-- [ ] Icons for all platforms
-- [ ] Installation prompt
-- [ ] Splash screen
+- [ ] Two-column layout (768px - 1023px)
+- [ ] Singers + Queue | Leaderboard
+- [ ] Optimized spacing
 
 ---
 
@@ -341,36 +322,27 @@ This document defines the Karaoke Tracker development roadmap, organized in mile
 **Priority**: High
 
 **Acceptance Criteria**:
-- [ ] Testing framework setup (Vitest or similar)
-- [ ] Unit tests for StorageService
-- [ ] Unit tests for Custom Elements
-- [ ] Integration tests for main flows
+- [ ] Testing framework setup (Vitest)
+- [ ] Unit tests for services
+- [ ] Unit tests for components
+- [ ] Integration tests
 - [ ] Coverage > 70%
 
-### TD-002: Error Boundary
+### TD-002: Performance Optimization
 **Priority**: Medium
 
 **Acceptance Criteria**:
-- [ ] Global error handling
-- [ ] UI fallback for critical errors
-- [ ] Structured error logging
+- [ ] Lighthouse score > 90
+- [ ] Bundle size < 100KB
+- [ ] First Contentful Paint < 1.5s
 
-### TD-003: Performance Audit
-**Priority**: Medium
-
-**Acceptance Criteria**:
-- [ ] Lighthouse score > 90 on all categories
-- [ ] Bundle analysis
-- [ ] List rendering optimization
-
-### TD-004: Documentation
+### TD-003: Documentation
 **Priority**: Ongoing
 
 **Acceptance Criteria**:
-- [ ] Complete JSDoc for all public functions
-- [ ] Storybook or demo page for components
+- [ ] JSDoc for all public APIs
+- [ ] Component usage examples
 - [ ] Contributing guide
-- [ ] Automatic changelog
 
 ---
 
@@ -378,22 +350,22 @@ This document defines the Karaoke Tracker development roadmap, organized in mile
 
 | Milestone | Target | Dependencies | Status |
 |-----------|--------|--------------|--------|
-| M1: MVP Core | ✅ Q4 2024 | - | 🟢 Done |
-| M2: Layout & UX | ✅ Q4 2024 | M1 | 🟢 Done |
-| M3: Performance Rating | ✅ Q4 2024 | M2 | 🟢 Done |
-| M4: Auto Re-add | ✅ Q4 2024 | M2 | 🟢 Done |
-| M5: Theme & i18n | ✅ Q4 2024 | M2 | 🟢 Done |
-| M6: History & Analytics | Q1 2025 | M3 | ⚪ Planned |
-| M7: Advanced Queue | Q1 2025 | M4 | ⚪ Planned |
-| M8: Multi-Session | Q2 2025 | M6 | ⚪ Planned |
-| M9: PWA & Offline | Q2 2025 | M8 | ⚪ Planned |
+| M1: Foundation | Week 1 | - | ⚪ Planned |
+| M2: Singers | Week 2 | M1 | ⚪ Planned |
+| M3: Song Queue | Week 2-3 | M1, M2 | ⚪ Planned |
+| M4: Leaderboard | Week 3 | M1, M3 | ⚪ Planned |
+| M5: Header | Week 3 | M1 | ⚪ Planned |
+| M6: Rotation | Week 4 | M2, M3 | ⚪ Planned |
+| M7: Session | Week 4 | All | ⚪ Planned |
+| M8: i18n & a11y | Week 5 | All | ⚪ Planned |
+| M9: Responsive | Week 5-6 | All | ⚪ Planned |
 
 ---
 
 ## How to Contribute
 
-1. Choose a task from an "In Progress" or "Planned" milestone
-2. Create a branch `feature/[milestone]-[feature-name]`
+1. Choose a task from a "Planned" milestone
+2. Create a branch `feature/m[number]-[feature-name]`
 3. Implement following coding styleguides in `/docs/coding-styleguides/`
 4. Verify all acceptance criteria
 5. Create Pull Request with milestone reference
@@ -402,7 +374,7 @@ This document defines the Karaoke Tracker development roadmap, organized in mile
 
 ## Notes
 
-- Dates are indicative and subject to revision
-- Priorities may change based on user feedback
-- New features can be added to future milestones
-- Technical debt is addressed continuously, not in a dedicated milestone
+- Milestones are designed to be completed incrementally
+- Each milestone should result in a working feature
+- Priorities may change based on feedback
+- Technical debt is addressed continuously

@@ -3,52 +3,111 @@
   "flag": "🇸🇦",
   "isRTL": true,
   "translations": {
-    "appTitle": "متتبع الكاريوكي",
-    "appSubtitle": "إدارة قائمة المغنين",
-    "singersQueue": "قائمة المغنين",
-    "exampleList": "📋 أمثلة",
-    "resetList": "🔄 إعادة",
-    "addSinger": "إضافة مغني",
-    "autoReadd": "🔄 تلقائي",
-    "leaderboard": "🏆 الترتيب",
-    "footer": "صُنع بـ ❤️ لعشاق الكاريوكي",
-    "singerName": "اسم المغني",
-    "songTitle": "عنوان الأغنية",
-    "songAuthor": "الفنان",
-    "keyAdjustment": "النغمة",
-    "youtubeLink": "يوتيوب",
-    "addToQueue": "إضافة",
-    "edit": "✎ تعديل",
-    "done": "✓ تم",
-    "remove": "✕ حذف",
-    "nowSinging": "🎤 يغني الآن",
-    "rating": "التقييم:",
-    "cancel": "إلغاء",
-    "complete": "إتمام",
-    "saveChanges": "حفظ",
-    "loadExampleTitle": "📋 تحميل أمثلة",
-    "loadExampleMsg": "سيتم استبدال القائمة الحالية بأمثلة.",
-    "loadExampleWarning": "سيتم حذف جميع المغنين.",
-    "loadExamples": "تحميل",
-    "resetListTitle": "🔄 إعادة تعيين",
-    "resetListMsg": "هل تريد حذف جميع المغنين؟",
-    "resetListWarning": "لا يمكن التراجع عن هذا.",
-    "removeSingerTitle": "✕ حذف",
-    "removeSingerMsg": "حذف",
-    "fromQueue": "من القائمة؟",
-    "performanceComplete": "✓ اكتمل",
-    "markAsDone": "تحديد",
-    "asDone": "كمكتمل؟",
-    "ratePerformance": "تقييم (اختياري)",
-    "editSingerTitle": "✎ تعديل",
-    "noSingers": "لا يوجد مغنين. أضف واحداً!",
-    "noRatedPerformances": "لا توجد تقييمات.",
-    "leaderboardHint": "أكمل مع تقييم لرؤية الترتيب!",
-    "songs": "أغاني",
-    "song": "أغنية",
-    "optional": "",
-    "required": "*",
-    "original": "",
-    "nextSong": "(التالية)"
+    "common.close": "إغلاق",
+    "common.cancel": "إلغاء",
+    "common.save": "حفظ",
+    "common.delete": "حذف",
+    "common.confirm": "تأكيد",
+    "common.edit": "تعديل",
+
+    "header.addSong": "إضافة أغنية",
+    "header.autoRotate": "تدوير تلقائي",
+    "header.fairPlay": "لعب نظيف",
+
+    "singerList.title": "المغنون",
+    "singerList.add": "إضافة مغني",
+    "singerList.clear": "مسح جميع المغنين",
+    "singerList.empty": "لا يوجد مغنين. أضف الأول!",
+
+    "singer.edit": "تعديل",
+    "singer.delete": "حذف",
+    "singer.song": "أغنية",
+    "singer.songs": "أغاني",
+
+    "songQueue.title": "قائمة الأغاني",
+    "songQueue.empty": "لا توجد أغاني. أضف واحدة!",
+    "songQueue.next": "التالي",
+    "songQueue.clear": "مسح جميع الأغاني",
+
+    "songCard.complete": "إتمام",
+    "songCard.edit": "تعديل",
+    "songCard.delete": "حذف",
+    "songCard.openYoutube": "فتح يوتيوب",
+
+    "leaderboard.title": "الترتيب",
+    "leaderboard.empty": "لا توجد عروض بعد. أكمل بعض الأغاني لرؤية التصنيف!",
+
+    "addSinger.title": "إضافة مغني",
+    "addSinger.editTitle": "تعديل المغني",
+    "addSinger.name": "الاسم",
+    "addSinger.namePlaceholder": "أدخل اسم المغني",
+
+    "addSong.title": "إضافة أغنية",
+    "addSong.editTitle": "تعديل الأغنية",
+    "addSong.songTitle": "عنوان الأغنية",
+    "addSong.songTitlePlaceholder": "أدخل عنوان الأغنية",
+    "addSong.author": "الفنان/المؤلف",
+    "addSong.authorPlaceholder": "أدخل اسم الفنان",
+    "addSong.singers": "المغنون",
+    "addSong.noSingers": "لا يوجد مغنين. أضف مغنين أولاً.",
+    "addSong.key": "النغمة",
+    "addSong.keyOriginal": "0 (النغمة الأصلية)",
+    "addSong.youtubeUrl": "رابط يوتيوب",
+    "addSong.youtubeUrlPlaceholder": "https://youtube.com/...",
+    "addSong.alreadyPerformed": "هذه الأغنية تم أداؤها بالفعل الليلة!",
+
+    "songComplete.title": "اكتمل العرض",
+    "songComplete.rating": "قيّم هذا العرض",
+    "songComplete.confirm": "إتمام",
+
+    "confirm.title": "تأكيد",
+    "confirm.message": "هل أنت متأكد؟",
+    "confirm.clearSingersMessage": "سيتم حذف جميع المغنين والأغاني وسجل الأداء. هل أنت متأكد؟",
+    "confirm.clearSongsMessage": "سيتم حذف جميع الأغاني من قائمة الانتظار. هل أنت متأكد؟",
+    "confirm.exampleDataMessage": "سيتم استبدال جميع البيانات الحالية ببيانات نموذجية. هل أنت متأكد؟",
+    "confirm.deleteSinger": "حذف المغني",
+    "confirm.deleteSingerMessage": "حذف {{name}}؟",
+    "confirm.deleteSong": "حذف الأغنية",
+    "confirm.deleteSongMessage": "حذف {{title}}؟",
+
+    "colorScheme.toggle": "تبديل نظام الألوان",
+    "colorScheme.light": "الوضع الفاتح",
+    "colorScheme.dark": "الوضع الداكن",
+    "colorScheme.system": "إعداد النظام",
+
+    "language.select": "اختر اللغة",
+
+    "filter.singers": "بحث المغنين...",
+    "filter.songs": "بحث الأغاني...",
+    "filter.leaderboard": "بحث في الترتيب...",
+
+    "rating.label": "التقييم",
+    "rating.star": "نجمة",
+    "rating.stars": "نجوم",
+
+    "song.unknownSinger": "مغنٍ غير معروف",
+    "song.key": "المقام",
+    "song.waitTime": "وقت الانتظار المقدر",
+    "song.openYoutube": "فتح يوتيوب",
+    "song.markComplete": "وضع علامة مكتمل",
+    "song.edit": "تحرير",
+    "song.delete": "حذف",
+
+    "singerStats.title": "إحصائيات المغني",
+    "singerStats.noPerformances": "لا توجد عروض بعد",
+    "singerStats.songsPerformed": "الأغاني",
+    "singerStats.averageRating": "المتوسط",
+    "singerStats.bestRating": "الأفضل",
+    "singerStats.history": "سجل الأداء",
+
+    "sessionStats.title": "إحصائيات الجلسة",
+    "sessionStats.singers": "المغنون",
+    "sessionStats.performed": "تم أداؤها",
+    "sessionStats.inQueue": "في القائمة",
+    "sessionStats.avgRating": "المتوسط",
+    "sessionStats.timeRemaining": "الوقت المتبقي",
+    "sessionStats.mostActive": "أكثر مغني نشاطاً",
+
+    "songQueue.waitTime": "~{{time}} دقائق انتظار"
   }
 }

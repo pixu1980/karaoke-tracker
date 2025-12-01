@@ -2,245 +2,300 @@
 
 ## Executive Summary
 
-**Karaoke Tracker** is a web application designed to manage the singer queue during a karaoke night. The application allows adding singers with song information, managing the performance order, rating performances, viewing a leaderboard, and maintaining a persistent history of performances. It supports multiple languages (8) and themes (light/dark/system).
+**Karaoke Tracker** is a web application designed for KJs (Karaoke Jockeys) to manage singers and song queues during karaoke events. The application features a **three-column layout** with:
+- **Singers Management** (left column)
+- **Song Queue** (center column)
+- **Leaderboard** (right column)
+
+Key features include multi-singer support (duets/groups), performance tracking, star ratings, automatic queue rotation, and comprehensive internationalization (8 languages with RTL support).
 
 ---
 
 ## Target Users
 
 ### Primary User: KJ (Karaoke Jockey) / Host
-- **Needs**: Quickly manage singer queue during the event
-- **Usage context**: Mobile device or tablet during the event
+- **Needs**: Efficiently manage singers rotation and song queue during events
+- **Usage context**: Tablet or laptop at the karaoke station
 - **Technical skills**: Basic
 
 ### Secondary User: Event Organizer
-- **Needs**: View participant order
+- **Needs**: Overview of participant order and performance statistics
 - **Usage context**: Evening supervision
 - **Technical skills**: Basic
 
 ---
 
+## Application Layout
+
+### Three-Column Desktop Layout
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              HEADER                                          │
+│  ┌──────────────────────┐              ┌────────────────────────────────┐   │
+│  │ 🎤 Karaoke Tracker   │              │ [🔄 Auto] [☀️🌙💻] [🌐] [📥]   │   │
+│  └──────────────────────┘              └────────────────────────────────┘   │
+├─────────────────────┬─────────────────────────┬─────────────────────────────┤
+│   SINGERS LIST      │     SONG QUEUE          │      LEADERBOARD            │
+│   (Left Column)     │     (Center Column)     │      (Right Column)         │
+│                     │                         │                             │
+│   ┌───────────────┐ │   [+ Add Song] [Clear]  │   ┌─────────────────────┐   │
+│   │ Singer Card   │ │                         │   │ 🏆 Leaderboard      │   │
+│   │ - Name        │ │   ┌─────────────────┐   │   │                     │   │
+│   │ - Songs: 3    │ │   │ 🎤 NOW PLAYING  │   │   │ 🥇 Singer A - ⭐4.5 │   │
+│   │ [Edit][Del]   │ │   │ Song Card       │   │   │ 🥈 Singer B - ⭐4.2 │   │
+│   └───────────────┘ │   │ - Title         │   │   │ 🥉 Singer C - ⭐4.0 │   │
+│                     │   │ - Author        │   │   │    Singer D - ⭐3.8 │   │
+│   ┌───────────────┐ │   │ - Singers       │   │   └─────────────────────┘   │
+│   │ Singer Card   │ │   │ - Key           │   │                             │
+│   │ ...           │ │   │ [Done][Remove]  │   │                             │
+│   └───────────────┘ │   └─────────────────┘   │                             │
+│                     │                         │                             │
+│ [+ Add] [Clear]     │   ┌─────────────────┐   │                             │
+│                     │   │ Next Song       │   │                             │
+│                     │   │ ...             │   │                             │
+│                     │   └─────────────────┘   │                             │
+├─────────────────────┴─────────────────────────┴─────────────────────────────┤
+│                              FOOTER                                          │
+│                    © 2024 | Links | Credits                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Responsive Breakpoints
+- **Desktop (1024px+)**: Three columns side by side
+- **Tablet (768px - 1023px)**: Stacked layout (Singers + Queue | Leaderboard)
+- **Mobile (< 768px)**: Single column with tabs or accordion
+
+---
+
 ## Functional Requirements
 
-### FR-001: Add Singer
-**Description**: User must be able to add a new singer to the queue.
+### FR-001: Singers Management (Left Column)
 
+**Description**: Manage the list of singers participating in the karaoke night.
+
+#### FR-001.1: Add Singer
 **Form fields**:
 | Field | Type | Required | Validation |
 |-------|------|----------|------------|
-| Singer name | Text | ✅ Yes | Min 1 character |
-| Song title | Text | ✅ Yes | Min 1 character |
-| Song author | Text | ❌ No | - |
-| Key adjustment | Select | ❌ No | Values: -4 to +4 |
-| YouTube URL | URL | ❌ No | Valid YouTube URL |
+| Singer name | Text | ✅ Yes | Min 1 character, unique |
 
 **Behavior**:
-1. User fills the form
-2. Click "Add to Queue"
-3. Required fields validation
-4. Save to IndexedDB with timestamp
-5. Reset form
-6. Update singer list
+1. Click "Add Singer" button in singers section
+2. Modal opens with name field
+3. Validate uniqueness
+4. Save to IndexedDB
+5. Update singers list
 
-**User feedback**:
-- Validation error: field highlight
-- Save error: alert with message
+#### FR-001.2: Singers List Display
+**Information per singer**:
+- Singer name
+- Song count for the night (from archived performances)
+- Edit button
+- Remove button
+
+**Sorting**: Alphabetical or by song count (configurable)
+
+#### FR-001.3: Edit Singer
+**Trigger**: Click "Edit" button on singer card
+**Behavior**: Open modal to edit singer name
+
+#### FR-001.4: Remove Singer
+**Trigger**: Click "Remove" button
+**Behavior**:
+1. Confirmation dialog
+2. Remove singer
+3. Remove associated pending songs from queue
+4. Keep archived performances (for leaderboard)
+
+#### FR-001.5: Auto Re-add (Rotation)
+**Description**: When "Auto Re-add" is enabled and a song is completed:
+1. The singer(s) who just performed are moved to the bottom of the singers list
+2. This allows KJ to approach them and ask for their next song
 
 ---
 
-### FR-002: Singer List Display
-**Description**: User must view all singers in queue.
+### FR-002: Song Queue (Center Column)
 
-**Information displayed per singer**:
-- Singer name
+**Description**: Manage the queue of songs to be performed.
+
+#### FR-002.1: Add Song to Queue
+**Trigger**: Click "Add Song" button in SongQueue header
+**Form fields**:
+| Field | Type | Required | Validation |
+|-------|------|----------|------------|
+| Song title | Text | ✅ Yes | Min 1 character |
+| Song author | Text | ❌ No | - |
+| Singers | Multi-select | ✅ Yes | At least 1 singer |
+| Key adjustment | Select | ❌ No | Values: -5 to +5, with "0 (Original Key)" default |
+| YouTube URL | URL | ❌ No | Valid YouTube URL |
+
+**Multi-singer support**:
+- Select one or more singers (duets, trios, groups)
+- All selected singers are credited for the performance
+
+#### FR-002.2: Song Queue Display
+**Information per song**:
 - Song title and author
-- Key adjustment (if set)
-- YouTube link (if provided)
-- Star rating (0-5 with half-star increments)
-- "NOW SINGING" badge for first singer
-- Available actions (Edit, Done, Remove)
+- Singer(s) names (with visual indication for duets/groups)
+- Key adjustment badge (if set)
+- YouTube link icon (if provided)
+- "NOW PLAYING" badge for first song
+- Available actions: Edit, Done, Remove
 
 **Sorting**: By insertion timestamp (FIFO)
 
-**List states**:
-- **Empty**: "No singers in the queue yet" message
-- **Populated**: List of singer cards
-- **Error**: Loading error message
-
----
-
-### FR-003: Remove Singer
-**Description**: User must be able to remove a singer from the queue.
-
-**Trigger**: Click on "Remove" button
-
+#### FR-002.3: Complete Song (Done)
+**Trigger**: Click "Done" button
 **Behavior**:
-1. Action confirmation (dialog)
-2. Remove from IndexedDB
-3. Update list
-
----
-
-### FR-004: Complete Singer (Done)
-**Description**: User must be able to mark a singer as "done" with optional rating.
-
-**Trigger**: Click on "Done" button
-
-**Behavior**:
-1. Action confirmation (dialog with star rating)
-2. Optional: Set performance rating (1-5 stars with 0.5 increments)
-3. Save performance to history (if rated)
+1. Open confirmation modal with star rating
+2. Set performance rating (0.5-5 stars in 0.5 increments, with hover preview)
+3. Archive performance:
+   - Create performance record for EACH singer involved
+   - Increment song count for each singer
 4. Remove from active queue
-5. Optional: Auto re-add singer to queue (if checkbox enabled)
-6. Update list and leaderboard
+5. If "Auto Re-add" enabled: move involved singer(s) to bottom of singers list
+6. Update leaderboard
+
+#### FR-002.4: Edit Song
+**Trigger**: Click "Edit" button
+**Behavior**: Open modal with pre-filled data, allow modification
+
+#### FR-002.5: Remove Song
+**Trigger**: Click "Remove" button
+**Behavior**: Confirmation dialog, then remove from queue
 
 ---
 
-### FR-005: Edit Singer
-**Description**: User must be able to edit singer information.
+### FR-003: Leaderboard (Right Column)
 
-**Trigger**: Click on "Edit" button
+**Description**: Display ranked list of singers by average performance rating.
 
-**Behavior**:
-1. Open edit dialog with pre-filled data
-2. Modify fields
-3. Save changes to IndexedDB
-4. Update list
-
----
-
-### FR-006: Clear All / Reset List
-**Description**: User must be able to clear the entire queue.
-
-**Trigger**: Click on "Reset List" button
-
-**Behavior**:
-1. Action confirmation (dialog with warning)
-2. Remove all records from IndexedDB (singers and performances)
-3. Update list (show empty state)
-4. Reset leaderboard
-
----
-
-### FR-007: Load Example List
-**Description**: User can load a pre-defined list of example singers.
-
-**Trigger**: Click on "Example List" button
-
-**Behavior**:
-1. Action confirmation (dialog with warning)
-2. Clear current queue and performances
-3. Load sample singers data
-4. Update list
-
----
-
-### FR-008: Star Rating System
-**Description**: Rate singer performances with stars.
-
-**Features**:
-- 5-star rating with half-star increments (0.5)
-- Click to set rating (no hover preview)
-- Reset button to clear rating
-- Rating synced between card and done modal
-- Rating saved with performance for leaderboard
-
----
-
-### FR-009: Leaderboard
-**Description**: Display ranked list of singers by average rating.
-
-**Information displayed**:
-- Rank (🥇🥈🥉 for top 3)
+**Information displayed per singer**:
+- Rank position (🥇🥈🥉 for top 3)
 - Singer name
-- Number of songs performed
-- Average rating with stars
-- Numeric average
+- Number of songs performed (with rating)
+- Average rating with star visualization
+- Numeric average value
 
 **Behavior**:
-- Updates when performance is completed with rating
-- Resets when list is cleared
+- Auto-updates when a performance is completed with rating
+- Only includes singers with at least one rated performance
+- Resets when session is cleared
 
 ---
 
-### FR-010: Auto Re-add
-**Description**: Automatically re-add singer to queue after completion.
+### FR-004: Header Controls
 
-**Trigger**: Checkbox in header controls (enabled by default)
+**Layout (left to right)**:
+1. **Logo/Title**: App branding (🎤 emoji + "Karaoke Tracker")
+2. **Spacer**
+3. **Auto Re-add Toggle**: Checkbox/switch for rotation feature (🔄)
+4. **Color Scheme Switcher**: Light/Dark/System (☀️/🌙/💻)
+5. **Language Selector**: i18n dropdown with flags
+6. **Example Data Button**: Load sample data for demo/testing
 
-**Behavior**:
-1. When "Done" is clicked and auto re-add is enabled
-2. Singer is added back to queue with "(next song)" placeholder
-3. Original singer is removed from current position
+**Note**: The "Add Song" button has been moved to the SongQueue component header alongside a "Clear Songs" button. Similarly, the SingerList component has its own "Add Singer" and "Clear Singers" buttons.
 
 ---
 
-### FR-011: Theme Switcher
-**Description**: Switch between light, dark, and system themes.
+### FR-005: Session Management
 
+#### FR-005.1: Clear All Singers
+**Trigger**: Click "Clear Singers" button in SingerList header
+**Behavior**:
+1. Confirmation dialog with warning
+2. Clear all data (singers, songs, performances)
+3. Start fresh session
+
+#### FR-005.2: Clear All Songs
+**Trigger**: Click "Clear Songs" button in SongQueue header
+**Behavior**:
+1. Confirmation dialog with warning
+2. Clear all songs from queue
+3. Keep singers and performance history
+
+#### FR-005.3: Load Example Data
+**Trigger**: Click Example Data button in header
+**Behavior**:
+1. Confirmation dialog
+2. Load sample data:
+   - 10 singers with names
+   - 20 queued songs with various artists
+   - 10 completed performances with ratings (2.5-5 stars)
+3. Useful for demo/testing
+
+---
+
+### FR-006: Theme Switcher
 **Options**:
 - ☀️ Light mode
 - 🌙 Dark mode
 - 💻 System (follows OS preference)
 
-**Behavior**:
-- Theme saved to localStorage
-- Applies CSS custom properties for colors
-- Default: System
+**Implementation**: Uses CSS `color-scheme` and `light-dark()` function
 
 ---
 
-### FR-012: Multi-language Support (i18n)
-**Description**: Application supports multiple languages.
+### FR-007: Multi-language Support (i18n)
 
 **Supported languages**:
-- 🇬🇧 English (en)
-- 🇮🇹 Italian (it)
-- 🇫🇷 French (fr)
-- 🇩🇪 German (de)
-- 🇪🇸 Spanish (es)
-- 🇨🇳 Chinese (zh)
-- 🇯🇵 Japanese (ja)
-- 🇸🇦 Arabic (ar) - with RTL support
-
-**Behavior**:
-- Language saved to localStorage
-- All UI text translated via `data-i18n` attributes
-- Dynamic components use `i18n.t()` function
-- RTL languages change document direction
+| Code | Language | RTL |
+|------|----------|-----|
+| en | English | No |
+| it | Italian | No |
+| fr | French | No |
+| de | German | No |
+| es | Spanish | No |
+| zh | Chinese | No |
+| ja | Japanese | No |
+| ar | Arabic | Yes |
 
 ---
 
-### FR-013: Data Persistence
-**Description**: Data must persist between sessions.
+### FR-008: Data Persistence
 
 **Technology**: IndexedDB
 
-**Data schema**:
-```javascript
-// singers store
-{
-    id: Number,           // Auto-generated, primary key
-    name: String,         // Singer name (required)
-    songTitle: String,    // Song title (required)
-    songAuthor: String,   // Song author/artist (optional)
-    songKey: String,      // Key adjustment: -4 to +4 (optional)
-    youtubeUrl: String,   // YouTube backing track URL (optional)
-    rating: Number,       // Current rating 0-5 (optional)
-    timestamp: Number     // Unix timestamp of insertion
-}
+**Data stores**:
 
-// performances store
+#### Store: `singers`
+```javascript
 {
     id: Number,           // Auto-generated, primary key
-    singerName: String,   // Singer name
-    songTitle: String,    // Song title
-    rating: Number,       // Performance rating 1-5
-    timestamp: Number     // Unix timestamp of completion
+    name: String,         // Singer name (required, unique)
+    createdAt: Number,    // Unix timestamp
+    sortOrder: Number     // For manual ordering / rotation
 }
 ```
 
-**Indexes**: `timestamp` for sorting, `singerName` for leaderboard
+#### Store: `songs`
+```javascript
+{
+    id: Number,           // Auto-generated, primary key
+    title: String,        // Song title (required)
+    author: String,       // Song author/artist (optional)
+    singerIds: Number[],  // Array of singer IDs (required, 1+)
+    key: String,          // Key adjustment: -6 to +6 (optional)
+    youtubeUrl: String,   // YouTube backing track URL (optional)
+    status: String,       // 'queued' | 'archived'
+    createdAt: Number,    // Unix timestamp
+    completedAt: Number   // Unix timestamp (when archived)
+}
+```
+
+#### Store: `performances`
+```javascript
+{
+    id: Number,           // Auto-generated, primary key
+    songId: Number,       // Reference to song
+    singerId: Number,     // Reference to singer (one record per singer)
+    songTitle: String,    // Denormalized for display
+    singerName: String,   // Denormalized for display
+    rating: Number,       // Performance rating 1-5 (optional)
+    performedAt: Number   // Unix timestamp
+}
+```
 
 ---
 
@@ -252,9 +307,9 @@
 - **Bundle size**: < 100KB
 
 ### NFR-002: Responsiveness
-- **Mobile**: 320px - 767px
-- **Tablet**: 768px - 1023px
-- **Desktop**: 1024px+
+- **Mobile**: 320px - 767px (single column)
+- **Tablet**: 768px - 1023px (two columns)
+- **Desktop**: 1024px+ (three columns)
 
 ### NFR-003: Accessibility
 - **WCAG Level**: AA
@@ -270,122 +325,77 @@
 - Edge 90+
 
 ### NFR-005: Offline Capability
-- Offline operation with local data
-- No dependency on external servers
+- Full offline operation with local IndexedDB
+- No external server dependencies
 
 ---
 
 ## User Flows
 
-### UF-001: Add New Singer
+### UF-001: Add Singer and First Song
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   Open      │───▶│   Fill      │───▶│   Submit    │───▶│   List      │
-│   App       │    │   Form      │    │   Form      │    │   Updated   │
+│   Open      │───▶│ Add Singer  │───▶│  Add Song   │───▶│   Queue     │
+│   App       │    │  (modal)    │    │  (modal)    │    │   Updated   │
 └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-### UF-002: Queue Management During Event
+### UF-002: Complete Song with Rotation
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│  Singer     │───▶│   Click     │───▶│   Rate      │───▶│   Next      │
-│  Performs   │    │   "Done"    │    │  (optional) │    │   Singer    │
+│ Song Plays  │───▶│ Click Done  │───▶│ Rate + OK   │───▶│ Singer at   │
+│             │    │             │    │             │    │ Bottom      │
 └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+                                              │
+                                              ▼
+                                      ┌─────────────┐
+                                      │ Leaderboard │
+                                      │ Updated     │
+                                      └─────────────┘
 ```
 
-### UF-003: Auto Re-add Flow
+### UF-003: Duet Performance
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│  Complete   │───▶│  Auto-add   │───▶│  Singer at  │───▶│  Edit new   │
-│  Singer     │    │  Enabled    │    │  End Queue  │    │  Song Info  │
+│ Add Song    │───▶│ Select 2+   │───▶│ Song Done   │───▶│ All Singers │
+│ Modal       │    │ Singers     │    │ with Rating │    │ Credited    │
 └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
-```
-
----
-
-## Data Model
-
-### Entity: Singer
-
-```
-┌────────────────────────────────────────┐
-│               Singer                    │
-├────────────────────────────────────────┤
-│ PK  id         : Number (auto)         │
-│     name       : String (required)     │
-│     songTitle  : String (required)     │
-│     songAuthor : String (optional)     │
-│     songKey    : String (optional)     │
-│     youtubeUrl : String (optional)     │
-│     rating     : Number (optional)     │
-│     timestamp  : Number (auto)         │
-└────────────────────────────────────────┘
-```
-
-### Entity: Performance
-
-```
-┌────────────────────────────────────────┐
-│             Performance                 │
-├────────────────────────────────────────┤
-│ PK  id         : Number (auto)         │
-│     singerName : String (required)     │
-│     songTitle  : String (required)     │
-│     rating     : Number (required)     │
-│     timestamp  : Number (auto)         │
-└────────────────────────────────────────┘
-```
-
-### Storage Structure
-
-```
-IndexedDB: KaraokeTrackerDB
-├── Version: 2
-├── ObjectStore: singers
-│   ├── keyPath: id (autoIncrement)
-│   └── Index: timestamp
-└── ObjectStore: performances
-    ├── keyPath: id (autoIncrement)
-    ├── Index: singerName
-    └── Index: timestamp
 ```
 
 ---
 
 ## UI Components
 
-### Component: SingerForm
-**Responsibility**: Collect new singer data
-**Input**: User form data
-**Output**: Custom event `singer-added`
-**i18n**: Yes - labels use `i18n.t()`
+### Core Components
 
-### Component: SingerList
-**Responsibility**: Display singers list
-**Input**: Events `storage-ready`, `singer-added`, `singer-deleted`, `language-changed`
-**Output**: Render SingerCard list
-**i18n**: Yes - empty state message
+| Component | Location | Responsibility |
+|-----------|----------|----------------|
+| `singer-list` | Left Column | Display and manage singers |
+| `singer-card` | Left Column | Single singer with actions |
+| `song-queue` | Center Column | Display song queue |
+| `song-card` | Center Column | Single song with actions |
+| `leaderboard` | Right Column | Ranked performances |
 
-### Component: SingerCard
-**Responsibility**: Display single singer with actions
-**Input**: Singer data via data attributes
-**Output**: Action events (edit, done, remove)
-**i18n**: Yes - buttons and badges
+### UI Components
 
-### Component: StarRating
-**Responsibility**: Display and capture star ratings
-**Input**: `value` attribute (0-5)
-**Output**: Custom event `rating-change`
-**i18n**: Yes - rating label
+| Component | Responsibility |
+|-----------|----------------|
+| `pix-dialog` | Base dialog component |
+| `pix-rating` | Star rating input/display |
+| `color-scheme-switcher` | Theme toggle |
+| `language-select` | i18n dropdown |
 
-### Component: SingerLeaderboard
-**Responsibility**: Display ranked singers by average rating
-**Input**: Events `storage-ready`, `performance-added`, `leaderboard-reset`, `language-changed`
-**Output**: Ranked list
-**i18n**: Yes - empty state and song count
+### Dialog Components
+
+| Component | Trigger |
+|-----------|---------|
+| `add-singer-dialog` | Add/Edit singer |
+| `add-song-dialog` | Add/Edit song (with multi-select) |
+| `confirm-dialog` | Generic confirmations |
+| `song-complete-dialog` | Done action with rating |
 
 ---
 
@@ -394,46 +404,31 @@ IndexedDB: KaraokeTrackerDB
 ### User Errors
 | Error | Message | Recovery |
 |-------|---------|----------|
-| Empty required field | Field highlight | Focus on field |
-| Invalid URL | (silent) | Ignored |
+| Empty required field | Field highlight + message | Focus on field |
+| Duplicate singer name | "Singer already exists" | Edit name |
+| No singer selected | "Select at least one singer" | Show multi-select |
 
 ### System Errors
 | Error | Message | Recovery |
 |-------|---------|----------|
-| IndexedDB unavailable | Alert | Page refresh |
-| Save error | Alert | Retry |
-| Load error | Message in list | Retry |
-
----
-
-## Future Considerations
-
-### Potential Evolutions (not in current scope):
-1. **Drag & drop**: Manual queue reordering
-2. **Singer search**: Filter by name/song
-3. **Export/Import**: JSON data backup
-4. **Multi-session**: Multiple nights management
-5. **Timer**: Estimated wait time
-6. **Music API integration**: Song search
-7. **PWA**: Offline-first with service worker
+| IndexedDB unavailable | Alert with instructions | Page refresh |
+| Save error | Toast notification | Retry action |
+| Load error | Error state in list | Retry button |
 
 ---
 
 ## Acceptance Criteria Summary
 
-✅ **MVP Complete**:
-- [x] Add singer form working
-- [x] Singer list displayed correctly
-- [x] Edit singer working
-- [x] Done/Remove actions working with dialogs
-- [x] Clear All working
-- [x] Data persistent after refresh
-- [x] Responsive on mobile/desktop
-- [x] Keyboard accessible
-- [x] Star rating system
-- [x] Leaderboard with average ratings
-- [x] Auto re-add functionality
-- [x] Theme switcher (light/dark/system)
-- [x] Multi-language support (8 languages)
-- [x] RTL support for Arabic
-- [x] No console errors in normal use
+### MVP Requirements:
+- [ ] Three-column layout (responsive)
+- [ ] Singers CRUD with song count
+- [ ] Songs queue with multi-singer support (duets/groups)
+- [ ] Leaderboard with average ratings
+- [ ] Auto re-add / rotation feature
+- [ ] Star rating system
+- [ ] Theme switcher (light/dark/system)
+- [ ] Multi-language support (8 languages)
+- [ ] RTL support for Arabic
+- [ ] Data persistence with IndexedDB
+- [ ] Keyboard accessible
+- [ ] No console errors in normal use

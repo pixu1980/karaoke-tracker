@@ -1,83 +1,96 @@
-import styles from 'bundle-text:./Dialog.css';
-import { i18n, registerStylesheet } from '../../../services/index.js';
-
 /**
- * Dialog Custom Element - extends native HTMLDialogElement
- * Provides common functionality for dialog components
- * Usage: <dialog is="pix-dialog">...</dialog>
+ * Dialog Component
+ * Base dialog using native <dialog> element
  */
-class Dialog extends HTMLDialogElement {
-  static {
-    // Inject base dialog styles using adoptedStyleSheets
-    registerStylesheet(styles);
+import { registerStylesheet, i18n, pixEngine } from '../../../services/index.js';
+import styles from 'bundle-text:./Dialog.css';
+import template from 'bundle-text:./Dialog.template.html';
 
-    customElements.define('pix-dialog', Dialog, { extends: 'dialog' });
+export class Dialog extends HTMLElement {
+  static {
+    registerStylesheet(styles);
+    customElements.define('pix-dialog', this);
   }
 
   constructor() {
     super();
+    this.dialog = null;
+    this._contentNodes = null;
   }
 
   connectedCallback() {
-    this.setupEventListeners();
+    if (!this._contentNodes || this._contentNodes.length === 0) {
+      this._contentNodes = Array.from(this.childNodes);
+    }
 
-    // Listen for language changes
-    window.addEventListener('language-changed', () => this.updateTranslations());
+    this.render();
+    this.dialog = this.querySelector('dialog');
+    this.restoreContent();
+    this.setupEventListeners();
+  }
+
+  render() {
+    const title = this.getAttribute('dialog-title') || '';
+    this.innerHTML = pixEngine(template, { title, commonClose: i18n.t('common.close') });
+  }
+
+  restoreContent() {
+    const content = this.querySelector('dialog > div');
+    if (!content) return;
+
+    content.innerHTML = '';
+
+    if (this._contentNodes?.length) {
+      this._contentNodes.forEach(node => {
+        content.appendChild(node);
+      });
+    }
   }
 
   setupEventListeners() {
-    // Handle cancel button
-    const cancelBtn = this.querySelector('[data-action="cancel"]');
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', () => this.close());
-    }
-
-    // Handle confirm button
-    const confirmBtn = this.querySelector('[data-action="confirm"]');
-    if (confirmBtn) {
-      confirmBtn.addEventListener('click', () => this.handleConfirm());
-    }
-
-    // Handle form submit
-    const form = this.querySelector('form');
-    if (form) {
-      form.addEventListener('submit', e => this.handleSubmit(e));
-    }
+    // Close button
+    const closeBtn = this.querySelector('header button');
+    closeBtn?.addEventListener('click', () => this.close());
 
     // Close on backdrop click
-    this.addEventListener('click', e => {
-      if (e.target === this) {
+    this.dialog?.addEventListener('click', e => {
+      if (e.target === this.dialog) {
         this.close();
       }
     });
 
-    // Close on Escape key (native dialog already supports this, but we add for custom handling)
-    this.addEventListener('keydown', e => {
+    // Close on Escape key
+    this.dialog?.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        e.preventDefault();
         this.close();
       }
     });
   }
 
-  handleConfirm() {
-    // Override in subclasses
-    this.close();
+  open() {
+    this.dialog?.showModal();
+    this.dispatchEvent(new CustomEvent('dialog:open', { bubbles: true }));
   }
 
-  handleSubmit(event) {
-    // Override in subclasses
-    event.preventDefault();
+  close() {
+    this.dialog?.close();
+    this.dispatchEvent(new CustomEvent('dialog:close', { bubbles: true }));
   }
 
-  updateTranslations() {
-    // Update all data-i18n elements
-    this.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      el.textContent = i18n.t(key);
-    });
+  setTitle(title) {
+    const titleEl = this.querySelector('header h2');
+    if (titleEl) {
+      titleEl.textContent = title;
+    }
+  }
+
+  setContent(html) {
+    const content = this.querySelector('dialog > div');
+    if (content) {
+      content.innerHTML = html;
+      this._contentNodes = Array.from(content.childNodes);
+    }
   }
 }
 
-export { Dialog };
 export default Dialog;

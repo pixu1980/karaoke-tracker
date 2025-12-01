@@ -1,104 +1,128 @@
+/**
+ * SongCard Component
+ * Displays a single song in the queue with singer info and actions
+ */
+import { registerStylesheet, i18n, storage, pixEngine } from '../../../services/index.js';
 import styles from 'bundle-text:./SongCard.css';
 import template from 'bundle-text:./SongCard.template.html';
-import { i18n, pixEngine, registerStylesheet, storage } from '../../../services/index.js';
 
-/**
- * Song Card Custom Element
- * Displays a single song card with singer info and actions
- */
-class SongCard extends HTMLElement {
+export class SongCard extends HTMLElement {
   static {
-    // Inject component styles using adoptedStyleSheets
     registerStylesheet(styles);
-
-    customElements.define('song-card', SongCard);
+    customElements.define('kt-song-card', this);
   }
 
-  connectedCallback() {
-    const id = this.dataset.id;
-    const name = this.dataset.name;
-    const songTitle = this.dataset.songTitle;
-    const songAuthor = this.dataset.songAuthor;
-    const songKey = this.dataset.songKey;
-    const youtubeUrl = this.dataset.youtubeUrl;
-    const rating = this.dataset.rating || '';
-    const isSinging = this.hasAttribute('data-singing');
+  static observedAttributes = ['song-id', 'wait-time'];
 
-    // Format key display (handle both numeric and string values with +/- prefix)
-    let keyDisplay = '';
-    if (songKey && songKey !== '0') {
-      const keyNum = parseInt(songKey, 10);
-      keyDisplay = keyNum > 0 ? `+${keyNum}` : String(keyNum);
+  constructor() {
+    super();
+    this._song = null;
+    this._singers = [];
+    this._waitTime = 0;
+  }
+
+  get songId() {
+    return this._song?.id || null;
+  }
+
+  async connectedCallback() {
+    const songId = parseInt(this.getAttribute('song-id'), 10);
+    this._waitTime = parseInt(this.getAttribute('wait-time'), 10) || 0;
+    if (songId) {
+      await this.loadData(songId);
+    }
+  }
+
+  async attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+
+    if (name === 'song-id' && this.isConnected) {
+      const songId = parseInt(newValue, 10);
+      if (songId) {
+        await this.loadData(songId);
+      }
+    }
+  }
+
+  async loadData(songId) {
+    try {
+      this._song = await storage.getSong(songId);
+      if (this._song && this._song.singerIds) {
+        const allSingers = await storage.getAllSingers();
+        this._singers = allSingers.filter(s => this._song.singerIds.includes(s.id));
+      }
+      this.render();
+      this.setupEventListeners();
+    } catch (error) {
+      console.error('Failed to load song:', error);
+    }
+  }
+
+  render() {
+    if (!this._song) {
+      this.innerHTML = '';
+      return;
     }
 
+    const singerNames = this._singers.map(s => s.name).join(', ') || i18n.t('song.unknownSinger');
+
     this.innerHTML = pixEngine(template, {
-      id,
-      name,
-      songTitle,
-      songAuthor,
-      songKey,
-      youtubeUrl,
-      rating,
-      isSinging,
-      keyDisplay,
-      nowSingingLabel: i18n.t('nowSinging'),
-      editLabel: i18n.t('edit'),
-      doneLabel: i18n.t('done'),
-      removeLabel: i18n.t('remove')
-    });
-
-    // Add event listeners
-    this.querySelector('[data-action="edit"]').addEventListener('click', () => this.handleEdit(id));
-    this.querySelector('[data-action="done"]').addEventListener('click', () => this.handleDone(id, name));
-    this.querySelector('[data-action="remove"]').addEventListener('click', () => this.handleRemove(id, name));
-
-    // Rating change listener
-    const starRating = this.querySelector('pix-rating');
-    starRating.addEventListener('rating-change', async e => {
-      try {
-        await storage.updateSong(Number(id), { rating: e.detail.value });
-        // Update the data-rating attribute so it's available when opening Done dialog
-        this.dataset.rating = e.detail.value;
-      } catch (error) {
-        console.error('Error updating rating:', error);
-      }
+      songId: this._song.id,
+      title: this._song.title,
+      author: this._song.author || '',
+      hasAuthor: Boolean(this._song.author),
+      singers: singerNames,
+      hasKey: Boolean(this._song.key),
+      keyValue: this._song.key || '',
+      keyLabel: i18n.t('song.key'),
+      hasWaitTime: this._waitTime > 0,
+      waitTime: this._waitTime,
+      waitTimeLabel: i18n.t('song.waitTime'),
+      hasYoutube: Boolean(this._song.youtubeUrl),
+      youtubeUrl: this._song.youtubeUrl || '',
+      youtubeLabel: i18n.t('song.openYoutube'),
+      completeLabel: i18n.t('song.markComplete'),
+      editLabel: i18n.t('song.edit'),
+      deleteLabel: i18n.t('song.delete')
     });
   }
 
-  handleEdit(id) {
-    const editDialog = document.getElementById('editSongDialog');
+  setupEventListeners() {
+    const completeBtn = this.querySelector('button[complete]');
+    const editBtn = this.querySelector('button[edit]');
+    const deleteBtn = this.querySelector('button[delete]');
 
-    // Build song object from card data
-    const song = {
-      id: Number(id),
-      name: this.dataset.name,
-      songTitle: this.dataset.songTitle,
-      songAuthor: this.dataset.songAuthor || '',
-      songKey: this.dataset.songKey || '0',
-      youtubeUrl: this.dataset.youtubeUrl || ''
-    };
+    completeBtn?.addEventListener('click', () => {
+      this.dispatchEvent(
+        new CustomEvent('song:complete', {
+          bubbles: true,
+          detail: {
+            songId: this._song.id,
+            song: this._song,
+            singers: this._singers
+          }
+        })
+      );
+    });
 
-    editDialog.showModal(song);
-  }
+    editBtn?.addEventListener('click', () => {
+      this.dispatchEvent(
+        new CustomEvent('song:edit', {
+          bubbles: true,
+          detail: { songId: this._song.id, song: this._song }
+        })
+      );
+    });
 
-  async handleDone(id, name) {
-    const doneDialog = document.getElementById('doneSongDialog');
-
-    // Build song object for the dialog
-    const song = {
-      id: Number(id),
-      name: name,
-      songTitle: this.dataset.songTitle
-    };
-
-    doneDialog.showModal(song);
-  }
-
-  async handleRemove(id, name) {
-    const removeDialog = document.getElementById('removeSongDialog');
-    removeDialog.showModal(Number(id), name);
+    deleteBtn?.addEventListener('click', () => {
+      this.dispatchEvent(
+        new CustomEvent('song:delete', {
+          bubbles: true,
+          detail: { songId: this._song.id, song: this._song }
+        })
+      );
+    });
   }
 }
 
-export { SongCard };
 export default SongCard;

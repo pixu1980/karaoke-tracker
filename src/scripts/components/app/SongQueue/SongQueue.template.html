@@ -1,0 +1,55 @@
+<article>
+  <header>
+    <div>
+      <h2 id="song-queue-title">{{title}}</h2>
+      <span count>{{count}}</span>
+    </div>
+    <div>
+      <button type="button" primary aria-label="{{addLabel}}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>{{addLabel}}</span>
+      </button>
+      <button type="button" danger aria-label="{{clearLabel}}" title="{{clearLabel}}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+  <form filter-bar>
+    <input type="search" placeholder="{{filterPlaceholder}}" aria-label="{{filterPlaceholder}}" data-filter />
+  </form>
+  <section>
+    <if condition="hasSongs">
+      <ul role="list" aria-label="{{title}}">
+        <for each="song in songs">
+          <li {{song.isNext ? 'next' : ''}}
+            data-label="{{nextLabel}}"
+            data-song-id="{{song.id}}"
+            data-wait="{{song.waitTime}}"
+            draggable="true"
+          >
+            <button type="button" drag-handle aria-label="Drag to reorder">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+                <circle cx="8" cy="6" r="2"/>
+                <circle cx="8" cy="12" r="2"/>
+                <circle cx="8" cy="18" r="2"/>
+                <circle cx="16" cy="6" r="2"/>
+                <circle cx="16" cy="12" r="2"/>
+                <circle cx="16" cy="18" r="2"/>
+              </svg>
+            </button>
+            <kt-song-card song-id="{{song.id}}" wait-time="{{song.waitTime}}"></kt-song-card>
+          </li>
+        </for>
+      </ul>
+    </if>
+    <else>
+      <span empty-state>{{emptyText}}</span>
+    </else>
+  </section>
+</article>

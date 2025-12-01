@@ -1,0 +1,12 @@
+<pix-dialog dialog-title="{{title}}">
+  <form class="add-singer-form">
+    <div class="form-group">
+      <label for="singer-name" class="form-label">{{nameLabel}}</label>
+      <input type="text" id="singer-name" name="name" class="form-input" placeholder="{{namePlaceholder}}" required autocomplete="off" />
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn--secondary" data-action="cancel">{{cancelText}}</button>
+      <button type="submit" class="btn btn--primary">{{saveText}}</button>
+    </div>
+  </form>
+</pix-dialog>

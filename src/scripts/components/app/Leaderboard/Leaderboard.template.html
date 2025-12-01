@@ -1,0 +1,30 @@
+<article>
+  <header>
+    <h2 id="leaderboard-title">{{title}}</h2>
+  </header>
+  <form filter-bar>
+    <input type="search" placeholder="{{filterPlaceholder}}" aria-label="{{filterPlaceholder}}" data-filter />
+  </form>
+  <section>
+    <if condition="hasEntries">
+      <ul role="list" aria-label="{{title}}">
+        <for each="entry in entries">
+          <li rank="{{entry.rank}}">
+            <span>{{entry.rankDisplay}}</span>
+            <span>{{entry.name}}</span>
+            <div>
+              <span rating>
+                <span aria-label="{{entry.ratingLabel}}">{{entry.stars}}</span>
+                <span>{{entry.ratingValue}}</span>
+              </span>
+              <span songs>{{entry.songCountText}}</span>
+            </div>
+          </li>
+        </for>
+      </ul>
+    </if>
+    <else>
+      <span empty-state>{{emptyText}}</span>
+    </else>
+  </section>
+</article>

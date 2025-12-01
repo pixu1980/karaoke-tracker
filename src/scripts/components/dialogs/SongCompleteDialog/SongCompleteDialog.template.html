@@ -1,0 +1,16 @@
+<pix-dialog dialog-title="{{title}}">
+  <div class="song-complete-content">
+    <div class="song-complete__info">
+      <h3 class="song-complete__song-title"></h3>
+      <p class="song-complete__singers"></p>
+    </div>
+    <div class="song-complete__rating">
+      <label class="form-label">{{ratingLabel}}</label>
+      <pix-rating value="0"></pix-rating>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn--secondary" data-action="cancel">{{cancelLabel}}</button>
+      <button type="button" class="btn btn--primary" data-action="complete">{{confirmLabel}}</button>
+    </div>
+  </div>
+</pix-dialog>

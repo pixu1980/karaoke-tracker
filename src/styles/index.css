@@ -1,33 +1,40 @@
-/* 
+/**
  * Karaoke Tracker - Main Stylesheet
- * Using CSS Layers for better cascade control
+ *
+ * Uses CSS Layers for cascade control:
+ * - reset: CSS reset
+ * - foundations: Design tokens, variables
+ * - layout: Page structure, grid
+ * - utilities: Shared utility styles
+ *
+ * Guidelines:
+ * - Element/attribute selectors preferred over classes
+ * - CSS nesting for hierarchy
+ * - Property order: variables → position → display → box-model → colors → typography → transform → behavior
  */
 
 @layer reset, foundations, layout, utilities;
 
-/* ==========================================================================
-   LAYER: Reset
-   Modern CSS reset for consistent base styling
-   ========================================================================== */
+/* ============================================
+   RESET LAYER
+   ============================================ */
 @layer reset {
   *,
   *::before,
   *::after {
     box-sizing: border-box;
-  }
-
-  * {
     margin: 0;
     padding: 0;
   }
 
   html {
+    font-size: 62.5%;
     -webkit-text-size-adjust: 100%;
-    -moz-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
   body {
+    font-size: 1.6rem;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -47,7 +54,6 @@
   textarea,
   select {
     font: inherit;
-    color: inherit;
   }
 
   p,
@@ -60,441 +66,466 @@
     overflow-wrap: break-word;
   }
 
+  ul,
+  ol {
+    list-style: none;
+  }
+
   a {
     color: inherit;
     text-decoration: none;
   }
 
   button {
-    background: none;
-    border: none;
     cursor: pointer;
+    border: none;
+    background: none;
   }
 
-  ul,
-  ol {
-    list-style: none;
+  dialog {
+    border: none;
+    padding: 0;
+    max-width: min(90vw, 50rem);
+    max-height: 90vh;
+
+    &::backdrop {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
   }
 }
 
-/* ==========================================================================
-   LAYER: Foundations
-   Design tokens, custom properties, and base element styles
-   ========================================================================== */
+/* ============================================
+   FOUNDATIONS LAYER
+   ============================================ */
 @layer foundations {
   :root {
-    /* Color Scheme - enables light-dark() function */
+    /* Color Scheme Support */
     color-scheme: light dark;
 
-    /* Colors - Semantic tokens using light-dark() */
-    --color-primary: #3b82f6;
-    --color-primary-hover: #2563eb;
-    --color-success: #22c55e;
-    --color-success-hover: #16a34a;
-    --color-danger: #ef4444;
-    --color-danger-hover: #dc2626;
-    --color-warning: #f59e0b;
-    --color-warning-hover: #d97706;
+    /* Primary Colors */
+    --color-primary: light-dark(#6366f1, #818cf8);
+    --color-primary-hover: light-dark(#4f46e5, #a5b4fc);
+    --color-primary-light: light-dark(#e0e7ff, #312e81);
 
-    /* Surface Colors - Light/Dark aware */
-    --color-bg: light-dark(#f8fafc, #0f172a);
-    --color-surface: light-dark(#ffffff, #1e293b);
-    --color-surface-elevated: light-dark(#ffffff, #334155);
-    --color-surface-elevated-light: #f1f5f9;
-    --color-surface-elevated-dark: #475569;
-    --color-border: light-dark(#e2e8f0, #334155);
+    /* Semantic Colors */
+    --color-success: light-dark(#10b981, #34d399);
+    --color-warning: light-dark(#f59e0b, #fbbf24);
+    --color-danger: light-dark(#ef4444, #f87171);
 
-    /* Text Colors - Light/Dark aware */
-    --color-text: light-dark(#1e293b, #f8fafc);
+    /* Neutral Colors */
+    --color-bg: light-dark(#ffffff, #0a0a0a);
+    --color-background: light-dark(#f8fafc, #0a0a0a);
+    --color-surface: light-dark(#ffffff, #171717);
+    --color-surface-elevated: light-dark(#f8fafc, #262626);
+    --color-surface-hover: light-dark(#f1f5f9, #262626);
+    --color-border: light-dark(#e2e8f0, #404040);
+    --color-border-hover: light-dark(#cbd5e1, #525252);
+    --color-text: light-dark(#1e293b, #f1f5f9);
     --color-text-secondary: light-dark(#64748b, #94a3b8);
     --color-text-muted: light-dark(#94a3b8, #64748b);
 
-    /* Primary backgrounds for selection states */
-    --color-primary-light-bg: rgba(59, 130, 246, 0.15);
-    --color-primary-dark-bg: rgba(59, 130, 246, 0.25);
-
-    /* Spacing Scale */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
-    --spacing-2xl: 48px;
-
-    /* Typography Scale */
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 1.875rem;
-
-    /* Font Family */
-    --font-family-base:
-      system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-
-    /* Border Radius */
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-full: 9999px;
-    --radius-card: 0.4rem;
-
-    /* Shadows - Light/Dark aware */
+    /* Shadows */
     --shadow-sm: light-dark(
       0 1px 2px rgba(0, 0, 0, 0.05),
-      0 1px 2px rgba(0, 0, 0, 0.2)
+      0 1px 2px rgba(0, 0, 0, 0.3)
     );
     --shadow-md: light-dark(
-      0 4px 6px rgba(0, 0, 0, 0.1),
-      0 4px 6px rgba(0, 0, 0, 0.3)
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 4px 6px -1px rgba(0, 0, 0, 0.4)
     );
     --shadow-lg: light-dark(
-      0 10px 15px rgba(0, 0, 0, 0.1),
-      0 10px 15px rgba(0, 0, 0, 0.3)
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 10px 15px -3px rgba(0, 0, 0, 0.4)
     );
+
+    /* Typography */
+    --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-size-xs: 1.2rem;
+    --font-size-sm: 1.4rem;
+    --font-size-base: 1.6rem;
+    --font-size-lg: 1.8rem;
+    --font-size-xl: 2rem;
+    --font-size-2xl: 2.4rem;
+    --font-size-3xl: 3rem;
+
+    /* Spacing */
+    --space-2xs: 0.2rem;
+    --space-xs: 0.4rem;
+    --space-sm: 0.8rem;
+    --space-md: 1.6rem;
+    --space-lg: 2.4rem;
+    --space-xl: 3.2rem;
+    --space-2xl: 4.8rem;
+
+    /* Border Radius */
+    --radius-sm: 0.4rem;
+    --radius-md: 0.8rem;
+    --radius-lg: 1.2rem;
+    --radius-full: 9999px;
 
     /* Transitions */
     --transition-fast: 150ms ease;
-    --transition-base: 200ms ease;
-    --transition-slow: 300ms ease;
+    --transition-normal: 250ms ease;
 
-    /* Component Sizes */
-    --header-control-height: 44px;
-  }
+    /* Z-Index Scale */
+    --z-dropdown: 100;
+    --z-modal: 200;
+    --z-tooltip: 300;
 
-  /* RTL Support */
-  [dir='rtl'] {
-    direction: rtl;
-    text-align: right;
-  }
-
-  [dir='rtl'] .header-controls {
-    flex-direction: row-reverse;
-  }
-
-  [dir='rtl'] .section-header {
-    flex-direction: row-reverse;
-  }
-
-  [dir='rtl'] .dialog-actions {
-    flex-direction: row-reverse;
-  }
-
-  /* Base Element Styles */
-  html {
-    font-family: var(--font-family-base);
-    font-size: 16px;
-    color: var(--color-text);
-    background-color: var(--color-bg);
+    /* Layout */
+    --header-height: 6rem;
+    --footer-height: 4rem;
+    --column-min-width: 28rem;
+    --column-gap: var(--space-lg);
   }
 
   body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-/* ==========================================================================
-   LAYER: Layout
-   Page structure, header, main content, footer, and sections
-   ========================================================================== */
-@layer layout {
-  /* App Header */
-  .app-header {
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    padding: var(--spacing-lg);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-xl);
-    flex-wrap: wrap;
-  }
-
-  .header-text {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    flex: 1 1 320px;
-  }
-
-  .app-header h1 {
-    font-size: var(--font-size-3xl);
-    font-weight: 700;
+    font-family: var(--font-family);
+    background-color: var(--color-bg);
     color: var(--color-text);
-    margin-bottom: var(--spacing-xs);
+    height: 100vh;
+    overflow: hidden;
   }
 
-  .app-header .subtitle {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-base);
-  }
-
-  /* Header Controls */
-  .header-controls {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: var(--spacing-sm);
-    flex-wrap: wrap;
-    margin-left: auto;
-  }
-
-  .header-control {
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: 0 var(--spacing-md);
-    min-height: var(--header-control-height);
-    border-radius: var(--radius-card);
-    border: 1px solid var(--color-border);
-    background-color: var(--color-surface-elevated);
-  }
-
-  .header-toggle {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    cursor: pointer;
-  }
-
-  .auto-readd-toggle input[type='checkbox'] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--color-primary);
-  }
-
-  .toggle-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-  }
-
-  /* Language Select */
-  .pix-language-select {
-    padding: 0 var(--spacing-md);
-    font-size: var(--font-size-sm);
-    cursor: pointer;
-    background-color: var(--color-surface-elevated);
-    height: var(--header-control-height);
-    line-height: var(--header-control-height);
-    border-radius: var(--radius-card);
-  }
-
-  /* App Main */
-  .app-main {
-    flex: 1;
-    padding: var(--spacing-lg);
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .main-content {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: var(--spacing-xl);
-  }
-
-  /* Sections */
-  .singers-section,
-  .add-singer-section {
-    background-color: var(--color-surface);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    border: 1px solid var(--color-border);
-  }
-
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-lg);
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-  }
-
-  .section-header h2 {
-    font-size: var(--font-size-xl);
-    font-weight: 600;
-    color: var(--color-text);
-    margin: 0;
-  }
-
-  .section-header-form {
-    margin-bottom: var(--spacing-lg);
-  }
-
-  .section-header-form h2 {
-    font-size: var(--font-size-xl);
-    font-weight: 600;
-    color: var(--color-text);
-    margin: 0;
-  }
-
-  .section-actions {
-    display: flex;
-    gap: var(--spacing-sm);
-  }
-
-  /* Leaderboard Section */
-  .leaderboard-section {
-    margin-top: var(--spacing-xl);
-    padding-top: var(--spacing-xl);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .leaderboard-section h3 {
-    font-size: var(--font-size-lg);
-    font-weight: 600;
-    color: var(--color-text);
-    margin-bottom: var(--spacing-md);
-  }
-
-  /* App Footer */
-  .app-footer {
-    background-color: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    padding: var(--spacing-md);
-    text-align: center;
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
-  }
-
-  /* Responsive Layout */
-  @media (max-width: 900px) {
-    .main-content {
-      grid-template-columns: 1fr;
-    }
-
-    .add-singer-section {
-      order: -1;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .app-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .header-controls {
-      width: 100%;
-      justify-content: flex-start;
-      margin-left: 0;
-    }
-
-    .app-main {
-      padding: var(--spacing-md);
-    }
-
-    .singers-section,
-    .add-singer-section {
-      padding: var(--spacing-md);
-    }
-
-    .section-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .section-actions {
-      width: 100%;
-    }
-
-    .section-actions .btn {
-      flex: 1;
-    }
-  }
-}
-
-/* ==========================================================================
-   LAYER: Utilities
-   Button styles and common utility classes
-   ========================================================================== */
-@layer utilities {
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    border-radius: var(--radius-md);
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all var(--transition-base);
-    white-space: nowrap;
-  }
-
-  .btn:focus-visible {
+  :focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 
-  .btn-primary {
-    background-color: var(--color-primary);
-    color: white;
-  }
-
-  .btn-primary:hover {
-    background-color: var(--color-primary-hover);
-  }
-
-  .btn-secondary {
-    background-color: var(--color-bg);
+  ::selection {
+    background-color: var(--color-primary-light);
     color: var(--color-text);
-    border-color: var(--color-border);
+  }
+}
+
+/* ============================================
+   LAYOUT LAYER
+   ============================================ */
+@layer layout {
+  body {
+    display: grid;
+    grid-template-rows: var(--header-height) 1fr var(--footer-height);
+    height: 100vh;
+    overflow: hidden;
   }
 
-  .btn-secondary:hover {
-    background-color: var(--color-surface-elevated);
+  /* Header */
+  body > header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-dropdown);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 var(--space-lg);
+
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+
+    /* Brand section */
+    & > div:first-child {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+
+      & > span[aria-hidden] {
+        font-size: var(--font-size-2xl);
+      }
+
+      & > h1 {
+        font-size: var(--font-size-xl);
+        font-weight: 600;
+      }
+    }
+
+    /* Actions section */
+    & > div:last-child {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    /* Header buttons */
+    & button {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+
+      padding: var(--space-sm) var(--space-md);
+
+      font-family: inherit;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+
+      border: none;
+      border-radius: var(--radius-md);
+
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
+
+      &[primary] {
+        background-color: var(--color-primary);
+        color: white;
+
+        &:hover {
+          background-color: var(--color-primary-hover);
+        }
+      }
+
+      &:not([primary]) {
+        padding: var(--space-sm);
+
+        background-color: transparent;
+        color: var(--color-text-muted);
+
+        border-radius: var(--radius-sm);
+
+        &:hover {
+          background-color: var(--color-surface-hover);
+          color: var(--color-text);
+        }
+      }
+    }
+
+    /* Toggle label */
+    & label:has(input[type="checkbox"]) {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+
+      padding: var(--space-xs) var(--space-sm);
+
+      border-radius: var(--radius-md);
+
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
+
+      &:hover {
+        background-color: var(--color-surface-elevated);
+      }
+
+      & input[type="checkbox"] {
+        width: 1.6rem;
+        height: 1.6rem;
+        accent-color: var(--color-primary);
+      }
+
+      & span {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        white-space: nowrap;
+      }
+    }
   }
 
-  .btn-success {
-    background-color: var(--color-success);
-    color: white;
+  /* Main Content - Three Column Grid */
+  body > main {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--column-gap);
+
+    padding: var(--space-lg);
+
+    overflow-y: auto;
+
+    /* Columns */
+    & > aside,
+    & > section {
+      display: flex;
+      flex-direction: column;
+
+      min-height: 0;
+      max-height: 100%;
+
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+
+      overflow: hidden;
+    }
+
+    /* Song Queue - center column */
+    & > section {
+      order: 0;
+    }
+
+    /* Singer List - first aside */
+    & > aside:first-of-type {
+      order: -1;
+    }
+
+    /* Leaderboard - last aside */
+    & > aside:last-of-type {
+      order: 1;
+    }
   }
 
-  .btn-success:hover {
-    background-color: var(--color-success-hover);
+  /* Footer */
+  body > footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
+
+    padding: 0 var(--space-lg);
+
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+
+    & nav {
+      display: flex;
+      gap: var(--space-md);
+
+      & a:hover {
+        color: var(--color-primary);
+      }
+    }
   }
 
-  .btn-danger {
-    background-color: var(--color-danger);
-    color: white;
+  /* RTL Support */
+  [dir="rtl"] {
+    & body > header > div:last-child {
+      flex-direction: row-reverse;
+    }
+
+    & body > main {
+      direction: rtl;
+    }
   }
 
-  .btn-danger:hover {
-    background-color: var(--color-danger-hover);
+  /* Responsive: Tablet - Song Queue full width on top, Singers + Leaderboard below */
+  @media (max-width: 1023px) {
+    body > main {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr;
+
+      /* Song Queue spans full width on top */
+      & > section {
+        order: -1;
+        grid-column: 1 / -1;
+      }
+
+      /* Singer List left */
+      & > aside:first-of-type {
+        order: 0;
+        grid-column: 1;
+      }
+
+      /* Leaderboard right */
+      & > aside:last-of-type {
+        order: 1;
+        grid-column: 2;
+      }
+    }
   }
 
-  .btn-warning {
-    background-color: var(--color-warning);
-    color: white;
-  }
+  /* Responsive: Mobile - All stacked vertically: Songs, Singers, Leaderboard */
+  @media (max-width: 767px) {
+    body {
+      grid-template-rows: auto 1fr var(--footer-height);
+    }
 
-  .btn-warning:hover {
-    background-color: var(--color-warning-hover);
-  }
+    body > header {
+      flex-direction: column;
+      height: auto;
+      padding: var(--space-md);
+      gap: var(--space-md);
 
-  /* Visibility Utilities */
-  .hidden {
-    display: none !important;
-  }
+      & > div:last-child {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
 
-  .visually-hidden {
+    body > main {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      padding: var(--space-md);
+
+      /* Song Queue first */
+      & > section {
+        order: -2;
+      }
+
+      /* Singer List second */
+      & > aside:first-of-type {
+        order: -1;
+      }
+
+      /* Leaderboard third */
+      & > aside:last-of-type {
+        order: 0;
+      }
+    }
+  }
+}
+
+/* ============================================
+   UTILITIES LAYER
+   ============================================ */
+@layer utilities {
+  /* Visually Hidden (for screen readers) */
+  [hidden-visually] {
     position: absolute;
+
     width: 1px;
     height: 1px;
     padding: 0;
     margin: -1px;
+
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  /* Empty State */
+  [empty-state] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--space-2xl);
+
+    color: var(--color-text-muted);
+    text-align: center;
+
+    & > span:first-child {
+      margin-bottom: var(--space-md);
+      font-size: 4rem;
+      opacity: 0.5;
+    }
+
+    & > span:last-child {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  /* Scrollable content */
+  [scrollable] {
+    flex: 1;
+    padding: var(--space-md);
+    overflow-y: auto;
+  }
+
+  /* Now Playing indicator */
+  [now-playing] {
+    background-color: light-dark(#ecfdf5, #022c22);
+    border-color: var(--color-success);
+  }
+
+  /* Rating Stars display */
+  [rating-display] {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    color: var(--color-warning);
   }
 }

@@ -1,0 +1,268 @@
+/**
+ * SongQueue Component Styles
+ * Uses element/attribute selectors per guidelines
+ */
+
+kt-song-queue {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+
+  overflow: hidden;
+
+  /* Header */
+  & > article > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+
+    padding: var(--space-md) var(--space-lg);
+
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+
+    /* Left side: title + count */
+    & > div:first-child {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+
+      & h2 {
+        margin: 0;
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+      }
+
+      & span[count] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        min-width: 2.4rem;
+        height: 2.4rem;
+        padding: 0 var(--space-sm);
+
+        background-color: var(--color-primary);
+        border-radius: var(--radius-full);
+        color: white;
+
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+      }
+    }
+
+    /* Right side: action buttons */
+    & > div:last-child {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    /* Header buttons */
+    & button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+
+      width: 3.2rem;
+      height: 3.2rem;
+      padding: 0;
+
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--color-text-muted);
+
+      cursor: pointer;
+      transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+
+      &:hover {
+        background-color: var(--color-surface-hover);
+        color: var(--color-text);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      &[primary] {
+        width: auto;
+        padding: var(--space-sm) var(--space-md);
+
+        background-color: var(--color-primary);
+        border-radius: var(--radius-md);
+        color: white;
+
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+
+        &:hover {
+          background-color: var(--color-primary-hover);
+        }
+      }
+
+      &[danger] {
+        border: 1px solid var(--color-border);
+        background-color: transparent;
+        color: var(--color-text-muted);
+
+        &:hover {
+          border-color: var(--color-danger);
+          color: var(--color-danger);
+        }
+      }
+    }
+  }
+
+  /* Filter bar */
+  & > article > form[filter-bar] {
+    padding: var(--space-md);
+
+    & input[data-filter] {
+      width: 100%;
+      padding: var(--space-sm);
+
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      color: var(--color-text);
+
+      font-family: inherit;
+      font-size: var(--font-size-sm);
+
+      &:focus {
+        border-color: var(--color-primary);
+        outline: none;
+      }
+
+      &::placeholder {
+        color: var(--color-text-muted);
+      }
+    }
+  }
+
+  /* Content area */
+  & > article > section {
+    flex: 1;
+    padding: var(--space-md);
+    overflow-y: auto;
+
+    & > ul {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+
+      margin: 0;
+      padding: 0;
+
+      list-style: none;
+      counter-reset: song-counter;
+    }
+
+    & > ul > li {
+      position: relative;
+      counter-increment: song-counter;
+
+      display: flex;
+      align-items: stretch;
+      gap: var(--space-xs);
+
+      &[dragging] {
+        opacity: 0.5;
+      }
+
+      /* Drag handle button - 32px width, same height as song card */
+      & > button[drag-handle] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 3.2rem;
+        flex-shrink: 0;
+        padding: 0;
+
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        color: var(--color-text-muted);
+
+        cursor: grab;
+        user-select: none;
+        transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+
+        & svg {
+          color: inherit;
+        }
+
+        &:hover {
+          background-color: var(--color-surface-hover);
+          color: var(--color-text);
+        }
+
+        &:active {
+          cursor: grabbing;
+          transform: scale(0.95);
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--color-primary);
+          outline-offset: 2px;
+        }
+      }
+
+      /* Song card takes remaining space */
+      & > kt-song-card {
+        flex: 1;
+      }
+
+      &[next] kt-song-card {
+        border-color: var(--color-primary);
+        border-width: 2px;
+      }
+
+      &[next]::before {
+        content: attr(data-label);
+
+        position: absolute;
+        top: -0.8rem;
+        left: calc(2rem + var(--space-xs) + var(--space-md));
+        z-index: 1;
+
+        padding: var(--space-2xs) var(--space-sm);
+
+        background-color: var(--color-primary);
+        border-radius: var(--radius-sm);
+        color: white;
+
+        font-size: var(--font-size-xs);
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  /* Empty state */
+  & span[empty-state] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 1;
+    padding: var(--space-lg);
+
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    text-align: center;
+  }
+}

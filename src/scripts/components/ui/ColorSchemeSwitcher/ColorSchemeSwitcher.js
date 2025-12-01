@@ -1,119 +1,120 @@
+/**
+ * ColorSchemeSwitcher Component
+ * Toggle between light and dark color schemes
+ */
+import { registerStylesheet, i18n, pixEngine } from '../../../services/index.js';
 import styles from 'bundle-text:./ColorSchemeSwitcher.css';
 import template from 'bundle-text:./ColorSchemeSwitcher.template.html';
-import { i18n, pixEngine, registerStylesheet } from '../../../services/index.js';
 
-const STORAGE_KEY = 'karaoke-color-scheme';
-const DEFAULT_SCHEME = 'light dark'; // System preference
-
-/**
- * Color Scheme Switcher Custom Element
- * Manages color scheme switching using native CSS color-scheme and light-dark()
- */
-class ColorSchemeSwitcher extends HTMLElement {
+export class ColorSchemeSwitcher extends HTMLElement {
   static {
-    // Inject component styles using adoptedStyleSheets
     registerStylesheet(styles);
-
-    customElements.define('color-scheme-switcher', ColorSchemeSwitcher);
+    customElements.define('pix-color-scheme-switcher', this);
   }
+
+  static STORAGE_KEY = 'karaoke-tracker-color-scheme';
+  static SCHEMES = ['light', 'dark', 'system'];
 
   constructor() {
     super();
-    this._currentScheme = this.loadScheme();
-  }
-
-  /**
-   * Load color scheme from localStorage
-   * @returns {string} The stored scheme or default
-   */
-  loadScheme() {
-    return localStorage.getItem(STORAGE_KEY) || DEFAULT_SCHEME;
-  }
-
-  /**
-   * Save color scheme to localStorage
-   * @param {string} scheme - The scheme to save
-   */
-  saveScheme(scheme) {
-    localStorage.setItem(STORAGE_KEY, scheme);
-  }
-
-  /**
-   * Update the meta color-scheme tag
-   * @param {string} scheme - The scheme value
-   */
-  updateMetaColorScheme(scheme) {
-    let meta = document.querySelector('meta[name="color-scheme"]');
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.name = 'color-scheme';
-      document.head.appendChild(meta);
-    }
-    meta.content = scheme;
-  }
-
-  /**
-   * Set the current color scheme
-   * @param {string} scheme - 'light', 'dark', or 'light dark' (system)
-   */
-  setScheme(scheme) {
-    this._currentScheme = scheme;
-    this.saveScheme(scheme);
-    this.updateMetaColorScheme(scheme);
-    this.updateRadioButtons();
-
-    // Dispatch event for other components that might need to react
-    window.dispatchEvent(new CustomEvent('color-scheme-changed', {
-      detail: { scheme }
-    }));
-  }
-
-  /**
-   * Update radio button checked states
-   */
-  updateRadioButtons() {
-    const radios = this.querySelectorAll('input[type="radio"]');
-    radios.forEach(radio => {
-      radio.checked = radio.value === this._currentScheme;
-    });
+    this._scheme = 'auto';
   }
 
   connectedCallback() {
-    // Apply scheme immediately on connection
-    this.updateMetaColorScheme(this._currentScheme);
-    
+    this.loadScheme();
     this.render();
     this.setupEventListeners();
-
-    // Listen for language changes
-    window.addEventListener('language-changed', () => this.render());
+    this.applyScheme();
   }
 
   render() {
     this.innerHTML = pixEngine(template, {
-      selectColorSchemeLabel: i18n.t('selectColorScheme') || 'Select Color Scheme',
-      lightModeLabel: i18n.t('lightMode') || 'Light mode',
-      darkModeLabel: i18n.t('darkMode') || 'Dark mode',
-      systemModeLabel: i18n.t('systemMode') || 'System mode',
-      lightChecked: this._currentScheme === 'light' ? 'checked' : '',
-      darkChecked: this._currentScheme === 'dark' ? 'checked' : '',
-      systemChecked: this._currentScheme === 'light dark' ? 'checked' : ''
+      toggleLabel: i18n.t('colorScheme.toggle'),
+      lightLabel: i18n.t('colorScheme.light'),
+      darkLabel: i18n.t('colorScheme.dark'),
+      systemLabel: i18n.t('colorScheme.system')
     });
-
-    this.setupEventListeners();
   }
 
   setupEventListeners() {
-    const radios = this.querySelectorAll('input[type="radio"]');
-    radios.forEach(radio => {
-      radio.addEventListener('change', e => {
-        if (e.target.checked) {
-          this.setScheme(e.target.value);
-        }
+    this.querySelectorAll('input[name="color-scheme"]').forEach(input => {
+      input.addEventListener('change', e => {
+        const val = e.target.value;
+        this._scheme = val === 'system' ? 'auto' : val;
+        this.saveScheme();
+        this.applyScheme();
+        this.dispatchEvent(
+          new CustomEvent('colorscheme:change', {
+            bubbles: true,
+            detail: { scheme: this._scheme }
+          })
+        );
       });
     });
   }
+
+  loadScheme() {
+    const stored = localStorage.getItem(ColorSchemeSwitcher.STORAGE_KEY);
+    if (stored && ColorSchemeSwitcher.SCHEMES.includes(stored)) {
+      this._scheme = stored;
+    }
+  }
+
+  saveScheme() {
+    localStorage.setItem(ColorSchemeSwitcher.STORAGE_KEY, this._scheme);
+  }
+
+  toggleScheme() {
+    // Cycle: light -> dark -> auto -> light
+    const currentIndex = ColorSchemeSwitcher.SCHEMES.indexOf(this._scheme);
+    const nextIndex = (currentIndex + 1) % ColorSchemeSwitcher.SCHEMES.length;
+    this._scheme = ColorSchemeSwitcher.SCHEMES[nextIndex];
+
+    this.saveScheme();
+    this.applyScheme();
+
+    this.dispatchEvent(
+      new CustomEvent('colorscheme:change', {
+        bubbles: true,
+        detail: { scheme: this._scheme }
+      })
+    );
+  }
+
+  applyScheme() {
+    const root = document.documentElement;
+
+    // Remove existing scheme classes
+    root.classList.remove('light-scheme', 'dark-scheme');
+
+    if (this._scheme === 'light') {
+      root.classList.add('light-scheme');
+      root.style.colorScheme = 'light';
+    } else if (this._scheme === 'dark') {
+      root.classList.add('dark-scheme');
+      root.style.colorScheme = 'dark';
+    } else {
+      // Auto - let system decide
+      root.style.colorScheme = 'light dark';
+    }
+
+    // Update radio checked state
+    const radioVal = this._scheme === 'auto' ? 'system' : this._scheme;
+    this.querySelectorAll('input[name="color-scheme"]').forEach(r => (r.checked = r.value === radioVal));
+  }
+
+  updateIcon() {
+    const lightIcon = this.querySelector('.color-scheme-switcher__icon--light');
+    const darkIcon = this.querySelector('.color-scheme-switcher__icon--dark');
+
+    if (this._scheme === 'dark') {
+      lightIcon?.classList.add('hidden');
+      darkIcon?.classList.remove('hidden');
+    } else {
+      lightIcon?.classList.remove('hidden');
+      darkIcon?.classList.add('hidden');
+    }
+  }
 }
 
-export { ColorSchemeSwitcher };
 export default ColorSchemeSwitcher;

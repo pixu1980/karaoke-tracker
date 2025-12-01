@@ -1,0 +1,140 @@
+/**
+ * SingerStatsDialog Component Styles
+ * Following CSS guidelines from docs/coding-styleguides/css.md
+ */
+
+kt-singer-stats-dialog {
+    /* Stats Content */
+    & [stats-content] {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        min-width: 280px;
+    }
+
+    /* Stats Grid */
+    & [stats-grid] {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-3);
+        text-align: center;
+    }
+
+    & [stat] {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+        padding: var(--space-3);
+        background-color: var(--color-bg-secondary);
+        border-radius: var(--radius-md);
+    }
+
+    & [stat-value] {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-bold);
+        color: var(--color-text-heading);
+    }
+
+    & [stat-label] {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-muted);
+    }
+
+    & [stars] {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.1rem;
+        color: var(--color-warning);
+
+        & .star-icon {
+            flex-shrink: 0;
+        }
+
+        & .star-full {
+            fill: var(--color-warning);
+        }
+
+        & .star-half {
+            color: var(--color-warning);
+        }
+
+        & .star-empty {
+            color: var(--color-text-muted);
+        }
+    }
+
+    /* History Section */
+    & h3 {
+        margin: 0;
+        padding-top: var(--space-2);
+        font-size: var(--font-size-base);
+        font-weight: var(--font-semibold);
+        color: var(--color-text-heading);
+        border-top: 1px solid var(--color-border);
+    }
+
+    & [history] {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    & [history] li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-2);
+        background-color: var(--color-bg-secondary);
+        border-radius: var(--radius-sm);
+    }
+
+    & [history] li > div {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+    }
+
+    & [history] li > div:last-child {
+        align-items: flex-end;
+        flex-shrink: 0;
+    }
+
+    & [song-title] {
+        font-weight: var(--font-medium);
+        color: var(--color-text);
+    }
+
+    & [song-author] {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-muted);
+    }
+
+    & [song-rating] {
+        font-size: var(--font-size-sm);
+    }
+
+    & [song-time] {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-muted);
+    }
+
+    /* Empty State */
+    & [empty] {
+        text-align: center;
+        color: var(--color-text-muted);
+        padding: var(--space-4);
+    }
+
+    /* Actions */
+    & [actions] {
+        display: flex;
+        justify-content: center;
+        padding-top: var(--space-3);
+    }
+}

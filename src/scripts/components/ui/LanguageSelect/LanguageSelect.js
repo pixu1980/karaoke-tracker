@@ -1,65 +1,52 @@
-import styles from 'bundle-text:./LanguageSelect.css';
-import { i18n } from '../../../services/index.js';
-import { Select } from '../Select/Select.js';
-
 /**
- * Language Select Custom Element
- * Dropdown for selecting the application language
- * Extends Select (HTMLSelectElement)
- * Usage: <select is="pix-language-select">...</select>
+ * LanguageSelect Component
+ * Simple native select for language switching
  */
-class LanguageSelect extends Select {
-  static {
-    // Inject component styles into document head
-    const styleSheet = document.createElement('style');
-    styleSheet.setAttribute('data-component', 'pix-language-select');
-    styleSheet.textContent = styles;
-    document.head.appendChild(styleSheet);
+import { registerStylesheet, i18n } from '../../../services/index.js';
+import styles from 'bundle-text:./LanguageSelect.css';
 
-    customElements.define('pix-language-select', LanguageSelect, { extends: 'select' });
-  }
-  
-  constructor() {
-    super();
+const LANGUAGES = [
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'ja', name: '日本語', flag: '🇯🇵' },
+  { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'ar', name: 'العربية', flag: '🇸🇦', rtl: true }
+];
+
+export class LanguageSelect extends HTMLElement {
+  static {
+    registerStylesheet(styles);
+    customElements.define('pix-language-select', LanguageSelect);
   }
 
   connectedCallback() {
-    super.connectedCallback();
     this.render();
-    this.setupEventListeners();
-
-    // Update page on initial load
-    i18n.updatePage();
+    this.querySelector('select').addEventListener('change', this.handleChange.bind(this));
   }
 
   render() {
-    const languages = i18n.getLanguages();
-    const currentLang = i18n.currentLang;
+    const currentLang = i18n.getCurrentLanguage().code;
 
-    // Set aria-label
-    this.setAttribute('aria-label', i18n.t('selectLanguage') || 'Select language');
-    this.classList.add('pix-language-select', 'header-control');
+    const options = LANGUAGES.map(lang =>
+      `<option value="${lang.code}"${lang.code === currentLang ? ' selected' : ''}>${lang.flag} ${lang.name}</option>`
+    ).join('');
 
-    // Clear existing options and render new ones
-    this.innerHTML = '';
-
-    for (const lang of languages) {
-      const option = document.createElement('option');
-      option.value = lang.code;
-      option.textContent = `${lang.flag} ${lang.code.toUpperCase()}`;
-      if (lang.code === currentLang) {
-        option.selected = true;
-      }
-      this.appendChild(option);
-    }
+    this.innerHTML = `<select aria-label="${i18n.t('language.select')}">${options}</select>`;
   }
 
-  setupEventListeners() {
-    this.addEventListener('change', e => {
-      i18n.setLanguage(e.target.value);
-    });
+  handleChange(event) {
+    const newLang = event.target.value;
+    const langData = LANGUAGES.find(l => l.code === newLang);
+
+    // Update document direction for RTL languages
+    document.documentElement.dir = langData?.rtl ? 'rtl' : 'ltr';
+
+    // Update i18n service (this also dispatches language-changed event)
+    i18n.setLanguage(newLang);
   }
 }
 
-export { LanguageSelect };
 export default LanguageSelect;

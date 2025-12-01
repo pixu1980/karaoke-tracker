@@ -2,7 +2,7 @@
 
 ## Overview
 
-Karaoke Tracker is a single-page web application for managing karaoke queues. It uses modern web technologies without frameworks, following a "vanilla" approach with internationalization (i18n) and theme support.
+Karaoke Tracker is a single-page web application for managing karaoke queues with a **three-column layout**. It uses modern web technologies without frameworks, following a "vanilla" approach with Custom Elements, IndexedDB, internationalization (i18n), and theme support.
 
 ---
 
@@ -41,36 +41,76 @@ karaoke-tracker/
 │   │       └── ar.json            # Arabic translations (RTL)
 │   └── scripts/
 │       ├── index.js               # App entry point & initialization
+│       ├── polyfills/             # Browser polyfills
+│       │   ├── index.js           # Polyfills barrel export
+│       │   └── _customElementsPolyfill.js  # Safari custom elements polyfill
 │       ├── services/              # Business logic services
 │       │   ├── index.js           # Services barrel export
-│       │   ├── I18nService.js     # Language management
-│       │   ├── ThemeService.js    # Theme management
-│       │   └── StorageService.js  # IndexedDB storage
+│       │   ├── _i18nService.js    # Language management
+│       │   ├── _storageService.js # IndexedDB storage
+│       │   ├── _templateService.js # Template engine (pixEngine)
+│       │   └── _stylesheetService.js # CSS injection
 │       └── components/            # Custom Elements (folder per component)
 │           ├── index.js           # Components barrel export
-│           ├── BaseDialog/
-│           │   ├── BaseDialog.js  # Base dialog component
-│           │   └── BaseDialog.css # Base dialog styles
-│           ├── StarRating/
-│           │   ├── StarRating.js  # Star rating component
-│           │   └── StarRating.css # Star rating styles
-│           ├── SingerCard/
-│           │   ├── SingerCard.js  # Singer card component
-│           │   └── SingerCard.css # Singer card styles
-│           ├── SingerForm/
-│           │   ├── SingerForm.js  # Add singer form
-│           │   └── SingerForm.css # Singer form styles
-│           ├── SingerList/
-│           │   ├── SingerList.js  # Singers list
-│           │   └── SingerList.css # Singers list styles
-│           └── SingerLeaderboard/
-│               ├── SingerLeaderboard.js  # Leaderboard component
-│               └── SingerLeaderboard.css # Leaderboard styles
+│           ├── ui/                # Reusable UI components
+│           │   ├── index.js
+│           │   ├── Dialog/
+│           │   │   ├── Dialog.js
+│           │   │   └── Dialog.css
+│           │   ├── Rating/
+│           │   │   ├── Rating.js
+│           │   │   ├── Rating.css
+│           │   │   └── Rating.template.html
+│           │   ├── ColorSchemeSwitcher/
+│           │   │   ├── ColorSchemeSwitcher.js
+│           │   │   ├── ColorSchemeSwitcher.css
+│           │   │   └── ColorSchemeSwitcher.template.html
+│           │   └── LanguageSelect/
+│           │       ├── LanguageSelect.js
+│           │       └── LanguageSelect.css
+│           ├── app/               # Application-specific components
+│           │   ├── index.js
+│           │   ├── SingerList/
+│           │   │   ├── SingerList.js
+│           │   │   ├── SingerList.css
+│           │   │   └── SingerList.template.html
+│           │   ├── SingerCard/
+│           │   │   ├── SingerCard.js
+│           │   │   ├── SingerCard.css
+│           │   │   └── SingerCard.template.html
+│           │   ├── SongQueue/
+│           │   │   ├── SongQueue.js
+│           │   │   ├── SongQueue.css
+│           │   │   └── SongQueue.template.html
+│           │   ├── SongCard/
+│           │   │   ├── SongCard.js
+│           │   │   ├── SongCard.css
+│           │   │   └── SongCard.template.html
+│           │   └── Leaderboard/
+│           │       ├── Leaderboard.js
+│           │       ├── Leaderboard.css
+│           │       └── Leaderboard.template.html
+│           └── dialogs/           # Dialog components
+│               ├── index.js
+│               ├── AddSingerDialog/
+│               │   ├── AddSingerDialog.js
+│               │   ├── AddSingerDialog.css
+│               │   └── AddSingerDialog.template.html
+│               ├── AddSongDialog/
+│               │   ├── AddSongDialog.js
+│               │   ├── AddSongDialog.css
+│               │   └── AddSongDialog.template.html
+│               ├── SongCompleteDialog/
+│               │   ├── SongCompleteDialog.js
+│               │   ├── SongCompleteDialog.css
+│               │   └── SongCompleteDialog.template.html
+│               └── ConfirmDialog/
+│                   ├── ConfirmDialog.js
+│                   ├── ConfirmDialog.css
+│                   └── ConfirmDialog.template.html
 │
 ├── dist/                          # 📦 Production build (generated)
 │
-├── .prettierrc                    # Prettier config (HTML, CSS, JSON)
-├── .prettierignore                # Prettier ignore (JS files)
 ├── biome.json                     # Biome config (JS linting & formatting)
 ├── package.json                   # Project scripts & metadata (pnpm-managed)
 ├── pnpm-lock.yaml                 # pnpm lock file
@@ -85,78 +125,194 @@ karaoke-tracker/
 
 ### `index.html`
 Application entry point. Contains:
-- Meta tags for SEO and viewport
+- Meta tags for SEO, viewport, and color-scheme
 - Semantic HTML5 structure (`<header>`, `<main>`, `<footer>`)
-- Header controls (auto re-add, theme switcher, language selector)
-- Custom elements placeholders (`<singer-form>`, `<singer-list>`, `<singer-leaderboard>`)
-- Dialog modals for confirmations (example list, reset, remove, done, edit)
+- Three-column grid layout structure
+- Header with logo (left) and actions (right)
+- Custom elements placeholders
 - `data-i18n` attributes for translatable text
 - CSS and JavaScript links
 
 ### `styles/index.css`
 Main stylesheet using CSS `@layer` for cascade control:
 - **`@layer reset`** - Modern CSS reset
-- **`@layer foundations`** - Design tokens and CSS variables:
-  - Colors (primary, secondary, success, danger, neutrals)
-  - Spacing scale (xs → 2xl)
-  - Typography (font family, sizes)
-  - Border radius and shadows
-  - Dark theme via `[data-theme="dark"]`
-  - System theme via `@media (prefers-color-scheme: dark)`
-  - RTL support via `[dir="rtl"]` selectors
-- **`@layer layout`** - Page structure (header, main, footer, sections)
+- **`@layer foundations`** - Design tokens and CSS variables
+- **`@layer layout`** - Three-column grid, header, footer
 - **`@layer utilities`** - Buttons and utility classes
 
-### Component CSS (in each component folder)
-Each component has its own CSS file that is:
-- Imported using Parcel's `bundle-text:` import
-- Injected into `document.head` via `<style data-component="...">` tag
-- Loaded once per component via static initialization block
-
-### `assets/i18n/*.json`
-Translation files for each supported language:
-- One JSON file per language (e.g., `en.json`, `it.json`)
-- Contains all translatable strings as key-value pairs
-- Imported by `I18nService` at runtime
-
-### `scripts/index.js`
-Application entry point (~250 lines):
-- Imports all services and components
-- Contains sample data for example list
-- `showConfirmDialog()` helper function
-- `initApp()` function for application initialization
-- Event handlers for dialogs and buttons
-
-### `scripts/services/`
-Business logic services (modular):
-- **`I18nService.js`** - Language management with RTL support
-  - Imports translation JSON files
-  - `setLanguage()`, `t()`, `updatePage()`, `isRTL()`
-- **`ThemeService.js`** - Theme management (light/dark/system)
-  - `setTheme()`, `updateButtons()`, `init()`
-- **`StorageService.js`** - IndexedDB management (v2, 2 stores)
-  - CRUD operations for singers and performances
-- **`index.js`** - Barrel export for all services
-
-### `scripts/components/`
-Custom Elements (folder per component with CSS):
-- **`BaseDialog/`** - Base dialog component and shared dialog styles
-- **`StarRating/`** - Star rating component (0-5, half-star)
-- **`SingerCard/`** - Single singer card with actions
-- **`SingerForm/`** - Add singer form
-- **`SingerList/`** - Singers list container
-- **`SingerLeaderboard/`** - Ranked performances display
-- **`index.js`** - Barrel export for all components
-
+### Component Structure
 Each component folder contains:
-- `ComponentName.js` - Component logic with static initialization block
-- `ComponentName.css` - Component-specific styles (imported via `bundle-text:`)
+```
+ComponentName/
+├── ComponentName.js           # Component logic with static initialization
+├── ComponentName.css          # Component-specific styles
+└── ComponentName.template.html # HTML template (processed by pixEngine)
+```
+
+---
+
+## Architecture
+
+### Three-Column Layout
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                              HEADER                                  │
+│  [Logo]                    [+ Add Song] [Auto] [🎨] [🌐]             │
+├────────────────────┬────────────────────┬───────────────────────────┤
+│   SINGERS LIST     │    SONG QUEUE      │      LEADERBOARD          │
+│   (Left Column)    │    (Center Column) │      (Right Column)       │
+│                    │                    │                           │
+│   <singer-list>    │    <song-queue>    │    <leaderboard>          │
+│                    │                    │                           │
+├────────────────────┴────────────────────┴───────────────────────────┤
+│                              FOOTER                                  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Data Flow
+
+```
+┌──────────────┐     Custom Events      ┌──────────────┐
+│  AddSong     │ ─────────────────────▶ │  SongQueue   │
+│  Dialog      │    'song-added'        │              │
+└──────────────┘                        └──────────────┘
+       │                                       │
+       │                                       │ 'song-completed'
+       │                                       ▼
+       │                                ┌──────────────┐
+       │                                │ Leaderboard  │
+       │                                └──────────────┘
+       │                                       ▲
+       ▼                                       │
+┌────────────────────────────────────────────────────────┐
+│                    StorageService                       │
+│                      (IndexedDB)                        │
+│      ┌─────────────┬─────────────┬─────────────┐       │
+│      │   singers   │    songs    │ performances│       │
+│      └─────────────┴─────────────┴─────────────┘       │
+└────────────────────────────────────────────────────────┘
+```
+
+### Custom Events
+
+| Event Name | Trigger | Listener |
+|------------|---------|----------|
+| `storage-ready` | App init | All data components |
+| `singer-added` | Add singer dialog | SingerList |
+| `singer-updated` | Edit singer | SingerList |
+| `singer-deleted` | Remove singer | SingerList, SongQueue |
+| `song-added` | Add song dialog | SongQueue |
+| `song-updated` | Edit song | SongQueue |
+| `song-completed` | Done action | Leaderboard, SingerList |
+| `song-deleted` | Remove song | SongQueue |
+| `singers-rotated` | Auto re-add | SingerList |
+| `language-changed` | Language select | All components |
+| `color-scheme-changed` | Theme switcher | App |
+
+---
+
+## Custom Elements Pattern
+
+### Component Registration Pattern
+All components use a **static initialization block** for auto-registration:
+
+```javascript
+import styles from 'bundle-text:./ComponentName.css';
+import template from 'bundle-text:./ComponentName.template.html';
+import { i18n, pixEngine, registerStylesheet } from '../../services/index.js';
+
+class ComponentName extends HTMLElement {
+    static {
+        // 1. Register component styles (once, globally)
+        registerStylesheet(styles);
+        
+        // 2. Register custom element
+        customElements.define('component-name', ComponentName);
+    }
+    
+    constructor() {
+        super();
+    }
+    
+    connectedCallback() {
+        this.render();
+        this.setupEventListeners();
+        
+        // Listen for language changes
+        window.addEventListener('language-changed', () => this.render());
+    }
+    
+    render() {
+        // Use template engine with i18n
+        this.innerHTML = pixEngine(template, {
+            title: i18n.t('componentTitle'),
+            // ... other data
+        });
+    }
+    
+    setupEventListeners() {
+        // Event delegation on component root
+    }
+}
+```
+
+### Template Engine (pixEngine)
+The `pixEngine` function processes HTML templates with:
+
+**Variable interpolation**:
+```html
+<h1>{{ title }}</h1>
+<p>{{ user.name }}</p>
+```
+
+**Conditionals**:
+```html
+<if condition="isVisible">
+    <div>Visible content</div>
+</if>
+<else>
+    <div>Hidden content</div>
+</else>
+```
+
+**Loops**:
+```html
+<for each="index, item in items">
+    <li data-index="{{ index }}">{{ item.name }}</li>
+</for>
+```
+
+---
+
+## Services
+
+### I18nService (`_i18nService.js`)
+- Manages translations for 8 languages
+- RTL support for Arabic
+- `i18n.t(key)` for translations
+- `i18n.setLanguage(code)` to switch language
+- Dispatches `language-changed` event
+
+### StorageService (`_storageService.js`)
+- IndexedDB wrapper with 3 stores: `singers`, `songs`, `performances`
+- CRUD operations for each entity
+- Async/Promise-based API
+
+### TemplateService (`_templateService.js`)
+- `pixEngine(template, data)` - Template rendering
+- `escapeHtml(text)` - XSS prevention
+- Supports loops, conditionals, nested data
+
+### StylesheetService (`_stylesheetService.js`)
+- `registerStylesheet(css)` - Injects CSS using `adoptedStyleSheets`
+- Ensures styles are loaded once per component
 
 ---
 
 ## CSS Architecture
 
-### Layer Structure (`styles/index.css`)
+### Layer Structure
 ```css
 @layer reset, foundations, layout, utilities;
 ```
@@ -165,154 +321,31 @@ Each component folder contains:
 |-------|---------|
 | `reset` | Modern CSS reset for consistent base styling |
 | `foundations` | Design tokens, custom properties, theme variables |
-| `layout` | Page structure, header, main, footer, sections |
-| `utilities` | Buttons and common utility classes |
+| `layout` | Three-column grid, header, footer, sections |
+| `utilities` | Buttons, forms, and common utility classes |
 
-### Component CSS Injection
-Components inject their CSS into `document.head` using:
-```javascript
-import styles from 'bundle-text:./ComponentName.css';
-
-static {
-    const styleSheet = document.createElement('style');
-    styleSheet.setAttribute('data-component', 'component-name');
-    styleSheet.textContent = styles;
-    document.head.appendChild(styleSheet);
-    
-    customElements.define('component-name', this);
+### Theme Support
+Uses CSS `color-scheme` property and `light-dark()` function:
+```css
+:root {
+    color-scheme: light dark;
+    --color-bg: light-dark(#ffffff, #1a1a1a);
+    --color-text: light-dark(#1a1a1a, #ffffff);
 }
 ```
 
 ---
 
-## Architecture
-
-### Component Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           index.html                                 │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                         <header>                               │  │
-│  │  ┌─────────────────────────────────────────────────────────┐  │  │
-│  │  │               .header-controls                           │  │  │
-│  │  │  [Auto Re-add] [Theme Switcher] [Language Select]       │  │  │
-│  │  └─────────────────────────────────────────────────────────┘  │  │
-│  │               App Title & Subtitle                            │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                          <main>                                │  │
-│  │  ┌─────────────────────────┐ ┌─────────────────────────────┐  │  │
-│  │  │    .singers-section     │ │    .add-singer-section      │  │  │
-│  │  │  ┌───────────────────┐  │ │  ┌───────────────────────┐  │  │  │
-│  │  │  │   <singer-list>   │  │ │  │    <singer-form>      │  │  │  │
-│  │  │  │ ┌───────────────┐ │  │ │  └───────────────────────┘  │  │  │
-│  │  │  │ │ <singer-card> │ │  │ │  ┌───────────────────────┐  │  │  │
-│  │  │  │ │ <pix-rating> │ │  │ │  │ <singer-leaderboard>  │  │  │  │
-│  │  │  │ └───────────────┘ │  │ │  └───────────────────────┘  │  │  │
-│  │  │  └───────────────────┘  │ │                             │  │  │
-│  │  └─────────────────────────┘ └─────────────────────────────┘  │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                         <footer>                               │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                    <dialog> modals                             │  │
-│  │  [Example List] [Reset] [Remove] [Done] [Edit]                │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-### Data Flow
-
-```
-┌──────────────┐      Custom Events       ┌──────────────┐
-│  SingerForm  │ ─────────────────────▶  │  SingerList  │
-│              │    'singer-added'        │              │
-└──────────────┘                          └──────────────┘
-       │                                         │
-       │                                         │
-       ▼                                         ▼
-┌────────────────────────────────────────────────────────┐
-│                    StorageService                       │
-│                      (IndexedDB)                        │
-│            ┌─────────────┬─────────────┐               │
-│            │   singers   │ performances│               │
-│            └─────────────┴─────────────┘               │
-└────────────────────────────────────────────────────────┘
-                         │
-                         ▼
-              ┌─────────────────────┐
-              │  SingerLeaderboard  │
-              │  'performance-added' │
-              └─────────────────────┘
-```
-
-### Custom Events
-
-| Event Name | Trigger | Listener |
-|------------|---------|----------|
-| `storage-ready` | App init | SingerList, SingerLeaderboard |
-| `singer-added` | Form submit, Auto re-add | SingerList |
-| `singer-deleted` | Card remove | SingerList |
-| `singer-updated` | Edit save | SingerList |
-| `performance-added` | Done with rating | SingerLeaderboard |
-| `leaderboard-reset` | Clear all, Example list | SingerLeaderboard |
-| `language-changed` | Language select | All components |
-| `rating-change` | Star click | SingerCard |
-
-### Services
-
-| Service | Responsibility | Storage |
-|---------|---------------|---------|
-| `I18nService` | Language management, RTL detection | localStorage |
-| `ThemeService` | Theme management (light/dark/system) | localStorage |
-| `StorageService` | Data persistence | IndexedDB |
-
----
-
 ## Technology Decisions
 
-### Why Vanilla JS?
-- Simplicity and maintainability
-- No framework dependencies
-- Minimal bundle size
-- Optimal performance
-- Easy to learn
-
-### Why Custom Elements?
-- Native web standard
-- Logical encapsulation without Shadow DOM
-- Excellent browser compatibility
-- No transpiler required
-
-### Why IndexedDB?
-- Persistent local storage
-- Greater capacity than localStorage
-- Asynchronous API
-- Support for complex data structures
-- Multiple object stores (singers, performances)
-
-### Why Parcel?
-- Zero configuration
-- Hot module replacement
-- Automatic optimized build
-- Modern support out-of-the-box
-
-### Why Custom i18n?
-- Lightweight solution (~70 lines)
-- Modular JSON translation files
-- No external dependencies
-- localStorage persistence
-- RTL support
-- Custom event for component updates
-
-### Why Modular Architecture?
-- Better code organization and maintainability
-- Separation of concerns (services vs components)
-- Static initialization blocks for auto-registration
-- Barrel exports for clean imports
-- Easier testing and debugging
+| Decision | Rationale |
+|----------|-----------|
+| **Vanilla JS** | Simplicity, no framework overhead, optimal performance |
+| **Custom Elements v1** | Native web standard, logical encapsulation without Shadow DOM |
+| **IndexedDB** | Persistent local storage with complex data support |
+| **Parcel.js** | Zero-config bundler with HMR |
+| **CSS Layers** | Explicit cascade control |
+| **Static Blocks** | Clean component auto-registration |
 
 ---
 
@@ -335,58 +368,16 @@ static {
 
 ### Development
 ```bash
-pnpm start          # Start dev server with HMR
+pnpm install     # Install dependencies
+pnpm start       # Start dev server with HMR
 ```
 
 ### Production
 ```bash
-pnpm run build      # Build to /dist
+pnpm run build   # Build to /dist
 ```
 
 ### Deploy
 - **Target**: GitHub Pages
 - **Trigger**: Push to `main` branch
 - **CI/CD**: GitHub Actions
-
----
-
-## Linting & Formatting
-
-### Tools
-| Tool | Scope | Config File |
-|------|-------|-------------|
-| **Biome** | JavaScript linting & formatting | `biome.json` |
-| **Prettier** | HTML, CSS, JSON formatting | `.prettierrc` |
-
-### Commands
-```bash
-pnpm run lint           # Lint JS with Biome
-pnpm run lint:fix       # Lint & auto-fix JS with Biome
-pnpm run format         # Format HTML, CSS, JSON with Prettier
-pnpm run format:check   # Check formatting without changes
-```
-
-### Biome Configuration
-- Indent: 2 spaces
-- Line width: 120
-- Semicolons: always
-- Quote style: single quotes
-- Trailing commas: none
-
-### Prettier Configuration
-- Indent: 2 spaces (JSON inherits 2 spaces)
-- Line width: 120 (140 for HTML)
-- Semicolons: always
-- Single quotes: yes
-- Trailing commas: none
-
----
-
-## Conventions Reference
-
-For detailed conventions, consult:
-- `docs/RULES.md` - General rules
-- `docs/coding-styleguides/javascript.md` - JavaScript
-- `docs/coding-styleguides/css.md` - CSS
-- `docs/coding-styleguides/html.md` - HTML
-- `docs/coding-styleguides/a11y.md` - Accessibility

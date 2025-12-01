@@ -1,0 +1,193 @@
+/**
+ * AddSongDialog Component Styles
+ * Uses element/attribute selectors per guidelines
+ */
+
+kt-add-song-dialog {
+  & form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+
+    overflow-x: hidden;
+  }
+
+  /* Form field groups */
+  & div[field] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+
+    & label {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    & input,
+    & select {
+      width: 100%;
+      padding: var(--space-sm) var(--space-md);
+
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+
+      font-family: inherit;
+      font-size: var(--font-size-base);
+
+      transition: border-color 200ms ease, box-shadow 200ms ease;
+
+      &:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        outline: none;
+      }
+
+      &::placeholder {
+        color: var(--color-text-muted);
+      }
+    }
+
+    & select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--space-md) center;
+      padding-right: var(--space-xl);
+    }
+  }
+
+  /* Warning message */
+  & div[warning] {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    padding: var(--space-sm) var(--space-md);
+
+    background-color: var(--color-warning-bg, #fef3c7);
+    border: 1px solid var(--color-warning-border, #f59e0b);
+    border-radius: var(--radius-md);
+
+    color: var(--color-warning-text, #92400e);
+    font-size: var(--font-size-sm);
+
+    &[hidden] {
+      display: none;
+    }
+
+    & svg {
+      flex-shrink: 0;
+      color: var(--color-warning-border, #f59e0b);
+    }
+  }
+
+  /* Singer checkboxes container */
+  & div[singers] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+
+    min-height: 6rem;
+    max-height: 12rem;
+    padding: var(--space-sm);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    overflow-y: auto;
+
+    & > p {
+      margin: 0;
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+    }
+
+    & label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+
+      padding: var(--space-xs) var(--space-sm);
+
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+
+      font-size: var(--font-size-sm);
+
+      cursor: pointer;
+      transition: border-color 200ms ease, background-color 200ms ease;
+
+      &:hover {
+        border-color: var(--color-primary);
+      }
+
+      &:has(input:checked) {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+        color: white;
+      }
+
+      & input {
+        width: auto;
+        padding: 0;
+        accent-color: white;
+      }
+    }
+  }
+
+  /* Form actions */
+  & div[actions] {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+
+    padding-top: var(--space-md);
+
+    border-top: 1px solid var(--color-border);
+
+    & button {
+      padding: var(--space-sm) var(--space-lg);
+
+      border: none;
+      border-radius: var(--radius-md);
+
+      font-family: inherit;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+
+      cursor: pointer;
+      transition: background-color 200ms ease, transform 100ms ease;
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      &[primary] {
+        background-color: var(--color-primary);
+        color: white;
+
+        &:hover {
+          background-color: var(--color-primary-hover);
+        }
+      }
+
+      &[secondary] {
+        background-color: var(--color-surface-hover);
+        color: var(--color-text);
+
+        &:hover {
+          background-color: var(--color-border);
+        }
+      }
+    }
+  }
+}

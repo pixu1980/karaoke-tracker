@@ -1,17 +1,37 @@
 /* LanguageSelect Component Styles */
 
-.pix-language-select-wrapper {
-  display: inline-flex;
-  align-items: center;
+pix-language-select {
+    display: contents;
+
+    & select {
+        appearance: none;
+        padding: var(--space-sm) var(--space-xl) var(--space-sm) var(--space-md);
+        min-width: 140px;
+        font-family: inherit;
+        font-size: var(--font-size-sm);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background-color: var(--color-surface);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right var(--space-sm) center;
+        color: var(--color-text);
+        cursor: pointer;
+        transition: border-color 0.2s, background-color 0.2s;
+
+        &:hover {
+            border-color: var(--color-border-hover);
+        }
+
+        &:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+    }
 }
 
-.pix-language-select-wrapper .pix-language-select {
-  padding: 0 var(--spacing-md);
-  font-size: var(--font-size-sm);
-  cursor: pointer;
-  background-color: var(--color-surface-elevated);
-  height: var(--header-control-height);
-  line-height: var(--header-control-height);
-  border-radius: var(--radius-card);
-  border: 1px solid var(--color-border);
+/* RTL support */
+[dir="rtl"] pix-language-select select {
+    padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-xl);
+    background-position: left var(--space-sm) center;
 }

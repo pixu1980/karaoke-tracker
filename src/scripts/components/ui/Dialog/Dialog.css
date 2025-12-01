@@ -1,82 +1,88 @@
-/* Base Dialog Component Styles */
+/**
+ * Dialog Component Styles
+ * Uses element/attribute selectors per guidelines
+ */
 
-.pix-confirm-dialog {
-  border: none;
-  border-radius: var(--radius-lg);
-  padding: 0;
-  background-color: var(--color-surface);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  width: calc(100% - var(--spacing-lg) * 2);
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-}
+pix-dialog {
+  & dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: var(--z-modal);
 
-.pix-confirm-dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-}
+    width: min(50rem, 90vw);
+    max-height: 90vh;
+    padding: 0;
+    margin: 0;
 
-.dialog-content {
-  padding: var(--spacing-xl);
-}
+    background-color: var(--color-surface);
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
 
-.dialog-title {
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-  color: var(--color-text);
-  margin: 0 0 var(--spacing-md) 0;
-}
+    color: var(--color-text);
 
-.dialog-message {
-  color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-sm) 0;
-  line-height: 1.5;
-}
+    transform: translate(-50%, -50%);
 
-.dialog-warning {
-  color: var(--color-danger);
-  font-weight: 500;
-  margin: 0 0 var(--spacing-lg) 0;
-}
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
+  }
 
-.dialog-singer-name {
-  color: var(--color-primary);
-  font-weight: 600;
-}
+  /* Header */
+  & header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-.dialog-actions {
-  display: flex;
-  gap: var(--spacing-sm);
-  justify-content: flex-end;
-  margin-top: var(--spacing-lg);
-}
+    padding: var(--space-md) var(--space-lg);
 
-/* Edit Dialog specific styles */
-.edit-dialog {
-  max-width: 480px;
-}
+    border-bottom: 1px solid var(--color-border);
 
-.edit-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
+    & h2 {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+    }
 
-.edit-form .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
+    & button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-.edit-form .form-row {
-  display: flex;
-  gap: var(--spacing-md);
-}
+      width: 3.2rem;
+      height: 3.2rem;
+      padding: 0;
 
-.edit-form .form-row .form-group {
-  flex: 1;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--color-text-muted);
+
+      cursor: pointer;
+      transition: background-color 200ms ease, color 200ms ease, transform 100ms ease;
+
+      &:hover {
+        background-color: var(--color-surface-hover);
+        color: var(--color-text);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  /* Content */
+  & > dialog > div {
+    max-height: calc(90vh - 10rem);
+    padding: var(--space-lg);
+    overflow-y: auto;
+  }
 }

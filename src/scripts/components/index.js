@@ -1,8 +1,13 @@
-// Re-export UI components
+/**
+ * Components barrel file
+ * Exports all components
+ */
+
+// UI Components (base building blocks)
 export * from './ui/index.js';
 
-// Re-export Dialog components
+// Dialog Components
 export * from './dialogs/index.js';
 
-// Re-export Application components
+// App Components (feature-specific)
 export * from './app/index.js';

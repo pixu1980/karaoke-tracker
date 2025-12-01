@@ -1,126 +1,154 @@
-/* Rating Component Styles */
+/**
+ * Rating Component Styles
+ * Uses SVG stars with left/right clickable zones for half-star support
+ */
 
-/* Screen reader only - hide the native input visually but keep it accessible */
-input[is='pix-rating'].sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+pix-rating {
+  --rating-star-size: 2.4rem;
+  --rating-color-empty: var(--color-text-muted);
+  --rating-color-filled: var(--color-warning);
 
-/* Rating wrapper (label element) */
-.rating-wrapper {
   display: inline-flex;
   align-items: center;
-}
+  gap: 0;
 
-.pix-rating-container {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
+  /* Hidden number input */
+  & input[type="number"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-.pix-rating-label {
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text-secondary);
-}
+  /* Star buttons */
+  & button {
+    position: relative;
 
-.pix-rating {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  user-select: none;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.pix-rating .star {
-  display: inline-flex;
-  position: relative;
-  width: 32px;
-  height: 32px;
-  aspect-ratio: 1;
-}
+    width: var(--rating-star-size);
+    height: var(--rating-star-size);
+    padding: 0;
 
-.pix-rating .star-half {
-  position: absolute;
-  top: 0;
-  width: 16px;
-  height: 32px;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
+    border: none;
+    background: transparent;
 
-.pix-rating .star-half::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 32px;
-  height: 32px;
-  background-color: var(--color-border);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  transition: background-color 0.15s ease;
-}
+    cursor: pointer;
+    transition: transform 100ms ease;
 
-.pix-rating .star-left {
-  left: 0;
-  overflow: hidden;
-}
+    &:not([disabled]):hover {
+      transform: scale(1.1);
+    }
 
-.pix-rating .star-left::before {
-  left: 0;
-}
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
 
-.pix-rating .star-right {
-  right: 0;
-  overflow: hidden;
-}
+    &[disabled] {
+      cursor: default;
+    }
 
-.pix-rating .star-right::before {
-  right: 0;
-}
+    /* Clickable zones - left half for half-star, right half for full star */
+    & [zone] {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      z-index: 1;
+    }
 
-.pix-rating .star-half.filled::before {
-  background-color: #fbbf24;
-}
+    & [zone="left"] {
+      left: 0;
+      cursor: pointer;
+    }
 
-.pix-rating .star-half:hover {
-  transform: scale(1.1);
-}
+    & [zone="right"] {
+      right: 0;
+      cursor: pointer;
+    }
 
-/* Reset Rating Button */
-.btn-reset-rating {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background-color: var(--color-surface);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
+    /* SVG star */
+    & svg {
+      width: var(--rating-star-size);
+      height: var(--rating-star-size);
 
-.btn-reset-rating:hover {
-  background-color: var(--color-danger);
-  border-color: var(--color-danger);
-  color: white;
-}
+      fill: none;
+      stroke: var(--rating-color-empty);
+      stroke-width: 1.5;
 
-.btn-reset-rating.hidden {
-  visibility: hidden;
-}
+      transition: fill 150ms ease, stroke 150ms ease;
+    }
 
-/* Song Rating Wrapper in Card */
-.song-rating-wrapper {
-  margin-top: var(--spacing-sm);
+    /* Empty star (default) */
+    & svg path {
+      fill: transparent;
+    }
+
+    /* Filled star */
+    &[filled] svg {
+      fill: var(--rating-color-filled);
+      stroke: var(--rating-color-filled);
+    }
+
+    &[filled] svg path {
+      fill: var(--rating-color-filled);
+    }
+
+    /* Half-filled star - show full outline with left half filled */
+    &[half] svg {
+      stroke: var(--rating-color-filled);
+    }
+
+    &[half] svg path {
+      fill: var(--rating-color-filled);
+      clip-path: inset(0 50% 0 0);
+    }
+
+    /* Add empty half on right side for half stars */
+    &[half]::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      background: transparent;
+    }
+
+    /* Preview state (hover) - same opacity for both half and full */
+    &[preview] svg {
+      fill: var(--rating-color-filled);
+      stroke: var(--rating-color-filled);
+      opacity: 0.6;
+    }
+
+    &[preview] svg path {
+      fill: var(--rating-color-filled);
+      opacity: 0.6;
+    }
+
+    /* Half preview */
+    &[preview][half] svg path {
+      clip-path: inset(0 50% 0 0);
+    }
+  }
+
+  /* Readonly state */
+  &[readonly] button {
+    cursor: default;
+    pointer-events: none;
+
+    & [zone] {
+      display: none;
+    }
+  }
 }

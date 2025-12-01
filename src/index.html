@@ -1,71 +1,83 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="description" content="Simple Karaoke Singers list tracker - Manage your karaoke singers queue" />
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="description" content="Karaoke Tracker - Manage your karaoke singers queue with ease">
+    <meta name="theme-color" content="#6366f1">
+
     <title>Karaoke Tracker</title>
-    <link rel="stylesheet" href="./styles/index.css" />
-  </head>
-  <body>
-    <header class="app-header">
-      <div class="header-text">
-        <h1>🎤 <span data-i18n="appTitle">Karaoke Tracker</span></h1>
-        <p class="subtitle" data-i18n="appSubtitle">Manage your karaoke singers queue</p>
-      </div>
-      <div class="header-controls">
-        <label class="auto-readd-toggle header-toggle header-control">
-          <input type="checkbox" id="autoReaddCheckbox" checked />
-          <span class="toggle-label" data-i18n="autoReadd">🔄 Auto re-add</span>
-        </label>
-        <color-scheme-switcher></color-scheme-switcher>
-        <language-select></language-select>
-      </div>
+
+    <link rel="stylesheet" href="./styles/index.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div>
+            <span aria-hidden="true">🎤</span>
+            <h1>Karaoke Tracker</h1>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" id="auto-rotate-toggle" checked>
+                <span data-i18n="header.autoRotate">🔄 Auto-rotate</span>
+            </label>
+
+            <label>
+                <input type="checkbox" id="fair-play-toggle">
+                <span data-i18n="header.fairPlay">⚖️ Fair Play</span>
+            </label>
+
+            <pix-color-scheme-switcher></pix-color-scheme-switcher>
+            <pix-language-select></pix-language-select>
+
+            <button type="button" id="session-stats-btn" title="Session statistics" aria-label="Session statistics">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+            </button>
+
+            <button type="button" id="example-data-btn" title="Load example data" aria-label="Load example data">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </button>
+        </div>
     </header>
 
-    <main class="app-main">
-      <div class="main-content">
-        <section class="singers-section" aria-label="Singers list">
-          <div class="section-header">
-            <h2 data-i18n="singersQueue">Singers Queue</h2>
-            <div class="section-actions">
-              <button id="resetListBtn" class="btn btn-warning" aria-label="Load example list with sample data" data-i18n="exampleList">
-                📋 Example List
-              </button>
-              <button id="clearAllBtn" class="btn btn-secondary" aria-label="Reset list and clear all singers" data-i18n="resetList">
-                🔄 Reset List
-              </button>
-            </div>
-          </div>
-          <song-list></song-list>
+    <!-- Main Content - Three Column Layout -->
+    <main>
+        <!-- Left Column: Singers List -->
+        <aside>
+            <kt-singer-list></kt-singer-list>
+        </aside>
+
+        <!-- Center Column: Song Queue -->
+        <section>
+            <kt-song-queue></kt-song-queue>
         </section>
 
-        <section class="add-singer-section" aria-label="Add new singer">
-          <div class="section-header-form">
-            <h2 data-i18n="addSinger">Add Singer</h2>
-          </div>
-          <song-form></song-form>
-
-          <div class="leaderboard-section">
-            <h3 data-i18n="leaderboard">🏆 Leaderboard</h3>
-            <singer-leaderboard></singer-leaderboard>
-          </div>
-        </section>
-      </div>
+        <!-- Right Column: Leaderboard -->
+        <aside>
+            <kt-leaderboard></kt-leaderboard>
+        </aside>
     </main>
 
-    <footer class="app-footer">
-      <p data-i18n="footer">Built with ❤️ for karaoke enthusiasts</p>
+    <!-- Footer -->
+    <footer>
+        <p>Built with ❤️ for karaoke enthusiasts</p>
+        <nav>
+            <a href="https://github.com/pixu1980/karaoke-tracker" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
     </footer>
 
-    <!-- Confirmation Dialogs -->
-    <dialog is="example-list-dialog" id="exampleListDialog"></dialog>
-    <dialog is="reset-song-list-dialog" id="resetListDialog"></dialog>
-    <dialog is="remove-song-dialog" id="removeSongDialog"></dialog>
-    <dialog is="song-sung-dialog" id="doneSongDialog"></dialog>
-    <dialog is="edit-song-dialog" id="editSongDialog"></dialog>
+    <!-- Dialogs -->
+    <kt-add-singer-dialog id="add-singer-dialog"></kt-add-singer-dialog>
+    <kt-add-song-dialog id="add-song-dialog"></kt-add-song-dialog>
+    <kt-song-complete-dialog id="song-complete-dialog"></kt-song-complete-dialog>
+    <kt-confirm-dialog id="confirm-dialog"></kt-confirm-dialog>
+    <kt-singer-stats-dialog id="singer-stats-dialog"></kt-singer-stats-dialog>
+    <kt-session-stats-dialog id="session-stats-dialog"></kt-session-stats-dialog>
 
+    <!-- Scripts -->
     <script type="module" src="./scripts/index.js"></script>
-  </body>
+</body>
 </html>

@@ -1,10 +1,10 @@
 /**
- * Dialog Components Index
- * Exports all dialog components for easy importing
+ * Dialog Components barrel file
  */
 
-export { EditSongDialog } from './EditSongDialog/EditSongDialog.js';
-export { ExampleListDialog } from './ExampleListDialog/ExampleListDialog.js';
-export { RemoveSongDialog } from './RemoveSongDialog/RemoveSongDialog.js';
-export { ResetSongListDialog } from './ResetSongListDialog/ResetSongListDialog.js';
-export { SongSungDialog } from './SongSungDialog/SongSungDialog.js';
+export { AddSingerDialog } from './AddSingerDialog/AddSingerDialog.js';
+export { AddSongDialog } from './AddSongDialog/AddSongDialog.js';
+export { SongCompleteDialog } from './SongCompleteDialog/SongCompleteDialog.js';
+export { ConfirmDialog } from './ConfirmDialog/ConfirmDialog.js';
+export { SingerStatsDialog } from './SingerStatsDialog/SingerStatsDialog.js';
+export { SessionStatsDialog } from './SessionStatsDialog/SessionStatsDialog.js';

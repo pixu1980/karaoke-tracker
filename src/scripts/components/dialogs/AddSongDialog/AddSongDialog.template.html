@@ -1,0 +1,57 @@
+<pix-dialog dialog-title="{{{title}}}">
+  <form>
+    <div field>
+      <label for="song-title">{{{songTitleLabel}}}</label>
+      <input type="text" id="song-title" name="title" placeholder="{{{songTitlePlaceholder}}}" required autocomplete="off" />
+    </div>
+
+    <div field>
+      <label for="song-author">{{{authorLabel}}}</label>
+      <input type="text" id="song-author" name="author" placeholder="{{{authorPlaceholder}}}" autocomplete="off" />
+    </div>
+
+    <div warning id="song-warning" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <span id="song-warning-text"></span>
+    </div>
+
+    <div field>
+      <label>{{{singersLabel}}}</label>
+      <div singers id="singer-checkboxes">
+        <p>{{{noSingersText}}}</p>
+      </div>
+    </div>
+
+    <div field>
+      <label for="song-key">{{{keyLabel}}}</label>
+      <select id="song-key" name="key">
+        <option value="">—</option>
+        <option value="-5">-5</option>
+        <option value="-4">-4</option>
+        <option value="-3">-3</option>
+        <option value="-2">-2</option>
+        <option value="-1">-1</option>
+        <option value="0" selected>{{{keyOriginal}}}</option>
+        <option value="+1">+1</option>
+        <option value="+2">+2</option>
+        <option value="+3">+3</option>
+        <option value="+4">+4</option>
+        <option value="+5">+5</option>
+      </select>
+    </div>
+
+    <div field>
+      <label for="song-youtube">{{{youtubeLabel}}}</label>
+      <input type="url" id="song-youtube" name="youtubeUrl" placeholder="{{{youtubePlaceholder}}}" autocomplete="off" />
+    </div>
+
+    <div actions>
+      <button type="button" secondary data-action="cancel">{{{cancelText}}}</button>
+      <button type="submit" primary>{{{saveText}}}</button>
+    </div>
+  </form>
+</pix-dialog>

@@ -1,122 +1,194 @@
-/* Song Card Component Styles */
+/**
+ * SongCard Component Styles
+ * Uses element/attribute selectors per guidelines
+ */
 
-.song-card {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-card);
-  padding: var(--spacing-lg);
-  border: 1px solid var(--color-border);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  gap: var(--spacing-lg);
-  transition: all 0.3s ease;
-}
+kt-song-card {
+  display: block;
 
-.song-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+  /* Article container */
+  & > article {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-md);
+    align-items: start;
 
-.song-card--singing {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-  background: linear-gradient(135deg, var(--color-surface) 0%, rgba(59, 130, 246, 0.05) 100%);
-}
+    padding: var(--space-md);
 
-.singing-badge {
-  display: inline-block;
-  background-color: var(--color-primary);
-  color: white;
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  margin-bottom: var(--spacing-xs);
-}
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
 
-.song-info {
-  flex: 1 1 260px;
-  min-width: 0;
-}
+    transition: border-color 200ms ease, box-shadow 200ms ease;
 
-.song-singer-name {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text);
-  margin: 0 0 var(--spacing-xs) 0;
-}
+    &:hover {
+      border-color: var(--color-border-hover);
+      box-shadow: var(--shadow-sm);
+    }
+  }
 
-.song-details {
-  color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-sm) 0;
-  font-size: var(--font-size-base);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+  /* Main content */
+  & section:first-child {
+    min-width: 0;
 
-.song-title {
-  font-weight: 500;
-}
+    & h3 {
+      margin: 0 0 var(--space-2xs);
 
-.song-author {
-  font-size: var(--font-size-sm);
-  font-style: italic;
-  opacity: 0.8;
-}
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      line-height: 1.3;
 
-.song-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  flex-wrap: wrap;
-}
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-.song-key {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  padding: 2px 8px;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--color-text-secondary);
-}
+    & p[author] {
+      margin: 0 0 var(--space-2xs);
 
-.song-youtube {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background-color: #ff0000;
-  color: white;
-  text-decoration: none;
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
 
-.song-youtube:hover {
-  background-color: #cc0000;
-}
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-.song-rating-wrapper {
-  margin-top: var(--spacing-sm);
-}
+    & p[singers] {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2xs);
 
-.song-actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  min-width: 140px;
-  align-items: stretch;
-}
+      margin: 0;
 
-.song-actions .btn {
-  width: 100%;
+      font-size: var(--font-size-sm);
+      color: var(--color-primary);
+
+      & svg {
+        flex-shrink: 0;
+      }
+    }
+
+    & span[key] {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2xs);
+
+      padding: var(--space-2xs) var(--space-xs);
+
+      background-color: var(--color-surface-hover);
+      border-radius: var(--radius-sm);
+
+      font-size: var(--font-size-xs);
+    }
+
+    & div[meta] {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+
+      margin-top: var(--space-xs);
+    }
+
+    & span[wait-time] {
+      display: inline-flex;
+      align-items: center;
+
+      padding: var(--space-2xs) var(--space-xs);
+
+      background-color: var(--color-warning);
+      border-radius: var(--radius-sm);
+      color: white;
+
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+    }
+  }
+
+  /* YouTube link (in meta row) */
+  & a[youtube] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.4rem;
+    height: 2.4rem;
+
+    border-radius: var(--radius-sm);
+    color: #ff0000;
+
+    transition: background-color 200ms ease, opacity 200ms ease;
+
+    &:hover {
+      background-color: var(--color-surface-hover);
+      opacity: 0.9;
+    }
+  }
+
+  /* Actions section - vertical */
+  & section[actions] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  /* Action buttons */
+  & button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 3.6rem;
+    height: 3.6rem;
+    padding: 0;
+
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-text-muted);
+
+    cursor: pointer;
+    transition: background-color 200ms ease, color 200ms ease, transform 100ms ease;
+
+    &:hover {
+      background-color: var(--color-surface-hover);
+      color: var(--color-text);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    &[complete]:hover {
+      background-color: var(--color-success);
+      color: white;
+    }
+
+    &[delete]:hover {
+      color: var(--color-danger);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 767px) {
+    & > article {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    & section[youtube] {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    & section[actions] {
+      justify-content: flex-end;
+    }
+  }
 }

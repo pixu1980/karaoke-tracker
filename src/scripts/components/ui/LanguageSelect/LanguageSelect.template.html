@@ -1,0 +1,5 @@
+<select aria-label="{{ariaLabel}}">
+  <for each="lang in languages">
+    <if condition="lang.isSelected"><option value="{{lang.code}}" selected>{{lang.flag}} {{lang.name}}</option></if><else><option value="{{lang.code}}">{{lang.flag}} {{lang.name}}</option></else>
+  </for>
+</select>

@@ -1,7 +1,0 @@
-/* EditSongDialog specific styles */
-/* Base dialog styles are inherited from BaseDialog.css */
-/* Form styles are handled by SongForm component */
-
-.edit-song-dialog .dialog-content {
-  min-width: 320px;
-}

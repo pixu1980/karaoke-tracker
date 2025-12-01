@@ -1,0 +1,60 @@
+<pix-dialog dialog-title="{{title}}">
+  <div stats-content>
+    <if condition="hasStats">
+      <div stats-grid>
+        <div stat>
+          <span stat-value>{{totalSingers}}</span>
+          <span stat-label>{{singersLabel}}</span>
+        </div>
+        <div stat>
+          <span stat-value>{{totalSongsPerformed}}</span>
+          <span stat-label>{{performedLabel}}</span>
+        </div>
+        <div stat>
+          <span stat-value>{{songsInQueue}}</span>
+          <span stat-label>{{inQueueLabel}}</span>
+        </div>
+        <div stat>
+          <span stat-value>
+            <if condition="averageStars">
+              <span stars>{{{averageStars}}}</span>
+            </if>
+            {{averageRating}}
+          </span>
+          <span stat-label>{{avgRatingLabel}}</span>
+        </div>
+        <div stat highlight>
+          <span stat-value>{{estimatedTimeRemaining}}</span>
+          <span stat-label>{{timeRemainingLabel}}</span>
+        </div>
+      </div>
+
+      <if condition="hasTopSingers">
+        <div top-singers>
+          <h3>{{topSingersLabel}}</h3>
+          <ol>
+            <for each="singer in topSingers">
+              <li>
+                <span medal>{{singer.medal}}</span>
+                <span name>{{singer.name}}</span>
+                <span stats>
+                  {{singer.songCount}} {{songsText}}
+                  <if condition="singer.avgRating">
+                    — <span stars>{{{singer.stars}}}</span> {{singer.avgRating}}
+                  </if>
+                </span>
+              </li>
+            </for>
+          </ol>
+        </div>
+      </if>
+    </if>
+    <else>
+      <p empty>{{noStats}}</p>
+    </else>
+  </div>
+
+  <div actions>
+    <button type="button" primary data-action="close">{{closeText}}</button>
+  </div>
+</pix-dialog>

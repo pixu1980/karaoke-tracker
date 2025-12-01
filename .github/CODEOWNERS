@@ -1,0 +1,8 @@
+# Code owners for the repository
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for the entire repository
+* @pixu1980
+
+# Owners for documentation
+/docs/ @pixu1980

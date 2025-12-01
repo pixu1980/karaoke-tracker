@@ -1,5 +1,10 @@
 # karaoke-tracker
 
+[![Deploy](https://github.com/pixu1980/karaoke-tracker/actions/workflows/deploy.yml/badge.svg)](https://github.com/pixu1980/karaoke-tracker/actions)
+[![License](https://img.shields.io/github/license/pixu1980/karaoke-tracker)](LICENSE)
+[![Open Issues](https://img.shields.io/github/issues/pixu1980/karaoke-tracker)](https://github.com/pixu1980/karaoke-tracker/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/pixu1980/karaoke-tracker)](https://github.com/pixu1980/karaoke-tracker/commits)
+
 🎤 Simple Karaoke Singers list tracker - Manage your karaoke singers queue with style!
 
 ## Features
@@ -99,5 +104,11 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ## Contributing
 
-Contributions are welcome! Please ensure your code follows the project's development guidelines outlined in `docs/RULES.md`.
+Contributions are welcome! See `CONTRIBUTING.md` in the repository root for details on how to contribute.
+
+- Development rules and conventions: `docs/RULES.md`
+- Local development guide: `DEVELOPING.md`
+- Issue and PR templates: `.github/ISSUE_TEMPLATE/` and `.github/PULL_REQUEST_TEMPLATE.md`
+
+Before opening a PR, please follow the guidelines in `CONTRIBUTING.md` and the docs under `docs/`.
 

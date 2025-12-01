@@ -112,3 +112,14 @@ Contributions are welcome! See `CONTRIBUTING.md` in the repository root for deta
 
 Before opening a PR, please follow the guidelines in `CONTRIBUTING.md` and the docs under `docs/`.
 
+## Documentation & Code of Conduct
+
+For project governance and contributor guidelines see:
+
+- `CONTRIBUTING.md` — how to contribute and PR checklist.
+- `docs/CONTRIBUTING_ADVANCED.md` — advanced technical workflow (Playwright, Biome, Husky, lint-staged) useful for maintainers and video tutorials.
+- `CODE_OF_CONDUCT.md` — repository Code of Conduct (Contributor Covenant reference).
+- `SECURITY.md` — how to report security issues confidentially.
+
+If you'd like a copy of the full Contributor Covenant text included directly in this repository, I can add it to `CODE_OF_CONDUCT.md`.
+

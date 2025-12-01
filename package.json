@@ -5,8 +5,8 @@
   "source": "src/index.html",
   "scripts": {
     "clear": "rm -rf .parcel-cache dist",
-    "prestart": "pnpm clear",
-    "start": "parcel src/index.html",
+    "predev": "pnpm clear",
+    "dev": "parcel src/index.html",
     "prebuild": "pnpm clear",
     "build": "parcel build src/index.html --public-url ./",
     "test": "echo \"No tests yet\" && exit 0",
@@ -19,9 +19,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@biomejs/biome": "2.3.7",
-    "@parcel/transformer-inline-string": "2.16.1",
-    "parcel": "2.16.1",
-    "prettier": "3.6.2"
+    "@biomejs/biome": "2.3.8",
+    "@parcel/transformer-inline-string": "2.16.3",
+    "parcel": "2.16.3",
+    "prettier": "3.7.4"
   }
 }

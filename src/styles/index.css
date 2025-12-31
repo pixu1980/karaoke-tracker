@@ -104,9 +104,10 @@
     color-scheme: light dark;
 
     /* Primary Colors */
-    --color-primary: light-dark(#6366f1, #818cf8);
-    --color-primary-hover: light-dark(#4f46e5, #a5b4fc);
-    --color-primary-light: light-dark(#e0e7ff, #312e81);
+    /* primary violet: slightly lighter in dark mode for better contrast */
+    --color-primary: light-dark(#6366f1, #9aa8ff);
+    --color-primary-hover: light-dark(#4f46e5, #c6d7ff);
+    --color-primary-light: light-dark(#e0e7ff, #41456a);
 
     /* Semantic Colors */
     --color-success: light-dark(#10b981, #34d399);
@@ -163,6 +164,12 @@
     --radius-md: 0.8rem;
     --radius-lg: 1.2rem;
     --radius-full: 9999px;
+    /* Button text color for primary in light/dark */
+    --color-button-primary-text: light-dark(#ffffff, #000000);
+    /* badge text for counters (white in light, black in dark) */
+    --color-badge-text: light-dark(#ffffff, #000000);
+    /* checkbox checkmark color (white in light, black in dark) */
+    --color-checkbox-checkmark: light-dark(#ffffff, #000000);
 
     /* Transitions */
     --transition-fast: 150ms ease;
@@ -186,6 +193,11 @@
     color: var(--color-text);
     height: 100vh;
     overflow: hidden;
+  }
+
+  /* Global button shape: unify radius across primary/secondary */
+  button {
+    border-radius: var(--radius-md);
   }
 
   :focus-visible {
@@ -268,7 +280,7 @@
 
       &[primary] {
         background-color: var(--color-primary);
-        color: white;
+        color: var(--color-button-primary-text);
 
         &:hover {
           background-color: var(--color-primary-hover);
@@ -278,10 +290,12 @@
       &:not([primary]) {
         padding: var(--space-sm);
 
+        /* secondary look: outline with subtle background on hover */
         background-color: transparent;
         color: var(--color-text-muted);
+        border: 1px solid var(--color-border);
 
-        border-radius: var(--radius-sm);
+        border-radius: var(--radius-md);
 
         &:hover {
           background-color: var(--color-surface-hover);
@@ -307,10 +321,44 @@
         background-color: var(--color-surface-elevated);
       }
 
+      /* visually hide native checkbox and render custom box via label::before
+         (we keep the input accessible but clipped) */
       & input[type="checkbox"] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* custom checkbox visual placed before the label content */
+      &::before {
+        content: "";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         width: 1.6rem;
         height: 1.6rem;
-        accent-color: var(--color-primary);
+        margin-right: var(--space-xs);
+        flex-shrink: 0;
+        border: 1px solid var(--color-border);
+        border-radius: 0.4rem;
+        background: transparent;
+        color: var(--color-checkbox-checkmark);
+        font-size: 1.2rem;
+        line-height: 1;
+      }
+
+      /* checked state: violet background, black checkmark in dark */
+      &:has(input[type="checkbox"]:checked)::before {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+        content: "✔";
+        color: var(--color-checkbox-checkmark);
       }
 
       & span {
@@ -323,13 +371,16 @@
 
   /* Main Content - Three Column Grid */
   body > main {
+    /* main fills the viewport between header and footer */
+    height: calc(100vh - var(--header-height) - var(--footer-height));
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--column-gap);
 
     padding: var(--space-lg);
 
-    overflow-y: auto;
+    /* don't let main itself scroll; columns will scroll internally */
+    overflow: hidden;
 
     /* Columns */
     & > aside,
@@ -337,8 +388,9 @@
       display: flex;
       flex-direction: column;
 
+      /* allow internal children to size and scroll correctly */
       min-height: 0;
-      max-height: 100%;
+      height: 100%;
 
       background-color: var(--color-surface);
       border: 1px solid var(--color-border);

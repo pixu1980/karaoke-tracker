@@ -64,10 +64,10 @@ pix-color-scheme-switcher {
   /* Selected state */
   & input[type="radio"]:checked + label {
     background-color: var(--color-primary);
-    color: white;
+    color: var(--color-button-primary-text);
 
     & svg {
-      color: white;
+      color: var(--color-button-primary-text);
     }
   }
 

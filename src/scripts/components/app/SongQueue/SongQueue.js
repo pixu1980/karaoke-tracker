@@ -91,6 +91,15 @@ export class SongQueue extends HTMLElement {
       filterInput.value = this._filterText;
       this.updateList();
     }
+
+    // Ensure real-time filtering: attach direct input handler to avoid delegation timing issues
+    if (filterInput) {
+      // replace any previous handler
+      filterInput.oninput = e => {
+        this._filterText = e.target.value.toLowerCase().trim();
+        this.updateList();
+      };
+    }
   }
 
   updateList() {

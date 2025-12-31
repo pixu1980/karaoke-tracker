@@ -1,0 +1,47 @@
+name: Validate Agent Skills
+
+on:
+  pull_request:
+    paths:
+      - '.ai/skills/**'
+      - '.github/workflows/skills-validate.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install skills-ref
+        run: |
+          pip install "git+https://github.com/agentskills/agentskills.git@main#subdirectory=skills-ref"
+
+      - name: Validate skills with skills-ref
+        run: |
+          for d in .ai/skills/*/; do
+            if [ -f "$d/SKILL.md" ]; then
+              echo "Validating $d..."
+              skills-ref validate "$d" || exit 1
+            fi
+          done
+
+      - name: Run local validator
+        run: |
+          python3 .ai/skills/scripts/validate_local.py || exit 1
+
+      - name: Generate prompt XML
+        run: |
+          mkdir -p .ai/generated
+          skills-ref to-prompt .ai/skills/*/ > .ai/generated/available_skills.xml || true
+
+      - name: Upload generated artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: skills-artifacts
+          path: .ai/generated/

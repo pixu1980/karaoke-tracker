@@ -15,7 +15,9 @@ kt-singer-card {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
 
-  transition: border-color 200ms ease, box-shadow 200ms ease;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
 
   &:hover {
     border-color: var(--color-border-hover);
@@ -52,7 +54,7 @@ kt-singer-card {
   /* Actions section */
   & > div:last-child {
     display: flex;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
     flex-shrink: 0;
   }
 
@@ -62,19 +64,24 @@ kt-singer-card {
     align-items: center;
     justify-content: center;
 
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 3.6rem;
+    height: 3.6rem;
     padding: 0;
 
-    border: none;
-    border-radius: var(--radius-sm);
+    /* Secondary look: outlined button to match UI kit */
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     background: transparent;
     color: var(--color-text-muted);
 
     cursor: pointer;
-    transition: background-color 200ms ease, color 200ms ease, transform 100ms ease;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease,
+      transform 100ms ease;
 
     &:hover {
+      /* default hover: subtle surface hover */
       background-color: var(--color-surface-hover);
       color: var(--color-text);
     }
@@ -91,5 +98,11 @@ kt-singer-card {
     &[delete]:hover {
       color: var(--color-danger);
     }
+  }
+
+  & section[actions] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
   }
 }

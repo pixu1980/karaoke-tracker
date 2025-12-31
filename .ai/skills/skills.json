@@ -1,0 +1,58 @@
+[
+  {
+    "id": "component-scaffold",
+    "title": "Component scaffold (Custom Element)",
+    "path": "skills/component-scaffold/SKILL.md",
+    "version": "1.0.0",
+    "tags": ["component","scaffold"]
+  },
+  {
+    "id": "styling-guidelines",
+    "title": "Styling guidelines & design tokens",
+    "path": "skills/styling-guidelines/SKILL.md",
+    "version": "1.0.0",
+    "tags": ["css","design-tokens"]
+  },
+  {
+    "id": "template-engine-pixengine",
+    "title": "Using pixEngine templates",
+    "path": "skills/template-engine/SKILL.md",
+    "version": "1.0.0",
+    "tags": ["templates"]
+  },
+  {
+    "id": "event-system",
+    "title": "Event system and communication",
+    "path": "skills/event-system/SKILL.md",
+    "version": "1.0.0",
+    "tags": ["events"]
+  },
+  {
+    "id": "real-time-filtering",
+    "title": "Real-time filtering pattern",
+    "path": "skills/real-time-filtering/SKILL.md",
+    "version": "1.0.0",
+    "tags": ["filtering","ui"]
+  },
+  {
+    "id": "storage-service",
+    "title": "Storage service usage",
+    "path": "skills/storage-service/SKILL.md",
+    "version": "1.0.0",
+    "tags": ["storage","indexeddb"]
+  },
+  {
+    "id": "accessibility-rules",
+    "title": "Accessibility rules for components",
+    "path": "skills/accessibility-rules/SKILL.md",
+    "version": "1.0.0",
+    "tags": ["a11y"]
+  },
+  {
+    "id": "testing-components",
+    "title": "Testing components (local + E2E)",
+    "path": "skills/testing-components/SKILL.md",
+    "version": "1.0.0",
+    "tags": ["testing","playwright"]
+  }
+]

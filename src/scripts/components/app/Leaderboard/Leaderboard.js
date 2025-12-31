@@ -97,6 +97,14 @@ export class Leaderboard extends HTMLElement {
       filterInput.value = this._filterText;
       this.updateList();
     }
+
+    // Ensure real-time filtering by attaching a direct input handler
+    if (filterInput) {
+      filterInput.oninput = e => {
+        this._filterText = e.target.value.toLowerCase().trim();
+        this.updateList();
+      };
+    }
   }
 
   updateList() {

@@ -14,6 +14,14 @@ kt-leaderboard {
 
   overflow: hidden;
 
+  /* Article layout: make article a column that fills the component */
+  & > article {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
   /* Header */
   & > article > header {
     display: flex;
@@ -35,7 +43,7 @@ kt-leaderboard {
 
   /* Filter bar */
   & > article > form[filter-bar] {
-    padding: var(--space-md);
+    padding: var(--space-md); /* reduced vertical spacing */
 
     & input[data-filter] {
       width: 100%;
@@ -63,7 +71,7 @@ kt-leaderboard {
   /* Content area */
   & > article > section {
     flex: 1;
-    padding: var(--space-md);
+    padding: 0 var(--space-md) var(--space-md);
     overflow-y: auto;
 
     & > ul {

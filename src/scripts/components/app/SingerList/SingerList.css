@@ -14,6 +14,14 @@ kt-singer-list {
 
   overflow: hidden;
 
+  /* Article layout: make article a column that fills the component */
+  & > article {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
   /* Header */
   & > article > header {
     display: flex;
@@ -49,7 +57,7 @@ kt-singer-list {
 
         background-color: var(--color-primary);
         border-radius: var(--radius-full);
-        color: white;
+        color: var(--color-badge-text);
 
         font-size: var(--font-size-sm);
         font-weight: 600;
@@ -60,7 +68,7 @@ kt-singer-list {
     & > div:last-child {
       display: flex;
       align-items: center;
-      gap: var(--space-xs);
+      gap: var(--space-sm); /* increased gap between add and delete */
     }
 
     /* Header buttons */
@@ -75,7 +83,7 @@ kt-singer-list {
       padding: 0;
 
       border: none;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
       background: transparent;
       color: var(--color-text-muted);
 
@@ -102,7 +110,7 @@ kt-singer-list {
 
         background-color: var(--color-primary);
         border-radius: var(--radius-md);
-        color: white;
+        color: var(--color-button-primary-text);
 
         font-size: var(--font-size-sm);
         font-weight: 500;
@@ -127,7 +135,7 @@ kt-singer-list {
 
   /* Filter bar */
   & > article > form[filter-bar] {
-    padding: var(--space-md);
+    padding: var(--space-md); /* reduced vertical spacing */
 
     & input[data-filter] {
       width: 100%;
@@ -155,7 +163,7 @@ kt-singer-list {
   /* Content area */
   & > article > section {
     flex: 1;
-    padding: var(--space-md);
+    padding: 0 var(--space-md) var(--space-md);
     overflow-y: auto;
 
     & > ul {

@@ -7,7 +7,7 @@ kt-song-card {
   display: block;
 
   /* Article container */
-  & > article {
+  > article {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: var(--space-md);
@@ -28,10 +28,10 @@ kt-song-card {
   }
 
   /* Main content */
-  & section:first-child {
+  section:first-child {
     min-width: 0;
 
-    & h3 {
+    h3 {
       margin: 0 0 var(--space-2xs);
 
       font-size: var(--font-size-base);
@@ -43,7 +43,7 @@ kt-song-card {
       white-space: nowrap;
     }
 
-    & p[author] {
+    p[author] {
       margin: 0 0 var(--space-2xs);
 
       font-size: var(--font-size-sm);
@@ -54,7 +54,7 @@ kt-song-card {
       white-space: nowrap;
     }
 
-    & p[singers] {
+    p[singers] {
       display: flex;
       align-items: center;
       gap: var(--space-2xs);
@@ -64,12 +64,12 @@ kt-song-card {
       font-size: var(--font-size-sm);
       color: var(--color-primary);
 
-      & svg {
+      svg {
         flex-shrink: 0;
       }
     }
 
-    & span[key] {
+    span[key] {
       display: inline-flex;
       align-items: center;
       gap: var(--space-2xs);
@@ -82,7 +82,7 @@ kt-song-card {
       font-size: var(--font-size-xs);
     }
 
-    & div[meta] {
+    div[meta] {
       display: flex;
       align-items: center;
       gap: var(--space-xs);
@@ -91,7 +91,7 @@ kt-song-card {
       margin-top: var(--space-xs);
     }
 
-    & span[wait-time] {
+    span[wait-time] {
       display: inline-flex;
       align-items: center;
 
@@ -107,7 +107,7 @@ kt-song-card {
   }
 
   /* YouTube link (in meta row) */
-  & a[youtube] {
+  a[youtube] {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -127,14 +127,14 @@ kt-song-card {
   }
 
   /* Actions section - vertical */
-  & section[actions] {
+  section[actions] {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
   }
 
   /* Action buttons */
-  & button {
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -178,17 +178,17 @@ kt-song-card {
 
   /* Responsive */
   @media (max-width: 767px) {
-    & > article {
+    > article {
       grid-template-columns: 1fr;
       gap: var(--space-sm);
     }
 
-    & section[youtube] {
+    section[youtube] {
       flex-direction: row;
       align-items: center;
     }
 
-    & section[actions] {
+    section[actions] {
       justify-content: flex-end;
     }
   }

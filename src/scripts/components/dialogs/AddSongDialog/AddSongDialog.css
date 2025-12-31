@@ -4,7 +4,7 @@
  */
 
 kt-add-song-dialog {
-  & form {
+  form {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
@@ -13,19 +13,19 @@ kt-add-song-dialog {
   }
 
   /* Form field groups */
-  & div[field] {
+  div[field] {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
 
-    & label {
+    label {
       font-size: var(--font-size-sm);
       font-weight: 500;
       color: var(--color-text);
     }
 
-    & input,
-    & select {
+    input,
+    select {
       width: 100%;
       padding: var(--space-sm) var(--space-md);
 
@@ -50,7 +50,7 @@ kt-add-song-dialog {
       }
     }
 
-    & select {
+    select {
       cursor: pointer;
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
@@ -61,7 +61,7 @@ kt-add-song-dialog {
   }
 
   /* Warning message */
-  & div[warning] {
+  div[warning] {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
@@ -79,14 +79,14 @@ kt-add-song-dialog {
       display: none;
     }
 
-    & svg {
+    svg {
       flex-shrink: 0;
       color: var(--color-warning-border, #f59e0b);
     }
   }
 
   /* Singer checkboxes container */
-  & div[singers] {
+  div[singers] {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
@@ -100,13 +100,13 @@ kt-add-song-dialog {
 
     overflow-y: auto;
 
-    & > p {
+    > p {
       margin: 0;
       font-size: var(--font-size-sm);
       color: var(--color-text-muted);
     }
 
-    & label {
+    label {
       display: inline-flex;
       align-items: center;
       gap: var(--space-xs);
@@ -131,7 +131,7 @@ kt-add-song-dialog {
         color: white;
       }
 
-      & input {
+      input {
         width: auto;
         padding: 0;
         accent-color: white;
@@ -140,7 +140,7 @@ kt-add-song-dialog {
   }
 
   /* Form actions */
-  & div[actions] {
+  div[actions] {
     display: flex;
     justify-content: flex-end;
     gap: var(--space-sm);
@@ -149,7 +149,7 @@ kt-add-song-dialog {
 
     border-top: 1px solid var(--color-border);
 
-    & button {
+    button {
       padding: var(--space-sm) var(--space-lg);
 
       border: none;

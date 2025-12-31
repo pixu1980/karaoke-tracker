@@ -25,7 +25,7 @@ kt-singer-card {
   }
 
   /* Info section */
-  & > div:first-child {
+  > div:first-child {
     display: flex;
     flex-direction: column;
     gap: var(--space-2xs);
@@ -33,7 +33,7 @@ kt-singer-card {
     flex: 1;
     min-width: 0;
 
-    & h3 {
+    h3 {
       margin: 0;
 
       font-size: var(--font-size-base);
@@ -45,21 +45,21 @@ kt-singer-card {
       white-space: nowrap;
     }
 
-    & span {
+    span {
       font-size: var(--font-size-sm);
       color: var(--color-text-muted);
     }
   }
 
   /* Actions section */
-  & > div:last-child {
+  > div:last-child {
     display: flex;
     gap: var(--space-sm);
     flex-shrink: 0;
   }
 
   /* Action buttons */
-  & button {
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,7 +100,7 @@ kt-singer-card {
     }
   }
 
-  & section[actions] {
+  section[actions] {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);

@@ -15,7 +15,7 @@ kt-song-queue {
   overflow: hidden;
 
   /* Article layout: make article a column that fills the component */
-  & > article {
+  > article {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -23,7 +23,7 @@ kt-song-queue {
   }
 
   /* Header */
-  & > article > header {
+  > article > header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -35,18 +35,18 @@ kt-song-queue {
     border-bottom: 1px solid var(--color-border);
 
     /* Left side: title + count */
-    & > div:first-child {
+    > div:first-child {
       display: flex;
       align-items: center;
       gap: var(--space-sm);
 
-      & h2 {
+      h2 {
         margin: 0;
         font-size: var(--font-size-lg);
         font-weight: 600;
       }
 
-      & span[count] {
+      span[count] {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -65,14 +65,14 @@ kt-song-queue {
     }
 
     /* Right side: action buttons */
-    & > div:last-child {
+    > div:last-child {
       display: flex;
       align-items: center;
       gap: var(--space-sm); /* increased gap between add and delete */
     }
 
     /* Header buttons */
-    & button {
+    button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -137,10 +137,10 @@ kt-song-queue {
   }
 
   /* Filter bar */
-  & > article > form[filter-bar] {
+  > article > form[filter-bar] {
     padding: var(--space-md); /* reduced vertical spacing */
 
-    & input[data-filter] {
+    input[data-filter] {
       width: 100%;
       padding: var(--space-sm);
 
@@ -164,12 +164,12 @@ kt-song-queue {
   }
 
   /* Content area */
-  & > article > section {
+  > article > section {
     flex: 1;
     padding: 0 var(--space-md) var(--space-md);
     overflow-y: auto;
 
-    & > ul {
+    > ul {
       display: flex;
       flex-direction: column;
       gap: var(--space-sm);
@@ -181,7 +181,7 @@ kt-song-queue {
       counter-reset: song-counter;
     }
 
-    & > ul > li {
+    > ul > li {
       position: relative;
       counter-increment: song-counter;
 
@@ -194,7 +194,7 @@ kt-song-queue {
       }
 
       /* Drag handle button - 32px width, same height as song card */
-      & > button[drag-handle] {
+      > button[drag-handle] {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -215,7 +215,7 @@ kt-song-queue {
           color 150ms ease,
           transform 150ms ease;
 
-        & svg {
+        svg {
           color: inherit;
         }
 
@@ -236,7 +236,7 @@ kt-song-queue {
       }
 
       /* Song card takes remaining space */
-      & > kt-song-card {
+      > kt-song-card {
         flex: 1;
       }
 
@@ -267,7 +267,7 @@ kt-song-queue {
   }
 
   /* Empty state */
-  & span[empty-state] {
+  span[empty-state] {
     display: flex;
     align-items: center;
     justify-content: center;

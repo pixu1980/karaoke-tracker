@@ -3,7 +3,7 @@
 pix-language-select {
     display: contents;
 
-    & select {
+    select {
         appearance: none;
         padding: var(--space-sm) var(--space-xl) var(--space-sm) var(--space-md);
         min-width: 140px;

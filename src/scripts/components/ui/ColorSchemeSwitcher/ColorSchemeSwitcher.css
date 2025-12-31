@@ -15,7 +15,7 @@ pix-color-scheme-switcher {
   border-radius: var(--radius-md);
 
   /* Hidden radio inputs */
-  & input[type="radio"] {
+  input[type="radio"] {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -28,7 +28,7 @@ pix-color-scheme-switcher {
   }
 
   /* Radio labels - match SingerCard delete button size */
-  & label {
+  label {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +51,7 @@ pix-color-scheme-switcher {
       color: var(--color-text);
     }
 
-    & svg {
+    svg {
       color: var(--color-text-muted);
       transition: color 200ms ease;
     }
@@ -62,17 +62,17 @@ pix-color-scheme-switcher {
   }
 
   /* Selected state */
-  & input[type="radio"]:checked + label {
+  input[type="radio"]:checked + label {
     background-color: var(--color-primary);
     color: var(--color-button-primary-text);
 
-    & svg {
+    svg {
       color: var(--color-button-primary-text);
     }
   }
 
   /* Focus state */
-  & input[type="radio"]:focus-visible + label {
+  input[type="radio"]:focus-visible + label {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }

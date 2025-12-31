@@ -15,7 +15,7 @@ kt-leaderboard {
   overflow: hidden;
 
   /* Article layout: make article a column that fills the component */
-  & > article {
+  > article {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -23,7 +23,7 @@ kt-leaderboard {
   }
 
   /* Header */
-  & > article > header {
+  > article > header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -34,7 +34,7 @@ kt-leaderboard {
     background-color: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
 
-    & h2 {
+    h2 {
       margin: 0;
       font-size: var(--font-size-lg);
       font-weight: 600;
@@ -42,10 +42,10 @@ kt-leaderboard {
   }
 
   /* Filter bar */
-  & > article > form[filter-bar] {
+  > article > form[filter-bar] {
     padding: var(--space-md); /* reduced vertical spacing */
 
-    & input[data-filter] {
+    input[data-filter] {
       width: 100%;
       padding: var(--space-sm);
 
@@ -69,12 +69,12 @@ kt-leaderboard {
   }
 
   /* Content area */
-  & > article > section {
+  > article > section {
     flex: 1;
     padding: 0 var(--space-md) var(--space-md);
     overflow-y: auto;
 
-    & > ul {
+    > ul {
       display: flex;
       flex-direction: column;
       gap: var(--space-sm);
@@ -87,7 +87,7 @@ kt-leaderboard {
   }
 
   /* Leaderboard item */
-  & li[rank] {
+  li[rank] {
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: var(--space-md);
@@ -118,7 +118,7 @@ kt-leaderboard {
     }
 
     /* Rank badge */
-    & > span:first-child {
+    > span:first-child {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -149,7 +149,7 @@ kt-leaderboard {
     }
 
     /* Name */
-    & > span:nth-child(2) {
+    > span:nth-child(2) {
       font-weight: 600;
 
       overflow: hidden;
@@ -158,29 +158,29 @@ kt-leaderboard {
     }
 
     /* Stats */
-    & > div {
+    > div {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       gap: var(--space-2xs);
 
-      & > span[rating] {
+      > span[rating] {
         display: flex;
         align-items: center;
         gap: var(--space-xs);
 
-        & > span:first-child {
+        > span:first-child {
           color: var(--color-warning);
           letter-spacing: 1px;
         }
 
-        & > span:last-child {
+        > span:last-child {
           font-size: var(--font-size-sm);
           font-weight: 600;
         }
       }
 
-      & > span[songs] {
+      > span[songs] {
         font-size: var(--font-size-xs);
         color: var(--color-text-muted);
       }
@@ -188,7 +188,7 @@ kt-leaderboard {
   }
 
   /* Empty state */
-  & span[empty-state] {
+  span[empty-state] {
     display: flex;
     align-items: center;
     justify-content: center;

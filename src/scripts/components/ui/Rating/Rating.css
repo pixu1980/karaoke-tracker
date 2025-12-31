@@ -1,19 +1,20 @@
 /**
  * Rating Component Styles
- * Uses SVG stars with left/right clickable zones for half-star support
+ * Improved UX with clear hover states, half-star support, and visual feedback
  */
 
 pix-rating {
   --rating-star-size: 2.4rem;
   --rating-color-empty: var(--color-text-muted);
   --rating-color-filled: var(--color-warning);
+  --rating-color-preview: rgba(217, 119, 6, 0.3);
 
   display: inline-flex;
   align-items: center;
   gap: 0;
 
   /* Hidden number input */
-  & input[type="number"] {
+  input[type="number"] {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -26,9 +27,8 @@ pix-rating {
   }
 
   /* Star buttons */
-  & button {
+  button {
     position: relative;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,12 +39,16 @@ pix-rating {
 
     border: none;
     background: transparent;
+    color: var(--color-text-muted);
 
     cursor: pointer;
-    transition: transform 100ms ease;
+    transition: transform 150ms ease, background-color 150ms ease;
 
     &:not([disabled]):hover {
-      transform: scale(1.1);
+      /* Subtle background on hover for better feedback */
+      background-color: var(--rating-color-preview);
+      border-radius: var(--radius-sm);
+      transform: scale(1.15);
     }
 
     &:focus-visible {
@@ -58,7 +62,7 @@ pix-rating {
     }
 
     /* Clickable zones - left half for half-star, right half for full star */
-    & [zone] {
+    [zone] {
       position: absolute;
       top: 0;
       bottom: 0;
@@ -66,34 +70,35 @@ pix-rating {
       z-index: 1;
     }
 
-    & [zone="left"] {
+    [zone="left"] {
       left: 0;
       cursor: pointer;
     }
 
-    & [zone="right"] {
+    [zone="right"] {
       right: 0;
       cursor: pointer;
     }
 
     /* SVG star */
-    & svg {
+    svg {
       width: var(--rating-star-size);
       height: var(--rating-star-size);
 
       fill: none;
       stroke: var(--rating-color-empty);
       stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
 
-      transition: fill 150ms ease, stroke 150ms ease;
+      transition: fill 150ms ease, stroke 150ms ease, filter 150ms ease;
     }
 
-    /* Empty star (default) */
-    & svg path {
+    svg path {
       fill: transparent;
     }
 
-    /* Filled star */
+    /* Filled star - solid color, no opacity */
     &[filled] svg {
       fill: var(--rating-color-filled);
       stroke: var(--rating-color-filled);
@@ -103,7 +108,7 @@ pix-rating {
       fill: var(--rating-color-filled);
     }
 
-    /* Half-filled star - show full outline with left half filled */
+    /* Half-filled star - show filled left half with yellow stroke, empty right half with gray stroke */
     &[half] svg {
       stroke: var(--rating-color-filled);
     }
@@ -113,32 +118,56 @@ pix-rating {
       clip-path: inset(0 50% 0 0);
     }
 
-    /* Add empty half on right side for half stars */
+    /* Create visible right half with empty stroke by layering a second path appearance */
     &[half]::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 50%;
-      width: 50%;
-      height: 100%;
-      background: transparent;
+      width: var(--rating-star-size);
+      height: var(--rating-star-size);
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' fill='none' stroke='%23d9d9d9' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' clip-path='polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
-    /* Preview state (hover) - same opacity for both half and full */
+    /* Preview state on hover - visual indication of what will be selected */
     &[preview] svg {
       fill: var(--rating-color-filled);
       stroke: var(--rating-color-filled);
-      opacity: 0.6;
+      /* Keep full opacity for selected, use filter for lighter effect */
+      filter: brightness(1.1);
     }
 
     &[preview] svg path {
       fill: var(--rating-color-filled);
-      opacity: 0.6;
     }
 
-    /* Half preview */
+    /* Half preview - show filled left half with yellow stroke, empty right half with gray stroke */
+    &[preview][half] svg {
+      stroke: var(--rating-color-filled);
+    }
+
     &[preview][half] svg path {
+      fill: var(--rating-color-filled);
       clip-path: inset(0 50% 0 0);
+    }
+
+    &[preview][half]::after {
+      content: '';
+      position: absolute;
+      width: var(--rating-star-size);
+      height: var(--rating-star-size);
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' fill='none' stroke='%23d9d9d9' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' clip-path='polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* Add subtle glow effect for preview state */
+    &[preview]:not([filled]) {
+      filter: drop-shadow(0 0 6px var(--rating-color-filled));
     }
   }
 
@@ -147,7 +176,12 @@ pix-rating {
     cursor: default;
     pointer-events: none;
 
-    & [zone] {
+    &:not([disabled]):hover {
+      background-color: transparent;
+      transform: scale(1);
+    }
+
+    [zone] {
       display: none;
     }
   }

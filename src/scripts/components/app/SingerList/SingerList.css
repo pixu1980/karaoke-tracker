@@ -15,7 +15,7 @@ kt-singer-list {
   overflow: hidden;
 
   /* Article layout: make article a column that fills the component */
-  & > article {
+  > article {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -23,7 +23,7 @@ kt-singer-list {
   }
 
   /* Header */
-  & > article > header {
+  > article > header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -35,18 +35,18 @@ kt-singer-list {
     border-bottom: 1px solid var(--color-border);
 
     /* Left side: title + count */
-    & > div:first-child {
+    > div:first-child {
       display: flex;
       align-items: center;
       gap: var(--space-sm);
 
-      & h2 {
+      h2 {
         margin: 0;
         font-size: var(--font-size-lg);
         font-weight: 600;
       }
 
-      & span[count] {
+      span[count] {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -65,14 +65,14 @@ kt-singer-list {
     }
 
     /* Right side: action buttons */
-    & > div:last-child {
+    > div:last-child {
       display: flex;
       align-items: center;
       gap: var(--space-sm); /* increased gap between add and delete */
     }
 
     /* Header buttons */
-    & button {
+    button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -134,10 +134,10 @@ kt-singer-list {
   }
 
   /* Filter bar */
-  & > article > form[filter-bar] {
+  > article > form[filter-bar] {
     padding: var(--space-md); /* reduced vertical spacing */
 
-    & input[data-filter] {
+    input[data-filter] {
       width: 100%;
       padding: var(--space-sm);
 
@@ -161,12 +161,12 @@ kt-singer-list {
   }
 
   /* Content area */
-  & > article > section {
+  > article > section {
     flex: 1;
     padding: 0 var(--space-md) var(--space-md);
     overflow-y: auto;
 
-    & > ul {
+    > ul {
       display: flex;
       flex-direction: column;
       gap: var(--space-sm);
@@ -179,7 +179,7 @@ kt-singer-list {
   }
 
   /* Empty state */
-  & span[empty-state] {
+  span[empty-state] {
     display: flex;
     align-items: center;
     justify-content: center;

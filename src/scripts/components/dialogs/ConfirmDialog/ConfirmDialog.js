@@ -66,7 +66,7 @@ export class ConfirmDialog extends HTMLElement {
     this._variant = variant;
 
     const dialog = this.querySelector('pix-dialog');
-    const messageEl = this.querySelector('.confirm-message');
+    const messageEl = this.querySelector('[data-role="message"]');
     const confirmBtn = this.querySelector('[data-action="confirm"]');
     const titleEl = dialog?.querySelector('.dialog__title');
 
@@ -74,7 +74,7 @@ export class ConfirmDialog extends HTMLElement {
     if (messageEl) messageEl.textContent = message;
     if (confirmBtn) {
       confirmBtn.textContent = confirmText;
-      confirmBtn.className = `btn btn--${variant}`;
+      confirmBtn.setAttribute('data-variant', variant);
     }
 
     dialog?.open();

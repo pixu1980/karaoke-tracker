@@ -138,7 +138,7 @@ export class AddSongDialog extends HTMLElement {
     const author = formData.get('author')?.trim();
     const singerIds = formData.getAll('singerIds').map(id => parseInt(id, 10));
     const keyValue = formData.get('key');
-    const key = keyValue && keyValue !== '' && keyValue !== '0' ? keyValue : null;
+    const key = keyValue && keyValue !== '' ? keyValue : null;
     const youtubeUrl = formData.get('youtubeUrl')?.trim();
 
     if (!title || singerIds.length === 0) {

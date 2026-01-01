@@ -1,86 +1,98 @@
-/* AddSingerDialog Component Styles */
+/* AddSingerDialog Component Styles - element-first selectors
+   Prefixed with the component tag to keep specificity low and scoped
+*/
 
-.add-singer-form {
+kt-add-singer-dialog {
+  form {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-}
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-}
+    /* Field groups: prefer structural selectors (fieldset) over BEM classes */
+    > fieldset {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
 
-.form-label {
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    color: var(--color-text);
-}
+    label {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-text);
+    }
 
-.form-input {
-    padding: var(--space-sm) var(--space-md);
-    font-family: inherit;
-    font-size: var(--font-size-base);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background-color: var(--color-surface);
-    color: var(--color-text);
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
+    :where(input, textarea, select) {
+      padding: var(--space-sm) var(--space-md);
+      font-family: inherit;
+      font-size: var(--font-size-base);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: var(--color-surface);
+      color: var(--color-text);
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
 
-.form-input:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
+      &:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+    }
 
-.form-input::placeholder {
-    color: var(--color-text-muted);
-}
+    :where(input, textarea)::placeholder {
+      color: var(--color-text-muted);
+    }
 
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-sm);
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--color-border);
-}
+    /* Form actions: the last direct child group in the form */
+    > footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-sm);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--color-border);
+    }
 
-.btn {
-    padding: var(--space-sm) var(--space-lg);
-    font-family: inherit;
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: background-color 0.2s, transform 100ms ease;
-}
+    /* Buttons: style native elements (avoid class-based BEM selectors)
+   Distinguish primary by type=submit and cancel by type=button for semantics
+*/
+    button {
+      padding: var(--space-sm) var(--space-lg);
+      font-family: inherit;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition:
+        background-color 0.2s,
+        transform 100ms ease;
 
-.btn:active {
-    transform: scale(0.98);
-}
+      &:active {
+        transform: scale(0.98);
+      }
 
-.btn:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-}
+      &:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
 
-.btn--primary {
-    background-color: var(--color-primary);
-    color: white;
-}
+      &[type='submit'] {
+        background-color: var(--color-primary);
+        color: white;
+        &:hover {
+          background-color: var(--color-primary-hover);
+        }
+      }
 
-.btn--primary:hover {
-    background-color: var(--color-primary-hover);
-}
+      &[type='button'] {
+        background-color: var(--color-surface-hover);
+        color: var(--color-text);
 
-.btn--secondary {
-    background-color: var(--color-surface-hover);
-    color: var(--color-text);
-}
-
-.btn--secondary:hover {
-    background-color: var(--color-border);
+        &:hover {
+          background-color: var(--color-border);
+        }
+      }
+    }
+  }
 }

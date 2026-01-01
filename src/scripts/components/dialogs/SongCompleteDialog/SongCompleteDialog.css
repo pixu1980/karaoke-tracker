@@ -1,48 +1,48 @@
-/* SongCompleteDialog Component Styles */
+/* SongCompleteDialog Component Styles - element-first selectors scoped to component */
 
-.song-complete-content {
+kt-song-complete-dialog section {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
 }
 
-.song-complete__info {
+kt-song-complete-dialog article {
     text-align: center;
     padding: var(--space-md);
     background-color: var(--color-surface-hover);
     border-radius: var(--radius-md);
 }
 
-.song-complete__song-title {
+kt-song-complete-dialog h3 {
     margin: 0 0 var(--space-xs);
     font-size: var(--font-size-lg);
     font-weight: 600;
 }
 
-.song-complete__singers {
+kt-song-complete-dialog p {
     margin: 0;
     color: var(--color-primary);
     font-size: var(--font-size-sm);
 }
 
-.song-complete__rating {
+kt-song-complete-dialog > div {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-sm);
 }
 
-.song-complete__rating .form-label {
+kt-song-complete-dialog label.form-label {
     font-size: var(--font-size-sm);
     font-weight: 500;
     color: var(--color-text);
 }
 
-.song-complete__rating pix-rating {
+kt-song-complete-dialog pix-rating {
     transform: scale(1.2);
 }
 
-.form-actions {
+kt-song-complete-dialog footer {
     display: flex;
     justify-content: flex-end;
     gap: var(--space-sm);
@@ -50,7 +50,7 @@
     border-top: 1px solid var(--color-border);
 }
 
-.btn {
+kt-song-complete-dialog button {
     padding: var(--space-sm) var(--space-lg);
     font-family: inherit;
     font-size: var(--font-size-sm);
@@ -61,29 +61,29 @@
     transition: background-color 0.2s, transform 100ms ease;
 }
 
-.btn:active {
+kt-song-complete-dialog button:active {
     transform: scale(0.98);
 }
 
-.btn:focus-visible {
+kt-song-complete-dialog button:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
-.btn--primary {
+kt-song-complete-dialog button[data-variant="primary"] {
     background-color: var(--color-success);
     color: white;
 }
 
-.btn--primary:hover {
+kt-song-complete-dialog button[data-variant="primary"]:hover {
     filter: brightness(1.1);
 }
 
-.btn--secondary {
+kt-song-complete-dialog button[data-variant="secondary"] {
     background-color: var(--color-surface-hover);
     color: var(--color-text);
 }
 
-.btn--secondary:hover {
+kt-song-complete-dialog button[data-variant="secondary"]:hover {
     background-color: var(--color-border);
 }

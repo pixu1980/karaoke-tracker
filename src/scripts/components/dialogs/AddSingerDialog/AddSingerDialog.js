@@ -60,11 +60,15 @@ export class AddSingerDialog extends HTMLElement {
     try {
       if (this._editMode && this._singerId) {
         await storage.updateSinger(this._singerId, { name });
+        // When editing a singer name, refresh all views
+        document.dispatchEvent(new CustomEvent('singers:updated'));
+        document.dispatchEvent(new CustomEvent('songs:updated'));
+        document.dispatchEvent(new CustomEvent('performances:updated'));
       } else {
         await storage.addSinger({ name });
+        document.dispatchEvent(new CustomEvent('singers:updated'));
       }
 
-      document.dispatchEvent(new CustomEvent('singers:updated'));
       this.close();
     } catch (error) {
       console.error('Failed to save singer:', error);

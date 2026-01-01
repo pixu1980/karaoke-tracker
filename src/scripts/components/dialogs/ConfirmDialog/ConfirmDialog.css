@@ -1,78 +1,73 @@
-/* ConfirmDialog Component Styles */
+/* ConfirmDialog Component Styles - using CSS nesting for clarity */
 
-.confirm-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-lg);
-}
+kt-confirm-dialog {
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
 
-.confirm-message {
-    margin: 0;
-    font-size: var(--font-size-base);
-    line-height: 1.6;
-    color: var(--color-text);
-}
+    [data-role="message"] {
+        margin: 0;
+        font-size: var(--font-size-base);
+        line-height: 1.6;
+        color: var(--color-text);
+    }
 
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-sm);
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--color-border);
-}
+    footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--space-sm);
+        padding-top: var(--space-md);
+        border-top: 1px solid var(--color-border);
+    }
 
-.btn {
-    padding: var(--space-sm) var(--space-lg);
-    font-family: inherit;
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: background-color 0.2s, transform 100ms ease;
-}
+    button {
+        padding: var(--space-sm) var(--space-lg);
+        font-family: inherit;
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        border: none;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: background-color 0.2s, transform 100ms ease;
 
-.btn:active {
-    transform: scale(0.98);
-}
+        &:active {
+            transform: scale(0.98);
+        }
 
-.btn:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-}
+        &:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
 
-.btn--secondary {
-    background-color: var(--color-surface-hover);
-    color: var(--color-text);
-}
+        /* variants */
+        &[data-variant="secondary"] {
+            background-color: var(--color-surface-hover);
+            color: var(--color-text);
 
-.btn--secondary:hover {
-    background-color: var(--color-border);
-}
+            &:hover { background-color: var(--color-border); }
+        }
 
-.btn--danger {
-    background-color: var(--color-danger);
-    color: white;
-}
+        &[data-variant="danger"] {
+            background-color: var(--color-danger);
+            color: white;
 
-.btn--danger:hover {
-    filter: brightness(1.1);
-}
+            &:hover { filter: brightness(1.1); }
+        }
 
-.btn--warning {
-    background-color: var(--color-warning);
-    color: #1a1a1a;
-}
+        &[data-variant="warning"] {
+            background-color: var(--color-warning);
+            color: #1a1a1a;
 
-.btn--warning:hover {
-    filter: brightness(1.1);
-}
+            &:hover { filter: brightness(1.1); }
+        }
 
-.btn--info {
-    background-color: var(--color-primary);
-    color: white;
-}
+        &[data-variant="info"] {
+            background-color: var(--color-primary);
+            color: white;
 
-.btn--info:hover {
-    background-color: var(--color-primary-hover);
+            &:hover { background-color: var(--color-primary-hover); }
+        }
+    }
 }

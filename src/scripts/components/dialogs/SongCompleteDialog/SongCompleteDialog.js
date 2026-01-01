@@ -97,13 +97,10 @@ export class SongCompleteDialog extends HTMLElement {
     this._song = data.song;
     this._singers = data.singers || [];
 
-    const songTitle = this.querySelector('.song-complete__song-title');
-    const singersEl = this.querySelector('.song-complete__singers');
+    const songTitle = this.querySelector('[data-role="song-title"]');
+    const singersEl = this.querySelector('[data-role="singers"]');
 
-    if (songTitle) {
-      songTitle.textContent = this._song.title;
-    }
-
+    if (songTitle) songTitle.textContent = this._song.title;
     if (singersEl) {
       const singerNames = this._singers.map(s => s.name).join(', ');
       singersEl.textContent = singerNames || i18n.t('song.unknownSinger');
